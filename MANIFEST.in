@@ -1,0 +1,3 @@
+include bluechips/config/deployment.ini_tmpl
+recursive-include bluechips/public *
+recursive-include bluechips/templates *
