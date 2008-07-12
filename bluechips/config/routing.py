@@ -19,8 +19,9 @@ def make_map():
 
     # CUSTOM ROUTES HERE
 
-    map.connect('/:controller/index', action='index')
-    map.connect('/:controller/:action/')
+    map.connect('/:controller')
+    map.connect('/:controller/', action='index')
+    map.connect('/:controller/:action')
     map.connect('/:controller/:action/:id')
 
     return map

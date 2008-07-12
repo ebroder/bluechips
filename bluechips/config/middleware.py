@@ -9,6 +9,9 @@ from pylons.middleware import ErrorHandler, StaticJavascripts, \
     StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 from routes.middleware import RoutesMiddleware
+from paste import httpexceptions
+
+from tw.api import make_middleware
 
 from bluechips.config.environment import load_environment
 
@@ -37,11 +40,18 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = PylonsApp()
     
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
+    app = httpexceptions.make_middleware(app, global_conf)
     
     # Routing/Session/Cache Middleware
     app = RoutesMiddleware(app, config['routes.map'])
     app = SessionMiddleware(app, config)
     app = CacheMiddleware(app, config)
+    
+    app = make_middleware(app, {
+            'toscawidgets.framework': 'pylons',
+            'toscawidgets.framework.default_view': 'mako',
+            'toscawidgets.middleware.inject_resources': True
+            })
     
     if asbool(full_stack):
         # Handle Python exceptions
@@ -59,7 +69,6 @@ def make_app(global_conf, full_stack=True, **app_conf):
 
     # Static files (If running in production, and Apache or another web 
     # server is handling this static content, remove the following 3 lines)
-    javascripts_app = StaticJavascripts()
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
-    app = Cascade([static_app, javascripts_app, app])
+    app = Cascade([static_app, app])
     return app
