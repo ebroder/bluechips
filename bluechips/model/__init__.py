@@ -7,11 +7,6 @@ from bluechips.model import types
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
-    ## Reflected tables must be defined and mapped here
-    #global reflected_table
-    #reflected_table = sa.Table("Reflected", meta.metadata, autoload=True,
-    #                           autoload_with=engine)
-    #orm.mapper(Reflected, reflected_table)
 
     sm = orm.sessionmaker(autoflush=True, transactional=True, bind=engine)
 
@@ -116,8 +111,12 @@ orm.mapper(Subitem, subitems, properties={
 })
 
 orm.mapper(Transfer, transfers, properties={
-        'debtor': orm.relation(User),
-        'creditor': orm.relation(User)
+        'debtor': orm.relation(User,
+                               primaryjoin=(transfers.c.debtor_id==\
+                                                users.c.id)),
+        'creditor': orm.relation(User,
+                                 primaryjoin=(transfers.c.creditor_id==\
+                                                  users.c.id))
 })
 
 __all__ = [users, expenditures, splits, subitems, transfers,
