@@ -27,7 +27,7 @@ class BaseController(WSGIController):
                 environ['PATH_INFO'] = environ['PATH_INFO'][:-5]
                 raise HTTPMovedPermanently(construct_url(environ))
             if not environ['PATH_INFO'].endswith('/') and \
-                    environ['pylons.routes_dict']['action'] is 'index':
+                    environ['pylons.routes_dict']['action'] == 'index':
                 environ['PATH_INFO'] += '/'
                 raise HTTPMovedPermanently(construct_url(environ))
         try:
