@@ -27,6 +27,7 @@ expenditures = sa.Table('expenditures', meta.metadata,
                         sa.Column('spender_id', sa.types.Integer,
                                   sa.ForeignKey('users.id'), nullable=False),
                         sa.Column('amount', types.Currency, nullable=False),
+                        sa.Column('description', sa.types.Text),
                         sa.Column('date', sa.types.Date, default=sa.func.now),
                         sa.Column('entered_time', sa.types.DateTime, 
                                   default=sa.func.now)
@@ -57,17 +58,17 @@ transfers = sa.Table('transfers', meta.metadata,
                      sa.Column('creditor_id', sa.types.Integer,
                                sa.ForeignKey('users.id'), nullable=False),
                      sa.Column('amount', types.Currency, nullable=False),
+                     sa.Column('description', sa.Text, default=None),
                      sa.Column('date', sa.types.Date, default=sa.func.now),
                      sa.Column('entered_time', sa.types.DateTime,
-                               default=sa.func.now),
-                     sa.Column('desc', sa.Text, default=None)
+                               default=sa.func.now)
                      )
 
 ### ORM Classes ###
 
 class User(object):
     def __repr__(self):
-        return '<User: %w>' % (self.username)
+        return '<User: %s>' % (self.username)
 
 class Expenditure(object):
     def __repr__(self):
