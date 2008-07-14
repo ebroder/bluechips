@@ -15,7 +15,7 @@ class UserSelect(forms.SingleSelectField):
     
     options = getUserList
     validator = validators.Wrapper(
-        to_python=meta.Session.query(model.User).get,
+        to_python=(lambda x: meta.Session.query(model.User).get(x)),
         from_python=(lambda x: x.id))
 
 class AmountField(forms.TextField):
