@@ -22,3 +22,7 @@ class SpendController(BaseController):
         
         even_split(e)
         meta.Session.commit()
+        
+        c.expenditure = e
+        
+        return render('/spend/new.mako')
