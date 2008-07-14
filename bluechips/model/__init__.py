@@ -39,7 +39,7 @@ splits = sa.Table('splits', meta.metadata,
                             sa.ForeignKey('expenditures.id'), nullable=False),
                   sa.Column('user_id', sa.types.Integer,
                             sa.ForeignKey('users.id'), nullable=False),
-                  sa.Column('share', sa.types.Integer, nullable=False)
+                  sa.Column('share', types.Currency, nullable=False)
                   )
 
 subitems = sa.Table('subitems', meta.metadata,
