@@ -5,6 +5,8 @@ from tw.forms import validators
 from bluechips import model
 from bluechips.model import meta
 
+from decimal import Decimal
+
 class UserSelect(forms.SingleSelectField):
     @staticmethod
     def getUserList():
@@ -19,7 +21,9 @@ class UserSelect(forms.SingleSelectField):
 class AmountField(forms.TextField):
     size = 8
     validator = validators.All(
-        validators.Number(),
+        validators.Wrapper(
+            to_python=Decimal,
+            from_python=str),
         validators.Regex(r'^[0-9]*(\.[0-9]{2})?$', not_empty=True))
 
 __all__ = ['UserSelect', 'AmountField']
