@@ -4,7 +4,7 @@ Define special types used in BlueChips
 
 import sqlalchemy as sa
 from bluechips.lib.helpers import round_currency
-import locale
+from decimal import Decimal
 
 class Currency(sa.types.TypeDecorator):
     """
