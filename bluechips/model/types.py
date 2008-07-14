@@ -3,7 +3,7 @@ Define special types used in BlueChips
 """
 
 import sqlalchemy as sa
-from decimal import Decimal
+from bluechips.lib.helpers import round_currency
 import locale
 
 class Currency(sa.types.TypeDecorator):
@@ -19,4 +19,4 @@ class Currency(sa.types.TypeDecorator):
         return int(value * 100)
     
     def convert_result_value(self, value, engine):
-        return Decimal(Decimal(value) / 100).quantize(Decimal("0.01"))
+        return round_currency(Decimal(value) / 100)
