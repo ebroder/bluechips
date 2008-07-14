@@ -6,6 +6,7 @@ import logging
 
 from bluechips.lib.base import *
 from bluechips.widgets import spend
+from bluechips.lib.split import *
 
 log = logging.getLogger(__name__)
 
@@ -15,4 +16,9 @@ class SpendController(BaseController):
     
     @validate(form=spend.new_spend_form, error_handler='index')
     def new(self):
-        return str(self.form_result)
+        e = model.Expenditure()
+        update_sar(e, self.form_result)
+        meta.Session.save(e)
+        
+        even_split(e)
+        meta.Session.commit()
