@@ -35,5 +35,13 @@ class BaseController(WSGIController):
         finally:
             meta.Session.remove()
 
+def update_sar(record, form_result):
+    """
+    Update a SQLAlchemy record with the results of a validated form submission
+    """
+    for key, value in form_result.items():
+        setattr(record, key, value)
+
 __all__ = ['c', 'h', 'render', 'render_response', 'validate',
-           'model', 'meta', '_', 'ungettext', 'N_', 'BaseController']
+           'model', 'meta', '_', 'ungettext', 'N_', 'BaseController',
+           'update_sar']
