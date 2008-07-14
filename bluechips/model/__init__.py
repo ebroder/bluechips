@@ -77,9 +77,9 @@ class Expenditure(object):
 
 class Split(object):
     def __repr__(self):
-        return '<Split: expense: %s user: %s share: %s%%>' % (self.expenditure,
-                                                              self.user,
-                                                              self.share)
+        return '<Split: expense: %s user: %s share: %s>' % (self.expenditure,
+                                                            self.user,
+                                                            self.share)
 
 class Subitem(object):
     def __repr__(self):
