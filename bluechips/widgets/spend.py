@@ -11,6 +11,8 @@ class NewSpendForm(forms.ListForm):
         amount = AmountField()
         date = forms.CalendarDatePicker(
             validator=validators.DateConverter(not_empty=True))
-        description = forms.TextField(size=40)
+        description = forms.TextField(
+            size=40,
+            validator=validators.NotEmpty())
 
 new_spend_form = NewSpendForm()
