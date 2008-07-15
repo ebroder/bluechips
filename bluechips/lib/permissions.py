@@ -17,7 +17,7 @@ class BlueChipUser(RequestPermission):
             raise NotAuthenticatedError('Not Authenticated')
         try:
             environ['user'] = meta.Session.query(model.User).\
-                filter_by(username=environ['REMOTE_USER']).\
+                filter_by(username=unicode(environ['REMOTE_USER'])).\
                 one()
         except InvalidRequestError:
             raise NotAuthorizedError('You are not allowed access.')
