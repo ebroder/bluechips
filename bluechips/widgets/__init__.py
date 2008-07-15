@@ -15,8 +15,11 @@ class UserSelect(forms.SingleSelectField):
     
     options = getUserList
     validator = validators.Wrapper(
-        to_python=(lambda x: meta.Session.query(model.User).get(x)),
-        from_python=(lambda x: x.id))
+        to_python=(lambda x: meta.Session.query(model.User).get(int(x))),
+        from_python=(lambda x: str(x.id)))
+    
+    def _is_option_selected(self, option_value, value):
+        return option_value == value.id
 
 class AmountField(forms.TextField):
     size = 8
