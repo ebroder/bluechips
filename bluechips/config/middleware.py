@@ -12,8 +12,11 @@ from routes.middleware import RoutesMiddleware
 from paste import httpexceptions
 
 from tw.api import make_middleware
+import authkit.authorize
 
 from bluechips.config.environment import load_environment
+
+from bluechips.lib.permissions import BlueChipUser, DummyAuthenticate
 
 def make_app(global_conf, full_stack=True, **app_conf):
     """Create a Pylons WSGI application and return it
@@ -40,6 +43,8 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = PylonsApp()
     
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
+    app = authkit.authorize.middleware(app, BlueChipUser())
+    app = DummyAuthenticate(app)
     app = httpexceptions.make_middleware(app, global_conf)
     
     # Routing/Session/Cache Middleware
