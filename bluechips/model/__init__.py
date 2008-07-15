@@ -73,7 +73,7 @@ class User(object):
 class Expenditure(object):
     def __repr__(self):
         return '<Expenditure: spender: %s spent: %s>' % (self.spender,
-                                               self.amount)
+                                                         self.amount)
 
 class Split(object):
     def __repr__(self):
