@@ -8,10 +8,15 @@ from bluechips.lib.base import *
 from bluechips.widgets import spend
 from bluechips.lib.split import *
 
+from pylons import request
+
 log = logging.getLogger(__name__)
 
 class SpendController(BaseController):
     def index(self):
+        c.expenditure = dict()
+        c.expenditure['spender'] = request.environ['user']
+        
         return render('/spend/index.mako')
     
     @validate(form=spend.new_spend_form, error_handler='index')
