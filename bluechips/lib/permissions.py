@@ -16,7 +16,7 @@ class BlueChipUser(RequestPermission):
         if 'REMOTE_USER' not in environ:
             raise NotAuthenticatedError('Not Authenticated')
         try:
-            user = meta.Session.query(model.User).\
+            environ['user'] = meta.Session.query(model.User).\
                 filter_by(username=environ['REMOTE_USER']).\
                 one()
         except InvalidRequestError:
