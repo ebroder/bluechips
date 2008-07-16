@@ -5,7 +5,7 @@ from sqlalchemy import orm
 from bluechips.model import meta
 from bluechips.model import types
 
-import datetime
+from datetime import datetime
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
