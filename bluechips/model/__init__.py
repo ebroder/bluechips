@@ -5,6 +5,8 @@ from sqlalchemy import orm
 from bluechips.model import meta
 from bluechips.model import types
 
+import datetime
+
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
 
@@ -28,9 +30,9 @@ expenditures = sa.Table('expenditures', meta.metadata,
                                   sa.ForeignKey('users.id'), nullable=False),
                         sa.Column('amount', types.Currency, nullable=False),
                         sa.Column('description', sa.types.Text),
-                        sa.Column('date', sa.types.Date, default=sa.func.now),
+                        sa.Column('date', sa.types.Date, default=datetime.now),
                         sa.Column('entered_time', sa.types.DateTime, 
-                                  default=sa.func.now)
+                                  default=datetime.now)
                         )
 
 splits = sa.Table('splits', meta.metadata,
@@ -59,9 +61,9 @@ transfers = sa.Table('transfers', meta.metadata,
                                sa.ForeignKey('users.id'), nullable=False),
                      sa.Column('amount', types.Currency, nullable=False),
                      sa.Column('description', sa.Text, default=None),
-                     sa.Column('date', sa.types.Date, default=sa.func.now),
+                     sa.Column('date', sa.types.Date, default=datetime.now),
                      sa.Column('entered_time', sa.types.DateTime,
-                               default=sa.func.now)
+                               default=datetime.now)
                      )
 
 ### ORM Classes ###
