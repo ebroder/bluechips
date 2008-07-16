@@ -48,9 +48,9 @@ def debts():
     total_credits = transfer_q.group_by(model.Transfer.creditor_id)
     
     for transfer, total_amount in total_debits:
-        debts[transfer.debtor] -= total_amount
+        debts[transfer.debtor] -= (total_amount / 100)
     for transfer, total_amount in total_credits:
-        debts[transfer.creditor] += total_amount
+        debts[transfer.creditor] += (total_amount / 100)
     
     return debts
 
