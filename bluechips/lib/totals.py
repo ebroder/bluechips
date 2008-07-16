@@ -54,10 +54,9 @@ def debts():
     
     return debts
 
-def settle():
+def settle(debts_dict):
     # This algorithm has been shamelessly stolen from Nelson Elhage's
     # <nelhage@mit.edu> implementation for our 2008 summer apartment.
-    debts_dict = debts()
     
     debts_list = [dict(who=user, amount=amount) for user, amount in \
                       debts_dict.iteritems()]
