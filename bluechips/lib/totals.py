@@ -96,3 +96,5 @@ def settle(debts_dict):
         raise DirtyBooks, ("People are still owed money", owed_list)
     
     return settle
+
+__all__ = ['debts', 'settle']
