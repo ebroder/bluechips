@@ -9,6 +9,12 @@ import sqlalchemy
 
 from decimal import Decimal
 
+class DirtyBooks(Exception):
+    """
+    If the books don't work out, raise this
+    """
+    pass
+
 def debts():
     # In this scheme, negative numbers represent money the house owes
     # the user, and positive numbers represent money the user owes the
@@ -47,3 +53,47 @@ def debts():
         debts[transfer.creditor] += total_amount
     
     return debts
+
+def settle():
+    # This algorithm has been shamelessly stolen from Nelson Elhage's
+    # <nelhage@mit.edu> implementation for our 2008 summer apartment.
+    debts_dict = debts()
+    
+    debts_list = [dict(who=user, amount=amount) for user, amount in \
+                      debts_dict.iteritems()]
+    debts_list.sort(reverse=True, key=(lambda x: abs(x['amount'])))
+    
+    owes_list = [debt for debt in debts_list if debt['amount'] > 0]
+    owed_list = [debt for debt in debts_list if debt['amount'] < 0]
+    
+    settle = []
+    
+    while len(owes_list) > 0 and len(owed_list) > 0:
+        owes = owes_list[0]
+        owed = owed_list[0]
+        
+        sum = owes['amount'] + owed['amount']
+        if sum == 0:
+            # Perfect balance!
+            owes_list.pop(0)
+            owed_list.pop(0)
+            val = owes['amount']
+        elif sum > 0:
+            # person in owes still owes money
+            owes['amount'] += owed['amount']
+            owed_list.pop(0)
+            val = -owed['amount']
+        else:
+            # person in owed is owed more than owes has to give
+            owed['amount'] += owes['amount']
+            owes_list.pop(0)
+            val = owes['amount']
+        
+        settle.append((owes['who'], owed['who'], val))
+    
+    if len(owes_list) > 0:
+        raise DirtyBooks, ("People still owe money", owes_list)
+    if len(owed_list) > 0:
+        raise DirtyBooks, ("People are still owed money", owed_list)
+    
+    return settle
