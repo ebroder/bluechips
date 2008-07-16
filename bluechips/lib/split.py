@@ -38,7 +38,8 @@ def split(e, split_dict):
     going to squabble over a few pennies?
     """
     
-    map(Session.delete, Session.query(model.Split))
+    map(Session.delete, Session.query(model.Split).\
+            filter_by(expenditure_id=e.id))
     
     total = sum(split_dict.itervalues())
     
