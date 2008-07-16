@@ -120,6 +120,6 @@ orm.mapper(Transfer, transfers, properties={
                                                   users.c.id))
 })
 
-__all__ = [users, expenditures, splits, subitems, transfers,
-           User, Expenditure, Split, Subitem, Transfer,
-           meta]
+__all__ = ['users', 'expenditures', 'splits', 'subitems', 'transfers',
+           'User', 'Expenditure', 'Split', 'Subitem', 'Transfer',
+           'meta']
