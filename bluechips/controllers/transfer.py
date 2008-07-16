@@ -23,6 +23,7 @@ class TransferController(BaseController):
         t = model.Transfer()
         update_sar(t, self.form_result)
         meta.Session.save(t)
+        meta.Session.commit()
         
         h.flash('Transfer recorded.')
         
