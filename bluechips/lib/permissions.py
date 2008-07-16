@@ -3,7 +3,7 @@ authkit authorization permission objects for BlueChips
 """
 
 from authkit.authenticate import AddDictToEnviron
-from authkit.authorize import NotAuthorizedError
+from authkit.authorize import NotAuthenticatedError, NotAuthorizedError
 from authkit.permissions import RequestPermission
 
 from sqlalchemy.exceptions import InvalidRequestError
