@@ -20,4 +20,10 @@ class TransferController(BaseController):
     
     @validate(form=transfer.new_transfer_form, error_handler='index')
     def new(self):
-        return str(self.form_result)
+        t = model.Transfer()
+        update_sar(t, self.form_result)
+        meta.Session.save(t)
+        
+        h.flash('Transfer recorded.')
+        
+        return h.redirect_to('/')
