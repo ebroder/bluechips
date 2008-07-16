@@ -28,23 +28,23 @@
 <table>
     <tr>
         <td>Total</td>
-        <td>$${c.total}</td>
+        <td>$${h.round_currency(c.total)}</td>
     </tr>
     <tr>
         <td>Past year</td>
-        <td>$${c.year_total}</td>
+        <td>$${h.round_currency(c.year_total)}</td>
     </tr>
     <tr>
         <td>Year to date</td>
-        <td>$${c.this_year_total}</td>
+        <td>$${h.round_currency(c.this_year_total)}</td>
     </tr>
     <tr>
         <td>Month to date</td>
-        <td>$${c.this_month_total}</td>
+        <td>$${h.round_currency(c.this_month_total)}</td>
     </tr>
     <tr>
         <td>Last month</td>
-        <td>$${c.last_month_total}</td>
+        <td>$${h.round_currency(c.last_month_total)}</td>
     </tr>
 </table>
 
