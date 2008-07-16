@@ -31,7 +31,7 @@ def debts():
     # investment in (i.e. splits)
     
     total_splits = Session.query(model.Split).\
-        add_column(sqlalchemy.func.sum(model.Split.share), 'total_split').\
+        add_column(sqlalchemy.func.sum(model.Split.share).label('total_split')).\
         group_by(model.Split.user_id)
     
     for split, total_cents in total_splits:
@@ -43,7 +43,7 @@ def debts():
     # transfers for us
     
     transfer_q = Session.query(model.Transfer).\
-        add_column(sqlalchemy.func.sum(model.Transfer.amount), 'total_amount')
+        add_column(sqlalchemy.func.sum(model.Transfer.amount).label('total_amount'))
     total_debits = transfer_q.group_by(model.Transfer.debtor_id)
     total_credits = transfer_q.group_by(model.Transfer.creditor_id)
     
