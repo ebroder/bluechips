@@ -8,6 +8,14 @@
   </head>
   <body>
     <h1>${self.title()}</h1>
+    <% messages = h.flash.pop_messages() %>
+    % if messages:
+    <ul id="flash-messages">
+    % for message in messages:
+        <li>${message}</li>
+    % endfor
+    </ul>
+    % endif
     <div id="content">
       ${next.body()}
     </div>

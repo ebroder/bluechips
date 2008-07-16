@@ -7,6 +7,8 @@ from routes import url_for, redirect_to
 from webhelpers.html import escape, literal, url_escape
 from webhelpers.html.tags import *
 
+from webhelpers.pylonslib import Flash as _Flash
+
 from decimal import Decimal
 
 def bluechips():
@@ -14,3 +16,5 @@ def bluechips():
 
 def round_currency(value):
     return Decimal(value).quantize(Decimal('0.01'))
+
+flash = _Flash()
