@@ -23,6 +23,31 @@
 </table>
 % endif
 
+<h2>Totals</h2>
+
+<table>
+    <tr>
+        <td>Total</td>
+        <td>$${c.total}</td>
+    </tr>
+    <tr>
+        <td>Past year</td>
+        <td>$${c.year_total}</td>
+    </tr>
+    <tr>
+        <td>Year to date</td>
+        <td>$${c.this_year_total}</td>
+    </tr>
+    <tr>
+        <td>Month to date</td>
+        <td>$${c.this_month_total}</td>
+    </tr>
+    <tr>
+        <td>Last month</td>
+        <td>$${c.last_month_total}</td>
+    </tr>
+</table>
+
 <h2>Add a new transaction</h2>
 
 <ul>
