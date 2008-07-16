@@ -28,6 +28,17 @@ class SpendController(BaseController):
         even_split(e)
         meta.Session.commit()
         
-        c.expenditure = e
+        h.flash('Expenditure recorded.')
+        h.flash("""Want to do something unusual?
+
+<ul id="expenditure_options">
+  <li>%s</li>
+  <li>%s</li>
+</ul>""" % (h.link_to('Change the split', h.url_for(controller='spend',
+                                                   action='split',
+                                                   id=e.id)),
+           h.link_to('Spin off a subitem', h.url_for(controller='spend',
+                                                     action='subitem',
+                                                     id=e.id))))
         
-        return render('/spend/new.mako')
+        return h.redirect_to('/')
