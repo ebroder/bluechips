@@ -99,8 +99,11 @@ class Transfer(object):
 
 orm.mapper(User, users)
 
-orm.mapper(Expenditure, expenditures, properties={
-        'spender': orm.relation(User, backref='expenditures')
+orm.mapper(Expenditure, expenditures, order_by=expenditures.c.date.desc(),
+           properties={
+        'spender': orm.relation(User,
+                                backref='expenditures',
+                                lazy=False)
 })
 
 orm.mapper(Split, splits, properties={
@@ -113,13 +116,16 @@ orm.mapper(Subitem, subitems, properties={
         'user': orm.relation(User)
 })
 
-orm.mapper(Transfer, transfers, properties={
+orm.mapper(Transfer, transfers, order_by=transfers.c.date.desc(),
+           properties={
         'debtor': orm.relation(User,
                                primaryjoin=(transfers.c.debtor_id==\
-                                                users.c.id)),
+                                                users.c.id),
+                               lazy=False),
         'creditor': orm.relation(User,
                                  primaryjoin=(transfers.c.creditor_id==\
-                                                  users.c.id))
+                                                  users.c.id),
+                                 lazy=False)
 })
 
 __all__ = ['users', 'expenditures', 'splits', 'subitems', 'transfers',
