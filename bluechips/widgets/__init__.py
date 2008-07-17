@@ -5,8 +5,6 @@ from tw.forms import validators
 from bluechips import model
 from bluechips.model import meta
 
-from bluechips.lib.base import _
-
 from decimal import Decimal
 
 class UserSelect(forms.SingleSelectField):
@@ -47,7 +45,7 @@ class FieldsDontMatch(validators.FormValidator):
     __unpackargs__ = ('*', 'field_names')
     
     messages = {
-        'invalid': _("Fields match")
+        'invalid': "Fields match"
         }
     
     def validate_partial(self, field_dict, state):
