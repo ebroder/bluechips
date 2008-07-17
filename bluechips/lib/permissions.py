@@ -28,8 +28,11 @@ class DummyAuthenticate(AddDictToEnviron):
     Set the authkit.authenticate environment variable so
     authkit.authorize shuts up
     """
-    def __init__(self, app):
-        super(DummyAuthenticate, self).__init__(app, {
-                'authkit.authenticate': True})
+    def __init__(self, app, app_conf):
+        newenv = {}
+        newenv['authkit.authenticate'] = True
+        if 'fake_username' in app_conf:
+            newenv['REMOTE_USER'] = app_conf['fake_username']
+        super(DummyAuthenticate, self).__init__(app, newenv)
 
 __all__ = ['BlueChipUser', 'DummyAuthenticate']

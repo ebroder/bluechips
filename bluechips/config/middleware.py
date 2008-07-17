@@ -44,7 +44,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
     
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
     app = authkit.authorize.middleware(app, BlueChipUser())
-    app = DummyAuthenticate(app)
+    app = DummyAuthenticate(app, app_conf)
     app = httpexceptions.make_middleware(app, global_conf)
     
     # Routing/Session/Cache Middleware
