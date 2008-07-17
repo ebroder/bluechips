@@ -38,11 +38,13 @@ class StatusController(BaseController):
                     model.expenditures.c.date < this_month))
         
         c.expenditures = meta.Session.query(model.Expenditure).\
-            filter(model.Expenditure.spender==request.environ['user']).all()
+            filter(model.Expenditure.spender==request.environ['user']).\
+            limit(10).all()
         c.transfers = meta.Session.query(model.Transfer).\
             filter(sqlalchemy.or_(
                 model.Transfer.debtor==request.environ['user'],
-                model.Transfer.creditor==request.environ['user'])).all()
+                model.Transfer.creditor==request.environ['user'])).\
+                limit(10).all()
         
         return render('/status/index.mako')
     
