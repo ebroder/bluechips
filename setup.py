@@ -33,5 +33,8 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
+    
+    [paste.filter_app_factory]
+    fakeauth = bluechips.lib.fake_auth:FakeAuth
     """,
 )
