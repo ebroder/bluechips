@@ -12,13 +12,14 @@ import sqlalchemy
 from datetime import date, timedelta
 from decimal import Decimal
 
+from pylons import request
+
 log = logging.getLogger(__name__)
 
 class StatusController(BaseController):
     def index(self):
         c.debts = debts()
         c.settle = settle(c.debts)
-        
         
         c.total = self._total(True)
         
@@ -35,6 +36,13 @@ class StatusController(BaseController):
         c.last_month_total = self._total(sqlalchemy.and_(
                     model.expenditures.c.date >= last_month,
                     model.expenditures.c.date < this_month))
+        
+        c.expenditures = meta.Session.query(model.Expenditure).\
+            filter(model.Expenditure.spender==request.environ['user']).all()
+        c.transfers = meta.Session.query(model.Transfer).\
+            filter(sqlalchemy.or_(
+                model.Transfer.debtor==request.environ['user'],
+                model.Transfer.creditor==request.environ['user'])).all()
         
         return render('/status/index.mako')
     

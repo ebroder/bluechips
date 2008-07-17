@@ -54,3 +54,16 @@
     <li>${h.link_to('Expenditure for the group', h.url_for(controller='spend', action='index'))}</li>
     <li>${h.link_to('Transfer between two people', h.url_for(controller='transfer', action='index'))}</li>
 </ul>
+
+<h2>Your History</h2>
+
+${h.link_to('See all history', h.url_for(controller='history',
+                                         action='index'))}
+
+<h3>Expenditures</h3>
+
+${self.listExpenditures(c.expenditures)}
+
+<h3>Transfers</h3>
+
+${self.listTransfers(c.transfers)}
