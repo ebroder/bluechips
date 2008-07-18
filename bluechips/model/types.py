@@ -6,6 +6,9 @@ import sqlalchemy as sa
 from bluechips.lib.subclass import SmartSubclass
 
 class Currency(object):
+    """
+    Store currency values as an integral number of cents
+    """
     __metaclass__ = SmartSubclass(int)
     def __init__(self, value):
         if isinstance(value, str):
@@ -14,24 +17,51 @@ class Currency(object):
             self.value = int(value)
     
     def __int__(self):
+        """
+        If I don't define this, SmartSubclass will return
+        Currency(int(self.value))
+        """
         return self.value
     def __float__(self):
+        """
+        If I don't define this, SmartSubclass will return
+        Currency(float(self.value))
+        """
         return float(self.value)
     def __long__(self):
+        """
+        If I don't define this, SmartSubclass will return
+        Currency(long(self.value))
+        """
         return long(self.value)
     
     def __cmp__(self, other):
-        try:
+        """
+        This is overridden for when validators compare a Currency to
+        ''
+        """
+        if other == '':
+            return 1
+        else:
             return self.value.__cmp__(int(other))
-        except:
-            return self.value.__cmp__(0)
     
     def __mul__(self, other):
+        """
+        If I don't define this, SmartSubclass will convert the other
+        argument to an int
+        """
         return Currency(self.value * other)
     def __rmul__(self, other):
+        """
+        If I don't define this, SmartSubclass will convert the other
+        argument to an int
+        """
         return self.__mul__(other)
     
     def __str_no_dollar__(self):
+        """
+        Get to the formatted string without the dollar sign
+        """
         return str(self)[1:]
     
     def __repr__(self):
