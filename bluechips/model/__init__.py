@@ -2,6 +2,12 @@
 import sqlalchemy as sa
 from sqlalchemy import orm
 
+from user import *
+from expenditure import *
+from split import *
+from subitem import *
+from transfer import *
+
 from bluechips.model import meta
 from bluechips.model import types
 
@@ -65,35 +71,6 @@ transfers = sa.Table('transfers', meta.metadata,
                      sa.Column('entered_time', sa.types.DateTime,
                                default=datetime.now)
                      )
-
-### ORM Classes ###
-
-class User(object):
-    def __repr__(self):
-        return '<User: %s>' % (self.username)
-
-class Expenditure(object):
-    def __repr__(self):
-        return '<Expenditure: spender: %s spent: %s>' % (self.spender,
-                                                         self.amount)
-
-class Split(object):
-    def __repr__(self):
-        return '<Split: expense: %s user: %s share: %s>' % (self.expenditure,
-                                                            self.user,
-                                                            self.share)
-
-class Subitem(object):
-    def __repr__(self):
-        return '<Subitem: expense: %s user: %s cost: %s>' % (self.expense,
-                                                             self.user,
-                                                             self.amount)
-
-class Transfer(object):
-    def __repr__(self):
-        return '<Transfer: from %s to %s for %s>' % (self.debtor,
-                                                     self.creditor,
-                                                     self.amount)
 
 ### DB/Class Mapping ###
 
