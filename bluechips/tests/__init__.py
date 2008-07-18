@@ -15,10 +15,24 @@ from paste.script.appinstall import SetupCommand
 from pylons import config
 from routes import url_for
 
+from bluechips import model
+from bluechips.model import meta
+
 __all__ = ['url_for', 'TestController']
 
-# Invoke websetup with the current config file
-SetupCommand('setup-app').run([config['__file__']])
+def setup():
+    # Invoke websetup with the current config file
+    SetupCommand('setup-app').run([config['__file__']])
+    
+    test_user = model.User()
+    test_user.username = u'root'
+    test_user.name = u'Charlie Root'
+    test_user.resident = True
+    meta.Session.save(test_user)
+    meta.Session.commit()
+
+def teardown():
+    meta.metadata.drop_all()
 
 class TestController(TestCase):
 
