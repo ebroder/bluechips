@@ -22,7 +22,7 @@ __all__ = ['url_for', 'TestController', 'sample_users']
 
 sample_users = [u'Alice', u'Bob', u'Charlie', u'Dave', u'Eve']
 
-def setup():
+def setUpPackage():
     # Invoke websetup with the current config file
     SetupCommand('setup-app').run([config['__file__']])
     
@@ -33,7 +33,7 @@ def setup():
     meta.Session.save(test_user)
     meta.Session.commit()
 
-def teardown():
+def tearDownPackage():
     meta.metadata.drop_all()
 
 class TestController(TestCase):
