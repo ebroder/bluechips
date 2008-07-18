@@ -21,7 +21,7 @@ class StatusController(BaseController):
         c.debts = debts()
         c.settle = settle(c.debts)
         
-        c.total = self._total(True)
+        c.total = self._total(sqlalchemy.text('1=1'))
         
         year = date.today() - timedelta(days=365)
         this_year = date.today().replace(month=1, day=1)
