@@ -1,7 +1,7 @@
 from user import User
 from split import Split
 from bluechips.model import meta
-from bluechips.lib.helpers import round_currency
+from bluechips.model.types import Currency
 from decimal import Decimal
 import random
 
@@ -47,18 +47,18 @@ class Expenditure(object):
         amounts_dict = dict()
         
         for user, share in split_dict.iteritems():
-            amounts_dict[user] = round_currency(split_dict[user] * self.amount)
+            amounts_dict[user] = Currency(split_dict[user] * self.amount)
         
         difference = self.amount - sum(amounts_dict.itervalues())
         
         if difference > 0:
             for i in xrange(difference * 100):
                 winner = random.choice(amounts_dict.keys())
-                amounts_dict[winner] += Decimal('0.01')
+                amounts_dict[winner] += Currency(1)
         elif difference < 0:
             for i in xrange(difference * -100):
                 winner = random.choice(amounts_dict.keys())
-                amounts_dict[winner] -= Decimal('0.01')
+                amounts_dict[winner] -= Currency(1)
         
         for user, share in amounts_dict.iteritems():
             s = Split()

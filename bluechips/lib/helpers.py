@@ -14,7 +14,4 @@ from decimal import Decimal
 def bluechips():
     return '<span class="bluechips">BlueChips</span>'
 
-def round_currency(value):
-    return Decimal(value).quantize(Decimal('0.01'))
-
 flash = _Flash()

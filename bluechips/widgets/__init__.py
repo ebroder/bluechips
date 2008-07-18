@@ -5,7 +5,7 @@ from tw.forms import validators
 from bluechips import model
 from bluechips.model import meta
 
-from decimal import Decimal
+from bluechips.model.types import Currency
 
 class UserSelect(forms.SingleSelectField):
     @staticmethod
@@ -28,9 +28,9 @@ class AmountField(forms.TextField):
     size = 8
     validator = validators.All(
         validators.Wrapper(
-            to_python=Decimal,
-            from_python=str),
-        validators.Regex(r'^[0-9]*(\.[0-9]{2})?$', not_empty=True))
+            to_python=(lambda x: Currency(float(x) * 100)),
+            from_python=Currency.__str_no_dollar__),
+        validators.Regex(r'^[0-9]*(\.[0-9]{2})?$'))
 
 # This is virtually copied from formencode.validator.FieldsMatch, but
 # I wanted my own version for fields that shouldn't match

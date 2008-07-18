@@ -49,7 +49,7 @@
         <td>${e.date}</td>
         <td>${e.spender.name}</td>
         <td>${e.description}</td>
-        <td>$${h.round_currency(e.amount)}</td>
+        <td>${e.amount}</td>
     </tr>
     % endfor
 </table>
@@ -70,7 +70,7 @@
         <td>${t.debtor.name}</td>
         <td>${t.creditor.name}</td>
         <td>${t.description}</td>
-        <td>$${h.round_currency(t.amount)}</td>
+        <td>${t.amount}</td>
     </tr>
     % endfor
 </table>

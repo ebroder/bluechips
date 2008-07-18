@@ -34,7 +34,7 @@ expenditures = sa.Table('expenditures', meta.metadata,
                         sa.Column('id', sa.types.Integer, primary_key=True),
                         sa.Column('spender_id', sa.types.Integer,
                                   sa.ForeignKey('users.id'), nullable=False),
-                        sa.Column('amount', types.Currency, nullable=False),
+                        sa.Column('amount', types.DBCurrency, nullable=False),
                         sa.Column('description', sa.types.Text),
                         sa.Column('date', sa.types.Date, default=datetime.now),
                         sa.Column('entered_time', sa.types.DateTime, 
@@ -47,7 +47,7 @@ splits = sa.Table('splits', meta.metadata,
                             sa.ForeignKey('expenditures.id'), nullable=False),
                   sa.Column('user_id', sa.types.Integer,
                             sa.ForeignKey('users.id'), nullable=False),
-                  sa.Column('share', types.Currency, nullable=False)
+                  sa.Column('share', types.DBCurrency, nullable=False)
                   )
 
 subitems = sa.Table('subitems', meta.metadata,
@@ -56,7 +56,7 @@ subitems = sa.Table('subitems', meta.metadata,
                               sa.ForeignKey('expenditures.id'), nullable=False),
                     sa.Column('user_id', sa.types.Integer,
                               sa.ForeignKey('users.id'), nullable=False),
-                    sa.Column('amount', types.Currency, nullable=False)
+                    sa.Column('amount', types.DBCurrency, nullable=False)
                     )
 
 transfers = sa.Table('transfers', meta.metadata,
@@ -65,7 +65,7 @@ transfers = sa.Table('transfers', meta.metadata,
                                sa.ForeignKey('users.id'), nullable=False),
                      sa.Column('creditor_id', sa.types.Integer,
                                sa.ForeignKey('users.id'), nullable=False),
-                     sa.Column('amount', types.Currency, nullable=False),
+                     sa.Column('amount', types.DBCurrency, nullable=False),
                      sa.Column('description', sa.Text, default=None),
                      sa.Column('date', sa.types.Date, default=datetime.now),
                      sa.Column('entered_time', sa.types.DateTime,

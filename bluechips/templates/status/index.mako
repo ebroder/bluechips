@@ -17,7 +17,7 @@
     <tr>
         <td>${transfer[0].username}</td>
         <td>${transfer[1].username}</td>
-        <td>$${h.round_currency(transfer[2])}</td>
+        <td>${transfer[2]}</td>
     </tr>
     % endfor
 </table>
@@ -28,23 +28,23 @@
 <table>
     <tr>
         <td>Total</td>
-        <td>$${h.round_currency(c.total)}</td>
+        <td>${c.total}</td>
     </tr>
     <tr>
         <td>Past year</td>
-        <td>$${h.round_currency(c.year_total)}</td>
+        <td>${c.year_total}</td>
     </tr>
     <tr>
         <td>Year to date</td>
-        <td>$${h.round_currency(c.this_year_total)}</td>
+        <td>${c.this_year_total}</td>
     </tr>
     <tr>
         <td>Month to date</td>
-        <td>$${h.round_currency(c.this_month_total)}</td>
+        <td>${c.this_month_total}</td>
     </tr>
     <tr>
         <td>Last month</td>
-        <td>$${h.round_currency(c.last_month_total)}</td>
+        <td>${c.last_month_total}</td>
     </tr>
 </table>
 

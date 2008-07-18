@@ -10,7 +10,8 @@ from bluechips.lib.totals import *
 import sqlalchemy
 
 from datetime import date, timedelta
-from decimal import Decimal
+
+from bluechips.model.types import Currency
 
 from pylons import request
 
@@ -49,7 +50,7 @@ class StatusController(BaseController):
         return render('/status/index.mako')
     
     def _total(self, where):
-        return (meta.Session.execute(sqlalchemy.sql.select([
+        return Currency(meta.Session.execute(sqlalchemy.sql.select([
                 sqlalchemy.func.sum(model.expenditures.c.amount).\
                     label('total')]).\
-                    where(where)).scalar() or Decimal("0.00")) / 100
+                    where(where)).scalar() or 0)
