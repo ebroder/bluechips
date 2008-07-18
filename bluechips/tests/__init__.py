@@ -18,7 +18,9 @@ from routes import url_for
 from bluechips import model
 from bluechips.model import meta
 
-__all__ = ['url_for', 'TestController']
+__all__ = ['url_for', 'TestController', 'sample_users']
+
+sample_users = [u'Alice', u'Bob', u'Charlie', u'Dave', u'Eve']
 
 def setup():
     # Invoke websetup with the current config file
