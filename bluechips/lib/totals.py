@@ -3,7 +3,7 @@ Calculate the total state of the books
 """
 
 from bluechips import model
-from bluechips.model.meta import Session
+from bluechips.model import meta
 
 import sqlalchemy
 
@@ -19,7 +19,7 @@ def debts():
     # In this scheme, negative numbers represent money the house owes
     # the user, and positive numbers represent money the user owes the
     # house
-    users = Session.query(model.User)
+    users = meta.Session.query(model.User)
     
     debts = {}
     
@@ -30,7 +30,7 @@ def debts():
     # Next, debit everyone for expenditures that they have an
     # investment in (i.e. splits)
     
-    total_splits = Session.query(model.Split).\
+    total_splits = meta.Session.query(model.Split).\
         add_column(sqlalchemy.func.sum(model.Split.share).label('total_split')).\
         group_by(model.Split.user_id)
     
@@ -42,7 +42,7 @@ def debts():
     # To keep this from getting to be expensive, have SQL sum up
     # transfers for us
     
-    transfer_q = Session.query(model.Transfer).\
+    transfer_q = meta.Session.query(model.Transfer).\
         add_column(sqlalchemy.func.sum(model.Transfer.amount).label('total_amount'))
     total_debits = transfer_q.group_by(model.Transfer.debtor_id)
     total_credits = transfer_q.group_by(model.Transfer.creditor_id)
