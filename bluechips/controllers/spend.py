@@ -6,7 +6,6 @@ import logging
 
 from bluechips.lib.base import *
 from bluechips.widgets import spend
-from bluechips.lib.split import *
 
 from pylons import request
 
@@ -25,7 +24,7 @@ class SpendController(BaseController):
         update_sar(e, self.form_result)
         meta.Session.save(e)
         
-        even_split(e)
+        e.even_split()
         meta.Session.commit()
         
         h.flash('Expenditure recorded.')
