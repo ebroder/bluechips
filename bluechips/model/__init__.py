@@ -38,7 +38,7 @@ expenditures = sa.Table('expenditures', meta.metadata,
                         sa.Column('description', sa.types.Text),
                         sa.Column('date', sa.types.Date, default=datetime.now),
                         sa.Column('entered_time', sa.types.DateTime, 
-                                  default=datetime.now)
+                                  default=datetime.utcnow)
                         )
 
 splits = sa.Table('splits', meta.metadata,
@@ -69,7 +69,7 @@ transfers = sa.Table('transfers', meta.metadata,
                      sa.Column('description', sa.Text, default=None),
                      sa.Column('date', sa.types.Date, default=datetime.now),
                      sa.Column('entered_time', sa.types.DateTime,
-                               default=datetime.now)
+                               default=datetime.utcnow)
                      )
 
 ### DB/Class Mapping ###
