@@ -52,11 +52,11 @@ class Expenditure(object):
         difference = self.amount - sum(amounts_dict.itervalues())
         
         if difference > 0:
-            for i in xrange(difference * 100):
+            for i in xrange(difference):
                 winner = random.choice(amounts_dict.keys())
                 amounts_dict[winner] += Currency(1)
         elif difference < 0:
-            for i in xrange(difference * -100):
+            for i in xrange(difference):
                 winner = random.choice(amounts_dict.keys())
                 amounts_dict[winner] -= Currency(1)
         
