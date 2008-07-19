@@ -14,10 +14,20 @@ class TestCurrency(TestCase):
         """
         Make sure the constructor for Currency works with strings
         """
-        self.assertEqual(Currency("0.01"), Currency(1),
-                     "Currency string conversion breaks")
+        self.assertEqual(Currency("0.01"), Currency(1))
         self.assert_(Currency("0.01") is Currency(1),
                      "string and int constructors return different values")
+    
+    def test_string(self):
+        """
+        Test converting a Currency to a string
+        """
+        self.assertEqual(str(Currency(1)), "$0.01")
+        self.assertEqual(str(Currency(100)), "$1.00")
+        self.assertEqual(str(Currency(101)), "$1.01")
+        self.assertEqual(str(Currency(-1)), "-$0.01")
+        self.assertEqual(str(Currency(-100)), "-$1.00")
+        self.assertEqual(str(Currency(-101)), "-$1.01")
     
     def test_additionMath(self):
         """
