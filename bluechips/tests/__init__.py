@@ -34,7 +34,7 @@ def setUpPackage():
     test_user = model.User()
     test_user.username = u'root'
     test_user.name = u'Charlie Root'
-    test_user.resident = True
+    test_user.resident = False
     meta.Session.save(test_user)
     meta.Session.commit()
 
@@ -48,8 +48,10 @@ class TestController(TestCase):
         self.app = TestApp(wsgiapp)
         TestCase.__init__(self, *args, **kwargs)
 
-def createUsers():
-    for i in xrange(random.randint(2, 5)):
+def createUsers(n=None):
+    if n is None:
+        n = random.randint(2, 5)
+    for i in xrange(n):
         u = model.User()
         u.username = sample_users[i].lower()
         u.name = sample_users[i]
@@ -57,9 +59,11 @@ def createUsers():
         meta.Session.save(u)
     meta.Session.commit()
 
-def createExpenditures():
+def createExpenditures(n=None):
+    if n is None:
+        n = random.randint(5, 20)
     users = meta.Session.query(model.User).all()
-    for i in xrange(random.randint(5, 20)):
+    for i in xrange(n):
         e = model.Expenditure()
         e.spender = random.choice(users)
         e.amount = Currency(random.randint(1000, 100000))
