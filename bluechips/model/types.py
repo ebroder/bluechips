@@ -5,16 +5,27 @@ Define special types used in BlueChips
 import sqlalchemy as sa
 from bluechips.lib.subclass import SmartSubclass
 
+from weakref import WeakValueDictionary
+
 class Currency(object):
     """
     Store currency values as an integral number of cents
     """
     __metaclass__ = SmartSubclass(int)
-    def __init__(self, value):
+    __old_values__ = WeakValueDictionary()
+    def __new__(cls, value):
         if isinstance(value, str):
-            self.value = int(float(value) * 100)
+            value = int(float(value) * 100)
         else:
-            self.value = int(value)
+            value = int(value)
+        
+        if value not in cls.__old_values__:
+            new_object = super(cls, cls).__new__(cls)
+            new_object.value = value
+            cls.__old_values__[value] = new_object
+            return new_object
+        else:
+            return cls.__old_values__[value]
     
     def __int__(self):
         """
