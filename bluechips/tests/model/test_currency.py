@@ -4,20 +4,32 @@ from bluechips.model.types import Currency
 from decimal import Decimal
 
 class TestCurrency(TestCase):
-    def test_addition(self):
+    def test_initialization(self):
         """
-        Each of these tests tests 3 things:
-        
-        1) That the math works
-        2) That the result is converted to a Currency type
-        3) That multiple Currency instances with the same value are
-           the same object
+        Make sure the constructor for Currency works
         """
-        assert Currency(2) + 2 is Currency(4), "Currency + int is Currency"
-        assert 2 + Currency(2) is Currency(4), "int + Currency is Currency"
-        assert Currency(2) + Currency(2) == Currency(4), \
-            "Currency + Currency is Currency"
+        self.assert_(Currency(1) is Currency(1), 
+                     "Currency objects not interned")
+        self.assert_(Currency("0.01") is Currency(1),
+                     "Currency string conversion breaks")
     
+    def test_additionMath(self):
+        """
+        Confirm that addition works over currency types and ints
+        """
+        self.assertEqual(Currency(2) + 2, Currency(4))
+        self.assertEqual(2 + Currency(2), Currency(4))
+        self.assertEqual(Currency(2) + Currency(2), Currency(4))
+    
+    def test_additionType(self):
+        """
+        Check that adding Currencies or a Currency and an int yields a
+        Currency
+        """
+        self.assertEqual(type(Currency(2) + 2), Currency)
+        self.assertEqual(type(2 + Currency(2)), Currency)
+        self.assertEqual(type(Currency(2) + Currency(2)), Currency)
+        
     def test_multiplication(self):
         """
         This test tests the same 3 things as ``test_addition``, but
