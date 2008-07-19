@@ -81,7 +81,7 @@ class Currency(object):
         sign = '-' if self.value < 0 else ''
         cents = abs(self.value) % 100
         dollars = (abs(self.value) - cents) / 100
-        return '$%s%s.%.02d' % (sign, dollars, cents)
+        return '%s$%s.%.02d' % (sign, dollars, cents)
 
 class DBCurrency(sa.types.TypeDecorator):
     """
