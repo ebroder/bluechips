@@ -73,7 +73,7 @@ class Currency(object):
         """
         Get to the formatted string without the dollar sign
         """
-        return str(self)[1:]
+        return str(self).replace('$', '')
     
     def __repr__(self):
         return '%s("%s")' % (self.__class__.__name__, str(self))
