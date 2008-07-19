@@ -17,8 +17,13 @@ from routes import url_for
 
 from bluechips import model
 from bluechips.model import meta
+from bluechips.model.types import Currency
 
-__all__ = ['url_for', 'TestController', 'sample_users']
+import random
+
+__all__ = ['url_for', 'TestController',
+           'createUsers', 'createExpenditures',
+           'deleteUsers', 'deleteExpenditures']
 
 sample_users = [u'Alice', u'Bob', u'Charlie', u'Dave', u'Eve']
 
@@ -42,3 +47,28 @@ class TestController(TestCase):
         wsgiapp = loadapp('config:%s' % config['__file__'])
         self.app = TestApp(wsgiapp)
         TestCase.__init__(self, *args, **kwargs)
+
+def createUsers():
+    for i in xrange(random.randint(2, 5)):
+        u = model.User()
+        u.username = sample_users[i].lower()
+        u.name = sample_users[i]
+        u.resident = 1
+        meta.Session.save(u)
+    meta.Session.commit()
+
+def createExpenditures():
+    users = meta.Session.query(model.User).all()
+    for i in xrange(random.randint(5, 20)):
+        e = model.Expenditure()
+        e.spender = random.choice(users)
+        e.amount = Currency(random.randint(1000, 100000))
+        meta.Session.save(e)
+        e.even_split()
+    meta.Session.commit()
+
+def deleteUsers():
+    map(meta.Session.delete, meta.Session.query(model.User))
+
+def deleteExpenditures():
+    map(meta.Session.delete, meta.Session.query(model.Expenditure))
