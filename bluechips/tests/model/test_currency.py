@@ -29,6 +29,17 @@ class TestCurrency(TestCase):
         self.assertEqual(str(Currency(-100)), "-$1.00")
         self.assertEqual(str(Currency(-101)), "-$1.01")
     
+    def test_stringNoDollar(self):
+        """
+        Test that Currency values can be retrieved without the dollar sign
+        """
+        self.assertEqual(Currency(1).__str_no_dollar__(), "0.01")
+        self.assertEqual(Currency(100).__str_no_dollar__(), "1.00")
+        self.assertEqual(Currency(101).__str_no_dollar__(), "1.01")
+        self.assertEqual(Currency(-1).__str_no_dollar__(), "-0.01")
+        self.assertEqual(Currency(-100).__str_no_dollar__(), "-1.00")
+        self.assertEqual(Currency(-101).__str_no_dollar__(), "-1.01")
+    
     def test_additionMath(self):
         """
         Confirm that addition works over currency types and ints
