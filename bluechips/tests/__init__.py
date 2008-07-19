@@ -15,7 +15,7 @@ from paste.script.appinstall import SetupCommand
 from pylons import config
 from routes import url_for
 
-from bluechips import model
+import bluechips.model
 from bluechips.model import meta
 from bluechips.model.types import Currency
 
@@ -31,7 +31,7 @@ def setUpPackage():
     # Invoke websetup with the current config file
     SetupCommand('setup-app').run([config['__file__']])
     
-    test_user = model.User()
+    test_user = bluechips.model.User()
     test_user.username = u'root'
     test_user.name = u'Charlie Root'
     test_user.resident = False
@@ -52,7 +52,7 @@ def createUsers(n=None):
     if n is None:
         n = random.randint(2, 5)
     for i in xrange(n):
-        u = model.User()
+        u = bluechips.model.User()
         u.username = sample_users[i].lower()
         u.name = sample_users[i]
         u.resident = 1
@@ -62,9 +62,9 @@ def createUsers(n=None):
 def createExpenditures(n=None):
     if n is None:
         n = random.randint(5, 20)
-    users = meta.Session.query(model.User).all()
+    users = meta.Session.query(bluechips.model.User).all()
     for i in xrange(n):
-        e = model.Expenditure()
+        e = bluechips.model.Expenditure()
         e.spender = random.choice(users)
         e.amount = Currency(random.randint(1000, 100000))
         meta.Session.save(e)
@@ -72,7 +72,7 @@ def createExpenditures(n=None):
     meta.Session.commit()
 
 def deleteUsers():
-    map(meta.Session.delete, meta.Session.query(model.User))
+    map(meta.Session.delete, meta.Session.query(bluechips.model.User))
 
 def deleteExpenditures():
-    map(meta.Session.delete, meta.Session.query(model.Expenditure))
+    map(meta.Session.delete, meta.Session.query(bluechips.model.Expenditure))
