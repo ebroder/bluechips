@@ -74,22 +74,26 @@ transfers = sa.Table('transfers', meta.metadata,
 
 ### DB/Class Mapping ###
 
-orm.mapper(User, users)
+orm.mapper(User, users,
+           properties={
+        'expenditures': orm.relation(Expenditure,
+                                     backref='spender',
+                                     lazy=False)
+})
 
 orm.mapper(Expenditure, expenditures, order_by=expenditures.c.date.desc(),
            properties={
-        'spender': orm.relation(User,
-                                backref='expenditures',
-                                lazy=False)
+        'splits': orm.relation(Split, backref='expenditure',
+                               cascade='all, delete'),
+        'subitems': orm.relation(Subitem, backref='expenditure',
+                                 cascade='all, delete')
 })
 
 orm.mapper(Split, splits, properties={
-        'expenditure': orm.relation(Expenditure, backref='splits'),
         'user': orm.relation(User)
 })
 
 orm.mapper(Subitem, subitems, properties={
-        'expenditure': orm.relation(Expenditure, backref='subitems'),
         'user': orm.relation(User)
 })
 
