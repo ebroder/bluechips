@@ -1,9 +1,10 @@
+from unittest import TestCase
 from bluechips.tests import *
 from bluechips import model
 from bluechips.model import meta
 from bluechips.model.types import Currency
 
-class TestSplitFixed(TestController):
+class TestSplitFixed(TestCase):
     def test_simpleSplit(self):
         createUsers(4)
         

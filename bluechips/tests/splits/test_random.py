@@ -1,9 +1,10 @@
+from unittest import TestCase
 from bluechips.tests import *
 from bluechips import model
 from bluechips.model import meta
 from webhelpers.number import standard_deviation as std_dev
 
-class TestSplitRandom(TestController):
+class TestSplitRandom(TestCase):
     @classmethod
     def setUpClass(cls):
         createUsers()
