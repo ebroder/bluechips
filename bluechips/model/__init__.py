@@ -2,11 +2,11 @@
 import sqlalchemy as sa
 from sqlalchemy import orm
 
-from user import *
-from expenditure import *
-from split import *
-from subitem import *
-from transfer import *
+from bluechips.model.user import User
+from bluechips.model.expenditure import Expenditure
+from bluechips.model.split import Split
+from bluechips.model.subitem import Subitem
+from bluechips.model.transfer import Transfer
 
 from bluechips.model import meta
 from bluechips.model import types

@@ -1,5 +1,5 @@
-from user import User
-from split import Split
+from bluechips.model.user import User
+from bluechips.model.split import Split
 from bluechips.model import meta
 from bluechips.model.types import Currency
 from decimal import Decimal

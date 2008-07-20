@@ -3,11 +3,13 @@ Create subclasses that call out to their "superclass" for all methods
 but return the "subclass's" type
 """
 
-def wrapper(c, func):
-    return (lambda self,*args: c(getattr(self.value, func)(*map(self.value.__class__, args))))
+def wrapper(cls, func):
+    return (lambda self, *args: cls(getattr(self.value, func)(*map(self.value.__class__, args))))
 
 class SmartSubclass(object):
-    def __init__(self, superclass, exclude=[]):
+    def __init__(self, superclass, exclude=None):
+        if exclude is None:
+            exclude = []
         self.superclass = superclass
         self.exclude = exclude
     def __call__(self, name, bases, dict):

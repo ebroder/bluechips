@@ -5,8 +5,7 @@ from paste.registry import RegistryManager
 from paste.urlparser import StaticURLParser
 from paste.deploy.converters import asbool
 from pylons import config
-from pylons.middleware import ErrorHandler, StaticJavascripts, \
-    StatusCodeRedirect
+from pylons.middleware import ErrorHandler, StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 from routes.middleware import RoutesMiddleware
 from paste import httpexceptions

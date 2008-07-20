@@ -21,11 +21,11 @@ def debts():
     # house
     users = meta.Session.query(model.User)
     
-    debts = {}
+    debts_dict = {}
     
     # First, credit everyone for expenditures they've made
     for user in users:
-        debts[user] = Currency(-sum(map((lambda x: x.amount), user.expenditures)))
+        debts_dict[user] = Currency(-sum(map((lambda x: x.amount), user.expenditures)))
     
     # Next, debit everyone for expenditures that they have an
     # investment in (i.e. splits)
@@ -35,7 +35,7 @@ def debts():
         group_by(model.Split.user_id)
     
     for split, total_cents in total_splits:
-        debts[split.user] += total_cents
+        debts_dict[split.user] += total_cents
     
     # Finally, move transfers around appropriately
     #
@@ -48,11 +48,11 @@ def debts():
     total_credits = transfer_q.group_by(model.Transfer.creditor_id)
     
     for transfer, total_amount in total_debits:
-        debts[transfer.debtor] -= total_amount
+        debts_dict[transfer.debtor] -= total_amount
     for transfer, total_amount in total_credits:
-        debts[transfer.creditor] += total_amount
+        debts_dict[transfer.creditor] += total_amount
     
-    return debts
+    return debts_dict
 
 def settle(debts_dict):
     # This algorithm has been shamelessly stolen from Nelson Elhage's
@@ -65,7 +65,7 @@ def settle(debts_dict):
     owes_list = [debt for debt in debts_list if debt['amount'] > 0]
     owed_list = [debt for debt in debts_list if debt['amount'] < 0]
     
-    settle = []
+    settle_list = []
     
     while len(owes_list) > 0 and len(owed_list) > 0:
         owes = owes_list[0]
@@ -88,13 +88,13 @@ def settle(debts_dict):
             owes_list.pop(0)
             val = owes['amount']
         
-        settle.append((owes['who'], owed['who'], val))
+        settle_list.append((owes['who'], owed['who'], val))
     
     if len(owes_list) > 0:
         raise DirtyBooks, ("People still owe money", owes_list)
     if len(owed_list) > 0:
         raise DirtyBooks, ("People are still owed money", owed_list)
     
-    return settle
+    return settle_list
 
 __all__ = ['debts', 'settle']

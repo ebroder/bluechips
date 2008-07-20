@@ -29,7 +29,7 @@ class StatusController(BaseController):
         this_month = date.today().replace(day=1)
         last_month = (date.today() - timedelta(days=30)).replace(day=1)
         
-        c.year_total, c.this_year_total, c.this_month_total =\
+        c.year_total, c.this_year_total, c.this_month_total = \
             [self._total(model.expenditures.c.date >= i)
              for i in [year, this_year, this_month]]
         
