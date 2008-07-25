@@ -13,6 +13,8 @@ log = logging.getLogger(__name__)
 
 class TransferController(BaseController):
     def index(self):
+        c.title = 'Add a New Transfer'
+        
         c.transfer = dict()
         c.transfer['debtor'] = request.environ['user']
         

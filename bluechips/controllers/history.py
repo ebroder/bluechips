@@ -13,6 +13,8 @@ log = logging.getLogger(__name__)
 
 class HistoryController(BaseController):
     def index(self):
+        c.title = 'History'
+        
         c.expenditures = meta.Session.query(model.Expenditure).all()
         c.transfers = meta.Session.query(model.Transfer).all()
         

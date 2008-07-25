@@ -1,6 +1,6 @@
 <%inherit file="/base.mako"/>
 
-<%def name="title()">${parent.title()} :: History</%def>
+<%def name="title()">${parent.title()} :: ${c.title}</%def>
 
 <h2>Group Expenditures</h2>
 

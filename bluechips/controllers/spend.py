@@ -13,6 +13,8 @@ log = logging.getLogger(__name__)
 
 class SpendController(BaseController):
     def index(self):
+        c.title = 'Add a New Expenditure'
+        
         c.expenditure = dict()
         c.expenditure['spender'] = request.environ['user']
         

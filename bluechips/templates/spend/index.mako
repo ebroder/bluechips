@@ -1,6 +1,6 @@
 <%inherit file="/base.mako"/>
 
-<%def name="title()">${parent.title()} :: Add a New Expenditure</%def>
+<%def name="title()">${parent.title()} :: ${c.title}</%def>
 <%!
 import bluechips.widgets.spend as forms
 %>
