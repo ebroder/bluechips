@@ -31,10 +31,7 @@ def setUpPackage():
     # Invoke websetup with the current config file
     SetupCommand('setup-app').run([config['__file__']])
     
-    test_user = bluechips.model.User()
-    test_user.username = u'root'
-    test_user.name = u'Charlie Root'
-    test_user.resident = False
+    test_user = bluechips.model.User(u'root', u'Charlie Root', False)
     meta.Session.save(test_user)
     meta.Session.commit()
 
@@ -52,10 +49,7 @@ def createUsers(n=None):
     if n is None:
         n = random.randint(2, 5)
     for i in xrange(n):
-        u = bluechips.model.User()
-        u.username = sample_users[i].lower()
-        u.name = sample_users[i]
-        u.resident = 1
+        u = bluechips.model.User(sample_users[i].lower(), resident=True)
         meta.Session.save(u)
     meta.Session.commit()
 
