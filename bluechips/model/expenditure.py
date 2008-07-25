@@ -61,10 +61,7 @@ class Expenditure(object):
                 amounts_dict[winner] -= Currency(1)
         
         for user, share in amounts_dict.iteritems():
-            s = Split()
-            s.expenditure = self
-            s.user = user
-            s.share = share
+            s = Split(self, user, share)
             meta.Session.save(s)
 
 __all__ = ['Expenditure']
