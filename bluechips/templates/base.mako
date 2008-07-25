@@ -19,13 +19,17 @@
     <div id="nav">
         <ul>
             <li>${h.link_to('Dashboard', h.url_for(controller='status',
-                                                   action='index'))}</li>
+                                                   action='index',
+                                                   id=None))}</li>
             <li>${h.link_to('Expense', h.url_for(controller='spend',
-                                                 action='index'))}</li>
+                                                 action='index',
+                                                 id=None))}</li>
             <li>${h.link_to('Transfer', h.url_for(controller='transfer',
-                                                  action='index'))}</li>
+                                                  action='index',
+                                                  id=None))}</li>
             <li>${h.link_to('History', h.url_for(controller='history',
-                                                 action='index'))}</li>
+                                                 action='index',
+                                                 id=None))}</li>
         </ul>
     </div>
     <div id="content">
