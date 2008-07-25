@@ -3,9 +3,18 @@ from bluechips.model.split import Split
 from bluechips.model import meta
 from bluechips.model.types import Currency
 from decimal import Decimal
+from datetime import datetime
 import random
 
 class Expenditure(object):
+    def __init__(self, spender=None, amount=Currency(0), description=u"",
+                 date=None):
+        self.spender = spender
+        self.amount = amount
+        self.description = description
+        if self.date == None:
+            self.date = datetime.now()
+    
     def __repr__(self):
         return '<Expenditure: spender: %s spent: %s>' % (self.spender,
                                                          self.amount)

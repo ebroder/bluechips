@@ -12,9 +12,8 @@ class TestSplitFixed(TestCase):
         """
         createUsers(4)
         
-        e = model.Expenditure()
-        e.spender = meta.Session.query(model.User).first()
-        e.amount = Currency("100.00")
+        e = model.Expenditure(meta.Session.query(model.User).first(),
+                              Currency("100"))
         meta.Session.save(e)
         e.even_split()
         meta.Session.commit()
@@ -34,9 +33,7 @@ class TestSplitFixed(TestCase):
         
         users = meta.Session.query(model.User).all()
         
-        e = model.Expenditure()
-        e.spender = users[0]
-        e.amount = Currency("100.00")
+        e = model.Expenditure(users[0], Currency("100"))
         meta.Session.save(e)
         
         split_dict = {users[0]: Decimal("20"),
@@ -63,9 +60,7 @@ class TestSplitFixed(TestCase):
         
         users = meta.Session.query(model.User).all()
         
-        e = model.Expenditure()
-        e.spender = users[0]
-        e.amount = Currency("100.00")
+        e = model.Expenditure(users[0], Currency("100.00"))
         meta.Session.save(e)
         
         split_dict = {users[0]: Decimal(10),

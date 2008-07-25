@@ -58,9 +58,8 @@ def createExpenditures(n=None):
         n = random.randint(5, 20)
     users = meta.Session.query(bluechips.model.User).all()
     for i in xrange(n):
-        e = bluechips.model.Expenditure()
-        e.spender = random.choice(users)
-        e.amount = Currency(random.randint(1000, 100000))
+        e = bluechips.model.Expenditure(random.choice(users),
+                                        Currency(random.randint(1000, 100000)))
         meta.Session.save(e)
         e.even_split()
     meta.Session.commit()
