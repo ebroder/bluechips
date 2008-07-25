@@ -8,6 +8,9 @@ from bluechips.lib.base import *
 from bluechips.widgets import spend
 
 from pylons import request
+from pylons.decorators.rest import dispatch_on
+
+from decimal import Decimal, InvalidOperation
 
 log = logging.getLogger(__name__)
 
@@ -65,5 +68,43 @@ class SpendController(BaseController):
            h.link_to('Spin off a subitem', h.url_for(controller='spend',
                                                      action='subitem',
                                                      id=e.id))))
+        
+        return h.redirect_to('/')
+    
+    @dispatch_on(POST='_post_split',
+                 GET='_get_split')
+    def split(self, id):
+        abort(500)
+    
+    def _get_split(self, id):
+        c.title = 'Change Expenditure Split'
+        
+        c.expenditure = meta.Session.query(model.Expenditure).get(id)
+        c.users = meta.Session.query(model.User)
+        
+        return render('/spend/split.mako')
+    
+    def _post_split(self, id):
+        c.values = request.params
+        c.errors = dict()
+        
+        split_dict = dict()
+        
+        for username, percent in c.values.iteritems():
+            try:
+                user = meta.Session.query(model.User).\
+                    filter(model.User.username==username).one()
+                split_dict[user] = Decimal(percent)
+            except InvalidOperation:
+                c.errors[username] = 'Please enter a number'
+        if c.errors != dict():
+            return self._get_split(id)
+        
+        e = meta.Session.query(model.Expenditure).get(id)
+        e.split(split_dict)
+        
+        meta.Session.commit()
+        
+        h.flash('Expenditure redivided')
         
         return h.redirect_to('/')
