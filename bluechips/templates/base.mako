@@ -43,6 +43,7 @@
         <th>Spender</th>
         <th>Description</th>
         <th>Amount</th>
+        <th></th>
     </tr>
     % for e in es:
     <tr>
@@ -50,6 +51,9 @@
         <td>${e.spender.name}</td>
         <td>${e.description}</td>
         <td>${e.amount}</td>
+        <td>${h.link_to('Edit', h.url_for(controller='spend', 
+                                          action='edit',
+                                          id=e.id))}</td>
     </tr>
     % endfor
 </table>
@@ -63,6 +67,7 @@
         <th>To</th>
         <th>Description</th>
         <th>Amount</th>
+        <th></th>
     </tr>
     % for t in ts:
     <tr>
@@ -71,6 +76,9 @@
         <td>${t.creditor.name}</td>
         <td>${t.description}</td>
         <td>${t.amount}</td>
+        <td>${h.link_to('Edit', h.url_for(controller='transfer', 
+                                          action='edit',
+                                          id=t.id))}</td>
     </tr>
     % endfor
 </table>
