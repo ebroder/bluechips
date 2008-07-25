@@ -77,8 +77,7 @@ transfers = sa.Table('transfers', meta.metadata,
 orm.mapper(User, users,
            properties={
         'expenditures': orm.relation(Expenditure,
-                                     backref='spender',
-                                     lazy=False)
+                                     backref='spender')
 })
 
 orm.mapper(Expenditure, expenditures, order_by=expenditures.c.date.desc(),
@@ -101,12 +100,10 @@ orm.mapper(Transfer, transfers, order_by=transfers.c.date.desc(),
            properties={
         'debtor': orm.relation(User,
                                primaryjoin=(transfers.c.debtor_id==\
-                                                users.c.id),
-                               lazy=False),
+                                                users.c.id)),
         'creditor': orm.relation(User,
                                  primaryjoin=(transfers.c.creditor_id==\
-                                                  users.c.id),
-                                 lazy=False)
+                                                  users.c.id))
 })
 
 __all__ = ['users', 'expenditures', 'splits', 'subitems', 'transfers',
