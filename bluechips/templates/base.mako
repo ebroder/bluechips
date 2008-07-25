@@ -38,7 +38,11 @@
   </body>
 </html>
 
-<%def name="title()">BlueChips</%def>
+<%def name="title()">BlueChips
+% if c.title != '':
+  :: ${c.title}
+% endif
+</%def>
 
 <%def name="listExpenditures(es)">
 <table>
