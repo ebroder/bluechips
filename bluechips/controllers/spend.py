@@ -20,13 +20,37 @@ class SpendController(BaseController):
         
         return render('/spend/index.mako')
     
-    @validate(form=spend.new_spend_form, error_handler='index')
-    def new(self):
-        e = model.Expenditure()
-        update_sar(e, self.form_result)
-        meta.Session.save(e)
+    def edit(self, id):
+        c.title = 'Edit an Expenditure'
         
-        e.even_split()
+        c.expenditure = meta.Session.query(model.Expenditure).get(id)
+        
+        return render('/spend/index.mako')
+    
+    def update(self, id=None):
+        # Validate the submission
+        if not valid(self, spend.new_spend_form):
+            if id is None:
+                return self.index()
+            else:
+                return self.edit(id)
+        
+        # Either create a new object, or, if we're editing, get the
+        # old one
+        if id is None:
+            e = model.Expenditure()
+        else:
+            e = meta.Session.query(model.Expenditure).get(id)
+        
+        # Set the fields that were submitted
+        update_sar(e, self.form_result)
+        meta.Session.save_or_update(e)
+        
+        if id is None:
+            e.even_split()
+        else:
+            e.update_split()
+        
         meta.Session.commit()
         
         h.flash('Expenditure recorded.')
