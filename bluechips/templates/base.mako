@@ -6,6 +6,7 @@
     <title>${self.title()}</title>
     ${h.stylesheet_link('/style/main.css')}
     ${h.javascript_link('/script/jquery-1.2.6.min.js')}
+    ${h.javascript_link('/script/expense_list.js')}
   </head>
   <body>
     <h1>${self.title()}</h1>
@@ -59,6 +60,7 @@
 <%def name="listExpenditures(es)">
 <table>
     <tr>
+        <th></th>
         <th>Date</th>
         <th>Description</th>
         <th>Total Amount</th>
@@ -67,7 +69,8 @@
         <th></th>
     </tr>
     % for e in es:
-    <tr class="compact">
+    <tr class="compact expenditure" id="e_${e.id}">
+        <td><img src="/images/contracted.gif" height="11" width="11" class="expand_button" /></td>
         <td>${e.date}</td>
         <td>${e.description}</td>
         <td>${sum(c.amount for c in e.credits)}</td>
