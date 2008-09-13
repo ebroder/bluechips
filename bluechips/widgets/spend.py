@@ -5,9 +5,9 @@ from tw.forms import validators
 
 from bluechips.widgets import *
 
-class NewSpendForm(forms.ListForm):
+class SimpleSpendForm(forms.ListForm):
     class fields(WidgetsList):
-        spender = AccountSelect()
+        account = AccountSelect(label_text='Spender')
         amount = AmountField()
         date = forms.CalendarDatePicker(
             validator=validators.DateConverter(not_empty=True))
@@ -15,4 +15,4 @@ class NewSpendForm(forms.ListForm):
             size=40,
             validator=validators.NotEmpty())
 
-new_spend_form = NewSpendForm()
+simple_spend_form = SimpleSpendForm()
