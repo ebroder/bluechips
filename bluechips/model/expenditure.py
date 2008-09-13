@@ -1,74 +1,82 @@
-from bluechips.model.user import User
-from bluechips.model.split import Split
+import sqlalchemy as sa
+from sqlalchemy.orm import relation
+from bluechips.model.base import Base, BlueChipsTable
+from bluechips.model import types
 from bluechips.model import meta
+from bluechips.model.account import Account
+from bluechips.model.debit import Debit
 from bluechips.model.types import Currency
+
 from decimal import Decimal
 from datetime import datetime
 import random
 
-class Expenditure(object):
-    def __init__(self, spender=None, amount=Currency(0), description=u"",
-                 date=None):
-        self.spender = spender
-        self.amount = amount
-        self.description = description
-        if self.date == None:
-            self.date = datetime.now()
+class Expenditure(Base):
+    __tablename__ = 'expenditures'
+    
+    id = sa.Column(types.Integer, primary_key=True)
+    description = sa.Column(types.Text, nullable=False)
+    date = sa.Column(types.Date, nullable=False, default=datetime.utcnow)
+    
+    credits = relation('Credit', backref='expenditure', cascade='all, delete')
+    debits = relation('Debit', backref='expenditure', cascade='all, delete')
+    subitems = relation('Subitem', backref='expenditure', cascade='all, delete')
     
     def __repr__(self):
-        return '<Expenditure: spender: %s spent: %s>' % (self.spender,
-                                                         self.amount)
-
+        return '<Expenditure: %s>' % self.description
+    
     def even_split(self):
         """
-        Split up an expenditure evenly among the resident users
+        Split up the debits from an expenditure evenly among the
+        resident users
         """
         
-        residents = meta.Session.query(User).filter(User.resident==True)
+        residents = meta.Session.query(Account).filter(Account.kind==u'RESIDENT')
         split_percentage = Decimal(100) / Decimal(residents.count())
         self.split(dict((resident, split_percentage) for resident in residents))
     
     def update_split(self):
         """
-        Re-split an expenditure using the same percentages as what is
-        currently in the database
+        Re-split the debits from an expenditure using the same ratios
+        as are currently in the database
         """
         
-        old_splits = meta.Session.query(Split).filter(Split.expenditure==self)
-        split_dict = dict((s.user, Decimal(int(s.share))) for s in old_splits)
-        self.split(split_dict)
+        old_debits = meta.Session.query(Debit).filter(Debit.expenditure==self)
+        ratios = dict((s.user, Decimal(int(s.share))) for s in old_debits)
+        self.split(ratios)
     
-    def split(self, split_dict):
+    def split(self, ratios):
         """
         Split up an expenditure.
         
-        split_dict should be a dict mapping from bluechips.model:User
-        objects to a decimal:Decimal object representing the percentage
-        that user is responsible for.
+        ratios should be a dict mapping from bluechips.model:Account
+        objects to a decimal:Decimal object representing the
+        percentage that account is responsible for.
         
         Percentages will be normalized to sum to 100%.
         
         If the split leaks or gains money due to rounding errors, the
-        pennies will be randomly distributed to one of the users.
+        pennies will be randomly distributed to one of the accounts.
         
         I mean, come on. You're already living together. Are you really
         going to squabble over a few pennies?
         """
         
-        map(meta.Session.delete, meta.Session.query(Split).\
-                filter_by(expenditure_id=self.id))
+        map(meta.Session.delete, meta.Session.query(Debit).\
+                filter(Debit.expenditure==self))
         
-        total = sum(split_dict.itervalues())
+        total = sum(c.amount for c in self.credits)
+        ratio_total = sum(ratios.itervalues())
         
-        for user, share in split_dict.iteritems():
-            split_dict[user] = share / total
-            
+        for account, share in ratios.iteritems():
+            ratios[account] = share / ratio_total
+        
         amounts_dict = dict()
         
-        for user, share in split_dict.iteritems():
-            amounts_dict[user] = Currency(split_dict[user] * self.amount)
+        for account, share in ratios.iteritems():
+            amounts_dict[account] = Currency(ratios[account] * total)
         
-        difference = self.amount - sum(amounts_dict.itervalues())
+        difference = total - sum(amounts_dict.itervalues())
         
         if difference > 0:
             for i in xrange(difference):
@@ -79,8 +87,10 @@ class Expenditure(object):
                 winner = random.choice(amounts_dict.keys())
                 amounts_dict[winner] -= Currency(1)
         
-        for user, share in amounts_dict.iteritems():
-            s = Split(self, user, share)
-            meta.Session.save(s)
+        for account, amount in amounts_dict.iteritems():
+            d = Debit(expenditure=self,
+                      account=account,
+                      amount=amount)
+            meta.Session.save(d)
 
 __all__ = ['Expenditure']

@@ -3,7 +3,10 @@ Define special types used in BlueChips
 """
 
 import sqlalchemy as sa
+from sqlalchemy.types import *
 from bluechips.lib.subclass import SmartSubclass
+
+from enum import Enum
 
 from weakref import WeakValueDictionary
 
@@ -97,3 +100,6 @@ class DBCurrency(sa.types.TypeDecorator):
     
     def convert_result_value(self, value, engine):
         return Currency(value)
+
+__all__ = ['Currency', 'DBCurrency', 'Enum']
+__all__.append(sa.types.__all__)
