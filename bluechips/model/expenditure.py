@@ -18,9 +18,12 @@ class Expenditure(Base):
     description = sa.Column(types.Text, nullable=False)
     date = sa.Column(types.Date, nullable=False, default=datetime.utcnow)
     
-    credits = relation('Credit', backref='expenditure', cascade='all, delete')
-    debits = relation('Debit', backref='expenditure', cascade='all, delete')
-    subitems = relation('Subitem', backref='expenditure', cascade='all, delete')
+    credits = relation('Credit', backref='expenditure',
+                       cascade='all, delete-orphan')
+    debits = relation('Debit', backref='expenditure',
+                      cascade='all, delete-orphan')
+    subitems = relation('Subitem', backref='expenditure',
+                        cascade='all, delete-orphan')
     
     def __repr__(self):
         return '<Expenditure: %s>' % self.description
