@@ -16,41 +16,16 @@ class DirtyBooks(Exception):
     pass
 
 def debts():
-    # In this scheme, negative numbers represent money the house owes
-    # the user, and positive numbers represent money the user owes the
-    # house
-    users = meta.Session.query(model.User)
+    # In this scheme, positive numbers represent money the house owes
+    # the account, and negative numbers represent money the account
+    # owes the house
+    accounts = meta.Session.query(model.Account)
     
     debts_dict = {}
     
-    # First, credit everyone for expenditures they've made
-    for user in users:
-        debts_dict[user] = Currency(-sum(map((lambda x: x.amount), user.expenditures)))
-    
-    # Next, debit everyone for expenditures that they have an
-    # investment in (i.e. splits)
-    
-    total_splits = meta.Session.query(model.Split).\
-        add_column(sqlalchemy.func.sum(model.Split.share).label('total_split')).\
-        group_by(model.Split.user_id)
-    
-    for split, total_cents in total_splits:
-        debts_dict[split.user] += total_cents
-    
-    # Finally, move transfers around appropriately
-    #
-    # To keep this from getting to be expensive, have SQL sum up
-    # transfers for us
-    
-    transfer_q = meta.Session.query(model.Transfer).\
-        add_column(sqlalchemy.func.sum(model.Transfer.amount).label('total_amount'))
-    total_debits = transfer_q.group_by(model.Transfer.debtor_id)
-    total_credits = transfer_q.group_by(model.Transfer.creditor_id)
-    
-    for transfer, total_amount in total_debits:
-        debts_dict[transfer.debtor] -= total_amount
-    for transfer, total_amount in total_credits:
-        debts_dict[transfer.creditor] += total_amount
+    for account in accounts:
+        debts_dict[account] = sum(c.amount for c in account.credits)
+        debts_dict[account] -= sum(d.amount for d in account.debits)
     
     return debts_dict
 
@@ -62,8 +37,8 @@ def settle(debts_dict):
                       debts_dict.iteritems()]
     debts_list.sort(reverse=True, key=(lambda x: abs(x['amount'])))
     
-    owes_list = [debt for debt in debts_list if debt['amount'] > 0]
-    owed_list = [debt for debt in debts_list if debt['amount'] < 0]
+    owes_list = [debt for debt in debts_list if debt['amount'] < 0]
+    owed_list = [debt for debt in debts_list if debt['amount'] > 0]
     
     settle_list = []
     
@@ -77,16 +52,16 @@ def settle(debts_dict):
             owes_list.pop(0)
             owed_list.pop(0)
             val = owes['amount']
-        elif sum > 0:
+        elif sum < 0:
             # person in owes still owes money
             owes['amount'] += owed['amount']
             owed_list.pop(0)
-            val = -owed['amount']
+            val = owed['amount']
         else:
             # person in owed is owed more than owes has to give
             owed['amount'] += owes['amount']
             owes_list.pop(0)
-            val = owes['amount']
+            val = -owes['amount']
         
         settle_list.append((owes['who'], owed['who'], val))
     
