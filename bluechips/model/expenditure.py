@@ -73,7 +73,10 @@ class Expenditure(Base):
         total = sum(c.amount for c in self.credits)
         ratio_total = sum(ratios.itervalues())
         
-        for account, share in ratios.iteritems():
+        # Using ratios.items instead of ratios.iteritems lets me
+        # delete things from the dict. And it's bound to be a small
+        # dict, so the efficiency hit won't be noticeable
+        for account, share in ratios.items():
             if share == 0:
                 del ratios[account]
             else:
