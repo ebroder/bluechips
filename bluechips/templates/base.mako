@@ -64,8 +64,8 @@
         <th>Date</th>
         <th>Description</th>
         <th>Total Amount</th>
-        <th>Debitors</th>
         <th>Creditors</th>
+        <th>Debtors</th>
         <th></th>
     </tr>
     % for e in es:
@@ -79,16 +79,16 @@
         <td>${e.description}</td>
         <td>${sum(c.amount for c in e.credits)}</td>
         
-        % if len(e.debits) == 1:
-        <td>${e.debits[0].account.username}</td>
-        % else:
-        <td>${listSplit(e, e.debits)}</td>
-        % endif
-        
         % if len(e.credits) == 1:
         <td>${e.credits[0].account.username}</td>
         % else:
         <td>${listSplit(e, e.credits)}</td>
+        % endif
+        
+        % if len(e.debits) == 1:
+        <td>${e.debits[0].account.username}</td>
+        % else:
+        <td>${listSplit(e, e.debits)}</td>
         % endif
         
         <td>${h.link_to('Edit', h.url_for(controller='spend', 
