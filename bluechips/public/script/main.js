@@ -1,6 +1,6 @@
 function expandContract() {
     elt = $(this);
-    row = elt.parents().find('.expenditure')
+    row = elt.parents().filter('.expenditure')
     if (row.hasClass('compact')) {
         row.removeClass('compact').addClass('expand');
         elt.attr('src', '/images/expanded.gif');
