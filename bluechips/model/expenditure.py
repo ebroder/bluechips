@@ -74,7 +74,10 @@ class Expenditure(Base):
         ratio_total = sum(ratios.itervalues())
         
         for account, share in ratios.iteritems():
-            ratios[account] = share / ratio_total
+            if share == 0:
+                del ratios[account]
+            else:
+                ratios[account] = share / ratio_total
         
         amounts_dict = dict()
         
