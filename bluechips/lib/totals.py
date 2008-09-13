@@ -51,7 +51,7 @@ def settle(debts_dict):
             # Perfect balance!
             owes_list.pop(0)
             owed_list.pop(0)
-            val = owes['amount']
+            val = -owes['amount']
         elif sum < 0:
             # person in owes still owes money
             owes['amount'] += owed['amount']
