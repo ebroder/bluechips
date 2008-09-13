@@ -47,7 +47,7 @@ class Expenditure(Base):
         """
         
         old_debits = meta.Session.query(Debit).filter(Debit.expenditure==self)
-        ratios = dict((s.user, Decimal(int(s.share))) for s in old_debits)
+        ratios = dict((s.account, Decimal(int(s.amount))) for s in old_debits)
         self.split(ratios)
     
     def split(self, ratios):
