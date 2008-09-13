@@ -8,18 +8,26 @@ ul.split {
     padding: 0;
 }
 
-.split_block {
+.compact .split_block {
     display: inline;
 }
 
-.split_block .split_name:after {
+.compact .split_block .split_name:after {
     content: ", ";
 }
 
-.split_block:last-of-type .split_name:after {
+.compact .split_block:last-of-type .split_name:after {
     content: "";
 }
 
-.split_amount {
+.compact .split_amount {
     display: none;
+}
+
+.expanded .split_block {
+    display: table-row;
+}
+
+.expanded .split_block span {
+    display: table-cell;
 }

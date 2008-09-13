@@ -66,7 +66,7 @@
         <th></th>
     </tr>
     % for e in es:
-    <tr>
+    <tr class="compact">
         <td>${e.date}</td>
         <td>${e.description}</td>
         <td>${sum(c.amount for c in e.credits)}</td>
