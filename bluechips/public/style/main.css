@@ -2,10 +2,18 @@
     color: #00a;
 }
 
+.expenditure {
+    vertical-align: top;
+}
+
 ul.split {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+.expand_button {
+    cursor: pointer;
 }
 
 .compact .split_block {
