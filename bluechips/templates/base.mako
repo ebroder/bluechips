@@ -5,6 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
     ${h.stylesheet_link('/style/main.css')}
+    ${h.javascript_link('/script/jquery-1.2.6.min.js')}
   </head>
   <body>
     <h1>${self.title()}</h1>
