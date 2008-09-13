@@ -16,7 +16,7 @@ ul.split {
     content: ", ";
 }
 
-.compact .split_block:last-of-type .split_name:after {
+.compact .split_block:last-child .split_name:after {
     content: "";
 }
 
@@ -25,9 +25,9 @@ ul.split {
 }
 
 .expanded .split_block {
-    display: table-row;
+    display: block;
 }
 
-.expanded .split_block span {
-    display: table-cell;
+.expanded .split_amount {
+    display: inline;
 }
