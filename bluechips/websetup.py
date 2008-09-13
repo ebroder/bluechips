@@ -11,7 +11,7 @@ def setup_app(command, conf, vars):
 
     # Load the models
     from bluechips.model import meta
-    meta.metadata.bind = meta.engine
+    meta.Base.metadata.bind = meta.engine
 
     # Create the tables if they aren't there already
-    meta.metadata.create_all(checkfirst=True)
+    meta.Base.metadata.create_all(checkfirst=True)
