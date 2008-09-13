@@ -35,7 +35,8 @@ class StatusController(BaseController):
         
 
         c.last_month_total = self._total(sqlalchemy.and_(
-                model.Expenditure.date.between(last_month, this_month)))
+                model.Expenditure.date>=last_month,
+                model.Expenditure.date<this_month))
         
         account = request.environ['user']
         c.expenditures = meta.Session.query(model.Expenditure).join('credits').\
