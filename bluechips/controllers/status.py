@@ -42,8 +42,8 @@ class StatusController(BaseController):
         c.expenditures = meta.Session.query(model.Expenditure).join('credits').\
             reset_joinpoint().join('debits').filter(sqlalchemy.or_(
                 model.Credit.account==account,
-                model.Debit.account==account)).limit(10)
-            
+                model.Debit.account==account)).\
+                group_by(model.Expenditure.id).limit(10)
         
         return render('/status/index.mako')
     
