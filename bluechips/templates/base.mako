@@ -92,7 +92,7 @@
         % endif
         
         <td>${h.link_to('Edit', h.url_for(controller='spend', 
-                                          action='edit',
+                                          action='simple',
                                           id=e.id))}</td>
     </tr>
     % endfor
