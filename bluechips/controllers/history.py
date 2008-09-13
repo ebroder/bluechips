@@ -16,6 +16,5 @@ class HistoryController(BaseController):
         c.title = 'History'
         
         c.expenditures = meta.Session.query(model.Expenditure).all()
-        c.transfers = meta.Session.query(model.Transfer).all()
         
         return render('/history/index.mako')
