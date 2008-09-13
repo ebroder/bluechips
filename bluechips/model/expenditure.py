@@ -60,6 +60,12 @@ class Expenditure(object):
         
         total = sum(split_dict.itervalues())
         
+        for user, share in split_dict.items():
+            if share == 0:
+                del split_dict[user]
+            else:
+                split_dict[user] = share / total
+        
         for user, share in split_dict.iteritems():
             split_dict[user] = share / total
             
