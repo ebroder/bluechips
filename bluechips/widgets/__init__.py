@@ -7,15 +7,15 @@ from bluechips.model import meta
 
 from bluechips.model.types import Currency
 
-class UserSelect(forms.SingleSelectField):
+class AccountSelect(forms.SingleSelectField):
     @staticmethod
-    def getUserList():
-        for u in meta.Session.query(model.User):
+    def getAccountList():
+        for u in meta.Session.query(model.Account):
             yield (u.id, u.name)
     
-    options = getUserList
+    options = getAccountList
     validator = validators.Wrapper(
-        to_python=(lambda x: meta.Session.query(model.User).get(int(x))),
+        to_python=(lambda x: meta.Session.query(model.Account).get(int(x))),
         from_python=(lambda x: str(x.id)))
     
     def _is_option_selected(self, option_value, value):
@@ -69,4 +69,4 @@ class FieldsDontMatch(validators.FormValidator):
                                      field_dict, state,
                                      error_dict=errors)
 
-__all__ = ['UserSelect', 'AmountField', 'FieldsDontMatch']
+__all__ = ['AccountSelect', 'AmountField', 'FieldsDontMatch']

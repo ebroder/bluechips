@@ -7,7 +7,7 @@ from bluechips.widgets import *
 
 class NewSpendForm(forms.ListForm):
     class fields(WidgetsList):
-        spender = UserSelect()
+        spender = AccountSelect()
         amount = AmountField()
         date = forms.CalendarDatePicker(
             validator=validators.DateConverter(not_empty=True))

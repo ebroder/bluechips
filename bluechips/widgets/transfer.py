@@ -7,8 +7,8 @@ from bluechips.widgets import *
 
 class NewTransferForm(forms.ListForm):
     class fields(WidgetsList):
-        debtor = UserSelect()
-        creditor = UserSelect()
+        debtor = AccountSelect()
+        creditor = AccountSelect()
         amount = AmountField()
         date = forms.CalendarDatePicker(
             validator=validators.DateConverter(not_empty=True))
