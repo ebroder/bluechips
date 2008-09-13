@@ -63,7 +63,3 @@ ${h.link_to('See all history', h.url_for(controller='history',
 <h3>Expenditures</h3>
 
 ${self.listExpenditures(c.expenditures)}
-
-<h3>Transfers</h3>
-
-${self.listTransfers(c.transfers)}

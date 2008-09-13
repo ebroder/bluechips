@@ -30,27 +30,27 @@ class StatusController(BaseController):
         last_month = (date.today() - timedelta(days=30)).replace(day=1)
         
         c.year_total, c.this_year_total, c.this_month_total = \
-            [self._total(model.expenditures.c.date >= i)
+            [self._total(model.Expenditure.date >= i)
              for i in [year, this_year, this_month]]
         
 
         c.last_month_total = self._total(sqlalchemy.and_(
-                    model.expenditures.c.date >= last_month,
-                    model.expenditures.c.date < this_month))
+                model.Expenditure.date.between(last_month, this_month)))
         
-        c.expenditures = meta.Session.query(model.Expenditure).\
-            filter(model.Expenditure.spender==request.environ['user']).\
-            limit(10).all()
-        c.transfers = meta.Session.query(model.Transfer).\
-            filter(sqlalchemy.or_(
-                model.Transfer.debtor==request.environ['user'],
-                model.Transfer.creditor==request.environ['user'])).\
-                limit(10).all()
+        account = request.environ['user']
+        c.expenditures = meta.Session.query(model.Expenditure).join('credits').\
+            reset_joinpoint().join('debits').filter(sqlalchemy.or_(
+                model.Credit.account==account,
+                model.Debit.account==account))
+            
         
         return render('/status/index.mako')
     
     def _total(self, where):
-        return Currency(meta.Session.execute(sqlalchemy.sql.select([
-                sqlalchemy.func.sum(model.expenditures.c.amount).\
-                    label('total')]).\
+        return Currency(meta.Session.execute(sqlalchemy.select(
+                    [
+                        sqlalchemy.func.sum(model.Credit.__table__.c.amount).\
+                            label('total')],
+                    from_obj=[
+                        model.Credit.__table__.join(model.Expenditure.__table__)]).\
                     where(where)).scalar() or 0)

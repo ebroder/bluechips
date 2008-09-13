@@ -48,45 +48,22 @@
 <table>
     <tr>
         <th>Date</th>
-        <th>Spender</th>
         <th>Description</th>
-        <th>Amount</th>
+        <th>Total Amount</th>
+        <th>Debitors</th>
+        <th>Creditors</th>
         <th></th>
     </tr>
     % for e in es:
     <tr>
         <td>${e.date}</td>
-        <td>${e.spender.name}</td>
         <td>${e.description}</td>
-        <td>${e.amount}</td>
+        <td>${sum(c.amount for c in e.credits)}</td>
+        <td>${', '.join(c.account.username for c in e.credits)}</td>
+        <td>${', '.join(d.account.username for d in e.debits)}</td>
         <td>${h.link_to('Edit', h.url_for(controller='spend', 
                                           action='edit',
                                           id=e.id))}</td>
-    </tr>
-    % endfor
-</table>
-</%def>
-
-<%def name="listTransfers(ts)">
-<table>
-    <tr>
-        <th>Date</th>
-        <th>From</th>
-        <th>To</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th></th>
-    </tr>
-    % for t in ts:
-    <tr>
-        <td>${t.date}</td>
-        <td>${t.debtor.name}</td>
-        <td>${t.creditor.name}</td>
-        <td>${t.description}</td>
-        <td>${t.amount}</td>
-        <td>${h.link_to('Edit', h.url_for(controller='transfer', 
-                                          action='edit',
-                                          id=t.id))}</td>
     </tr>
     % endfor
 </table>
