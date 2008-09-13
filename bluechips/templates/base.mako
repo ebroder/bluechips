@@ -44,6 +44,17 @@
 % endif
 </%def>
 
+<%def name="listSplit(e, splits)">
+<ul class="split split_${e.id}">
+% for s in splits:
+  <li class="split_block">
+    <span class="split_name split_name_${e.id}" id="split_name_${e.id}.${s.id}">${s.account.username}</span>
+    <span class="split_amount split_amount_${e.id}" id="split_amount_${e.id}.${s.id}">${s.amount}</span>
+  </li>
+% endfor
+</ul>
+</%def>
+
 <%def name="listExpenditures(es)">
 <table>
     <tr>
@@ -59,8 +70,8 @@
         <td>${e.date}</td>
         <td>${e.description}</td>
         <td>${sum(c.amount for c in e.credits)}</td>
-        <td>${', '.join(c.account.username for c in e.credits)}</td>
-        <td>${', '.join(d.account.username for d in e.debits)}</td>
+        <td>${listSplit(e, e.debits)}</td>
+        <td>${listSplit(e, e.credits)}</td>
         <td>${h.link_to('Edit', h.url_for(controller='spend', 
                                           action='edit',
                                           id=e.id))}</td>
