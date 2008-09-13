@@ -25,6 +25,8 @@ class Expenditure(Base):
     subitems = relation('Subitem', backref='expenditure',
                         cascade='all, delete-orphan')
     
+    __mapper_args__ = dict(order_by=date.desc())
+    
     def __repr__(self):
         return '<Expenditure: %s>' % self.description
     
