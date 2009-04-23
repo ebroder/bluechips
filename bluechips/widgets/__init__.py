@@ -8,8 +8,17 @@ from bluechips.model import meta
 from bluechips.model.types import Currency
 
 class AccountSelect(forms.SingleSelectField):
-    @staticmethod
-    def getAccountList():
+    params = ['include_blank']
+    
+    include_blank = False
+    include_blank__doc = """
+Should the field enclude a blank, unselected entry at the top?
+Defaults to False
+"""
+    
+    def getAccountList(self):
+        if self.include_blank:
+            yield ('', '')
         for u in meta.Session.query(model.Account):
             yield (u.id, u.name)
     

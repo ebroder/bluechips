@@ -31,7 +31,7 @@ class SpendController(BaseController):
             e = meta.Session.query(model.Expenditure).get(id)
             if len(e.credits) > 1:
                 return h.redirect_to(h.url_for(action='complex'))
-            for field in e.c:
+            for field in e.__table__.c:
                 c.expenditure[field.name] = getattr(e, field.name)
             c.expenditure['amount'] = e.credits[0].amount
             c.expenditure['spender'] = e.credits[0].account
@@ -73,3 +73,17 @@ class SpendController(BaseController):
         return h.redirect_to(h.url_for(controller='status',
                                        action=None,
                                        id=None))
+    
+    @dispatch_on(GET='_complex_get',
+                 POST='_complex_post')
+    def complex(self, id=None):
+        abort(500)
+    
+    def _complex_get(self, id=None):
+        c.title = 'Add a Complex Expenditure'
+        
+        return render('/spend/complex.mako')
+    
+    def _complex_post(self, id=None):
+        if not valid(self, spend.complex_spend_form):
+            return self._complex_get(id)
