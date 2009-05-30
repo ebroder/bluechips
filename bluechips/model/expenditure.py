@@ -65,12 +65,6 @@ class Expenditure(object):
                 del split_dict[user]
             else:
                 split_dict[user] = share / total
-        
-        for user, share in split_dict.items():
-            if share == 0:
-                del split_dict[user]
-            else:
-                split_dict[user] = share / total
             
         amounts_dict = dict()
         
