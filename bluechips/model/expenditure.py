@@ -94,7 +94,7 @@ class Expenditure(Base):
                 winner = random.choice(amounts_dict.keys())
                 amounts_dict[winner] += Currency(1)
         elif difference < 0:
-            for i in xrange(difference):
+            for i in xrange(-difference):
                 winner = random.choice(amounts_dict.keys())
                 amounts_dict[winner] -= Currency(1)
         
