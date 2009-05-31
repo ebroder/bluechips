@@ -30,7 +30,7 @@ class AmountField(forms.TextField):
         validators.Wrapper(
             to_python=(lambda x: Currency(float(x) * 100)),
             from_python=Currency.__str_no_dollar__),
-        validators.Regex(r'^[0-9]*(\.[0-9]{2})?$'))
+        validators.Regex(r'^\-?[0-9]*(\.[0-9]{2})?$'))
 
 # This is virtually copied from formencode.validator.FieldsMatch, but
 # I wanted my own version for fields that shouldn't match
