@@ -77,3 +77,26 @@ class TestSplitFixed(TestCase):
         
         deleteExpenditures()
         deleteUsers()
+
+    def test_negativeExpenditure(self):
+        """
+        Test that negative expenditures get split correctly
+        """
+        createUsers(2)
+
+        users = meta.Session.query(model.User).all()
+
+        e = model.Expenditure(users[0], Currency("100.00"))
+        meta.Session.save(e)
+
+        # Force a split that will result in needing to distribute
+        # pennies
+        split_dict = {users[0]: Decimal(1),
+                      users[1]: Decimal(2)}
+        e.split(split_dict)
+        meta.Session.commit()
+
+        self.assertEqual(e.amount, sum(s.share for s in meta.Session.query(model.Split)))
+
+        deleteExpenditures()
+        deleteUsers()
