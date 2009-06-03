@@ -6,8 +6,6 @@ from authkit.authenticate import AddDictToEnviron
 from authkit.authorize import NotAuthenticatedError, NotAuthorizedError
 from authkit.permissions import RequestPermission
 
-from sqlalchemy.exceptions import InvalidRequestError
-
 from bluechips import model
 from bluechips.model import meta
 
@@ -15,11 +13,10 @@ class BlueChipUser(RequestPermission):
     def check(self, app, environ, start_response):
         if 'REMOTE_USER' not in environ:
             raise NotAuthenticatedError('Not Authenticated')
-        try:
-            environ['user'] = meta.Session.query(model.User).\
-                filter_by(username=unicode(environ['REMOTE_USER'])).\
-                one()
-        except InvalidRequestError:
+        environ['user'] = meta.Session.query(model.User).\
+            filter_by(username=unicode(environ['REMOTE_USER'])).\
+            first()
+        if environ['user'] == None:
             raise NotAuthorizedError('You are not allowed access.')
         return app(environ, start_response)
 
