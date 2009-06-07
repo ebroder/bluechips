@@ -32,6 +32,10 @@ app_instance_uuid = ${app_instance_uuid}
 sqlalchemy.url = sqlite:///production.db
 sqlalchemy.echo = False
 
+# If you're using MySQL, uncomment this line to avoid the "MySQL
+# server has gone away" error
+#sqlalchemy.pool_recycle = 3600
+
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to
 # execute malicious code after an exception is raised.
