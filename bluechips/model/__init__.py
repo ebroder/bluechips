@@ -80,7 +80,8 @@ orm.mapper(User, users,
                                      backref='spender')
 })
 
-orm.mapper(Expenditure, expenditures, order_by=expenditures.c.date.desc(),
+orm.mapper(Expenditure, expenditures,
+           order_by=[expenditures.c.date.desc(), expenditures.c.entered_time.desc()],
            properties={
         'splits': orm.relation(Split, backref='expenditure',
                                cascade='all, delete'),
@@ -96,7 +97,8 @@ orm.mapper(Subitem, subitems, properties={
         'user': orm.relation(User)
 })
 
-orm.mapper(Transfer, transfers, order_by=transfers.c.date.desc(),
+orm.mapper(Transfer, transfers,
+           order_by=[transfers.c.date.desc(), transfers.c.entered_time.desc()],
            properties={
         'debtor': orm.relation(User,
                                primaryjoin=(transfers.c.debtor_id==\
