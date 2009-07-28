@@ -60,7 +60,7 @@ def settle(debts_dict):
     
     debts_list = [dict(who=user, amount=amount) for user, amount in \
                       debts_dict.iteritems()]
-    debts_list.sort(reverse=True, key=(lambda x: abs(x['amount'])))
+    #debts_list.sort(reverse=True, key=(lambda x: abs(x['amount'])))
     
     owes_list = [debt for debt in debts_list if debt['amount'] > 0]
     owed_list = [debt for debt in debts_list if debt['amount'] < 0]
@@ -68,6 +68,9 @@ def settle(debts_dict):
     settle_list = []
     
     while len(owes_list) > 0 and len(owed_list) > 0:
+        owes_list.sort(reverse=True, key=(lambda x: abs(x['amount'])))
+        owed_list.sort(reverse=True, key=(lambda x: abs(x['amount'])))
+
         owes = owes_list[0]
         owed = owed_list[0]
         
