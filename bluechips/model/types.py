@@ -14,7 +14,9 @@ class Currency(object):
     __metaclass__ = SmartSubclass(int)
     __old_values__ = WeakValueDictionary()
     def __new__(cls, value):
-        if isinstance(value, str):
+        if value is None:
+            value = 0
+        elif isinstance(value, str):
             value = int(float(value) * 100)
         else:
             value = int(value)
@@ -97,3 +99,4 @@ class DBCurrency(sa.types.TypeDecorator):
     
     def convert_result_value(self, value, engine):
         return Currency(value)
+    process_result_value = convert_result_value

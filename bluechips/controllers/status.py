@@ -22,7 +22,7 @@ class StatusController(BaseController):
         c.debts = debts()
         c.settle = settle(c.debts)
         
-        c.total = self._total(sqlalchemy.text('1=1'))
+        c.total = self._total()
         
         year = date.today() - timedelta(days=365)
         this_year = date.today().replace(month=1, day=1)
@@ -30,13 +30,13 @@ class StatusController(BaseController):
         last_month = (date.today() - timedelta(days=30)).replace(day=1)
         
         c.year_total, c.this_year_total, c.this_month_total = \
-            [self._total(model.expenditures.c.date >= i)
+            [self._total(model.Expenditure.date >= i)
              for i in [year, this_year, this_month]]
         
 
         c.last_month_total = self._total(sqlalchemy.and_(
-                    model.expenditures.c.date >= last_month,
-                    model.expenditures.c.date < this_month))
+                    model.Expenditure.date >= last_month,
+                    model.Expenditure.date < this_month))
         
         c.expenditures = meta.Session.query(model.Expenditure).\
             filter(model.Expenditure.spender==request.environ['user']).\
@@ -49,8 +49,9 @@ class StatusController(BaseController):
         
         return render('/status/index.mako')
     
-    def _total(self, where):
-        return Currency(meta.Session.execute(sqlalchemy.sql.select([
-                sqlalchemy.func.sum(model.expenditures.c.amount).\
-                    label('total')]).\
-                    where(where)).scalar() or 0)
+    def _total(self, conditions=None):
+        q = meta.Session.query(sqlalchemy.func.SUM(
+            model.Expenditure.amount))
+        if conditions is not None:
+            q = q.filter(conditions)
+        return q.scalar()
