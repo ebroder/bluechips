@@ -2,10 +2,35 @@
 Define special types used in BlueChips
 """
 
+import locale
+
 import sqlalchemy as sa
 from bluechips.lib.subclass import SmartSubclass
 
 from weakref import WeakValueDictionary
+
+def localeconv():
+    "Manually install en_US for systems that don't have it."
+    d = {'currency_symbol': '$',
+     'decimal_point': '.',
+     'frac_digits': 2,
+     'grouping': [3, 3, 0],
+     'int_curr_symbol': 'USD ',
+     'int_frac_digits': 2,
+     'mon_decimal_point': '.',
+     'mon_grouping': [3, 3, 0],
+     'mon_thousands_sep': ',',
+     'n_cs_precedes': 1,
+     'n_sep_by_space': 0,
+     'n_sign_posn': 1,
+     'negative_sign': '-',
+     'p_cs_precedes': 1,
+     'p_sep_by_space': 0,
+     'p_sign_posn': 1,
+     'positive_sign': '',
+     'thousands_sep': ','}
+    return d
+locale.localeconv = localeconv
 
 class Currency(object):
     """
@@ -80,10 +105,7 @@ class Currency(object):
     def __repr__(self):
         return '%s("%s")' % (self.__class__.__name__, str(self))
     def __str__(self):
-        sign = '-' if self.value < 0 else ''
-        cents = abs(self.value) % 100
-        dollars = (abs(self.value) - cents) / 100
-        return '%s$%s.%.02d' % (sign, dollars, cents)
+        return locale.currency(self.value / 100., grouping=True)
 
 class DBCurrency(sa.types.TypeDecorator):
     """
