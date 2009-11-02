@@ -5,8 +5,9 @@ Provides the BaseController class for subclassing.
 from pylons import tmpl_context as c
 from pylons.controllers import WSGIController
 from pylons.i18n import _, ungettext, N_
+from pylons.templating import render_mako as render
 
-from tw.mods.pylonshf import render, render_response, validate, valid
+from tw.mods.pylonshf import validate, valid
 
 import bluechips.lib.helpers as h
 from bluechips import model
@@ -42,6 +43,6 @@ def update_sar(record, form_result):
     for key, value in form_result.items():
         setattr(record, key, value)
 
-__all__ = ['c', 'h', 'render', 'render_response', 'validate', 'valid',
+__all__ = ['c', 'h', 'render', 'validate', 'valid',
            'model', 'meta', '_', 'ungettext', 'N_', 'BaseController',
            'update_sar']
