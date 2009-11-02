@@ -84,6 +84,6 @@ class Expenditure(object):
         
         for user, share in amounts_dict.iteritems():
             s = Split(self, user, share)
-            meta.Session.save(s)
+            meta.Session.add(s)
 
 __all__ = ['Expenditure']

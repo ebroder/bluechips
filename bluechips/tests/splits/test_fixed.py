@@ -14,7 +14,7 @@ class TestSplitFixed(TestCase):
         
         e = model.Expenditure(meta.Session.query(model.User).first(),
                               Currency("100"))
-        meta.Session.save(e)
+        meta.Session.add(e)
         e.even_split()
         meta.Session.commit()
         
@@ -34,7 +34,7 @@ class TestSplitFixed(TestCase):
         users = meta.Session.query(model.User).all()
         
         e = model.Expenditure(users[0], Currency("100"))
-        meta.Session.save(e)
+        meta.Session.add(e)
         
         split_dict = {users[0]: Decimal("20"),
                       users[1]: Decimal("80")}
@@ -61,7 +61,7 @@ class TestSplitFixed(TestCase):
         users = meta.Session.query(model.User).all()
         
         e = model.Expenditure(users[0], Currency("100.00"))
-        meta.Session.save(e)
+        meta.Session.add(e)
         
         split_dict = {users[0]: Decimal(10),
                       users[1]: Decimal(15)}
@@ -87,7 +87,7 @@ class TestSplitFixed(TestCase):
         users = meta.Session.query(model.User).all()
 
         e = model.Expenditure(users[0], Currency("100.00"))
-        meta.Session.save(e)
+        meta.Session.add(e)
 
         # Force a split that will result in needing to distribute
         # pennies

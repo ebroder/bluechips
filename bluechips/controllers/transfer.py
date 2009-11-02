@@ -38,11 +38,11 @@ class TransferController(BaseController):
         
         if id is None:
             t = model.Transfer()
+            meta.Session.add(t)
         else:
             t = meta.Session.query(model.Transfer).get(id)
         
         update_sar(t, self.form_result)
-        meta.Session.save_or_update(t)
         meta.Session.commit()
         
         h.flash('Transfer recorded.')

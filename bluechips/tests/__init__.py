@@ -32,7 +32,7 @@ def setUpPackage():
     SetupCommand('setup-app').run([config['__file__']])
     
     test_user = bluechips.model.User(u'root', u'Charlie Root', False)
-    meta.Session.save(test_user)
+    meta.Session.add(test_user)
     meta.Session.commit()
 
 def tearDownPackage():
@@ -50,7 +50,7 @@ def createUsers(n=None):
         n = random.randint(2, 5)
     for i in xrange(n):
         u = bluechips.model.User(sample_users[i].lower(), resident=True)
-        meta.Session.save(u)
+        meta.Session.add(u)
     meta.Session.commit()
 
 def createExpenditures(n=None):
@@ -60,7 +60,7 @@ def createExpenditures(n=None):
     for i in xrange(n):
         e = bluechips.model.Expenditure(random.choice(users),
                                         Currency(random.randint(1000, 100000)))
-        meta.Session.save(e)
+        meta.Session.add(e)
         e.even_split()
     meta.Session.commit()
 

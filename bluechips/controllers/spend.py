@@ -42,12 +42,12 @@ class SpendController(BaseController):
         # old one
         if id is None:
             e = model.Expenditure()
+            meta.Session.add(e)
         else:
             e = meta.Session.query(model.Expenditure).get(id)
         
         # Set the fields that were submitted
         update_sar(e, self.form_result)
-        meta.Session.save_or_update(e)
         
         if id is None:
             e.even_split()
