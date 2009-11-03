@@ -4,6 +4,8 @@ Handle transfers
 
 import logging
 
+from datetime import date
+
 from bluechips.lib.base import *
 
 from pylons import request
@@ -34,6 +36,7 @@ class TransferController(BaseController):
             c.title = 'Add a New Transfer'
             c.transfer = model.Transfer()
             c.transfer.debtor_id = request.environ['user'].id
+            c.transfer.date = date.today()
         else:
             c.title = 'Edit a Transfer'
             c.transfer = meta.Session.query(model.Transfer).get(id)
