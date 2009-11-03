@@ -7,14 +7,6 @@
     ${h.stylesheet_link('/css/main.css')}
   </head>
   <body>
-    <% messages = h.flash.pop_messages() %>
-    % if messages:
-    <ul id="flash-messages">
-    % for message in messages:
-        <li>${message}</li>
-    % endfor
-    </ul>
-    % endif
     <div id="nav" class="block">
       <table>
         <tr>
@@ -54,6 +46,9 @@
         </tr>
       </table>
     </div>
+    % for message in h.flash.pop_messages():
+      <div class="flash">${message | n}</div>
+    % endfor
     <div id="content">
       ${next.body()}
     </div>

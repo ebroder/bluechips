@@ -65,10 +65,26 @@ table.list td.amount {
 #totals th {
     text-align: right;
 }
+#balance {
+    margin-bottom: 10px;
+}
+#balance th {
+    text-align: left;
+}
 td.labelcol {
     text-align: right;
     font-weight: bold;
 }
 tr.user-not-involved {
     color: #aaa;
+}
+div.flash {
+    margin: 10px 0;
+    padding: 0.5em;
+    font-weight: bold;
+    background: #fffa98;
+    border: 1px solid #e6e000;
+}
+div.flash ul {
+    margin-bottom: 0;
 }

@@ -8,7 +8,7 @@
   % else:
     <p>To balance the books, the following transfers need to be made:</p>
 
-    <table>
+    <table id="balance">
       <tr>
         <th>From</th>
         <th>To</th>
