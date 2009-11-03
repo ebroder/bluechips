@@ -23,29 +23,36 @@ ${c.expenditure.spender.name} on ${c.expenditure.date}, described as
 
 ${h.form('', method='post')}
 <form>
-  <ul class="field_list">
+  <table>
     % for user in c.users:
-    <%
-    name = user.username
-    try:
-        percent = c.values[name]
-    except TypeError:
+      <%
+        name = user.username
         try:
-            share = [s.share for s in c.expenditure.splits if s.user == user][0]
-            percent = (Decimal(100) * Decimal(int(share)) / Decimal(int(c.expenditure.amount))).quantize(Decimal("0.001"))
-        except IndexError:
-            percent = Decimal(0)
-    %>\
-    <li class="${form_cycle.next()}" id="${name}.container">
-      <label id="${name}.label" for="${name}" class="fieldlabel">${user.name}</label>
-      ${h.text(name, value=percent, class_="textfield required", id=name)}
-      % if name in c.errors:
-      <span class="fielderror">${c.errors[name]}</span>
-      % endif
-    </li>
+            percent = c.values[name]
+        except TypeError:
+            try:
+                share = [s.share for s in c.expenditure.splits if s.user == user][0]
+                percent = (Decimal(100) * Decimal(int(share)) / Decimal(int(c.expenditure.amount))).quantize(Decimal("0.001"))
+            except IndexError:
+                percent = Decimal(0)
+      %>\
+      <tr class="${form_cycle.next()}" id="${name}.container">
+        <td class="labelcol">
+          <label id="${name}.label" for="${name}" class="fieldlabel">${user.name}</label>
+        </td>
+        <td class="fieldcol">
+          ${h.text(name, value=percent, class_="textfield required", id=name)}
+          % if name in c.errors:
+            <span class="fielderror">${c.errors[name]}</span>
+          % endif
+        </td>
+      </tr>
     % endfor
-    <li class="${form_cycle.next()}" id="submit.container">
-      ${h.submit(None, 'Submit', class_="submitbutton")}
-    </li>
+    <tr class="${form_cycle.next()}" id="submit.container">
+      <td class="labelcol"></td>
+      <td class="fieldcol">
+        ${h.submit(None, 'Submit', class_="submitbutton")}
+      </td>
+    </tr>
   </ul>
 </form>

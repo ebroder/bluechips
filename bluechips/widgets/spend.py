@@ -5,7 +5,7 @@ from tw.forms import validators
 
 from bluechips.widgets import *
 
-class NewSpendForm(forms.ListForm):
+class NewSpendForm(forms.TableForm):
     class fields(WidgetsList):
         spender = UserSelect()
         amount = AmountField()

@@ -5,7 +5,7 @@ from tw.forms import validators
 
 from bluechips.widgets import *
 
-class NewTransferForm(forms.ListForm):
+class NewTransferForm(forms.TableForm):
     class fields(WidgetsList):
         debtor = UserSelect()
         creditor = UserSelect()
