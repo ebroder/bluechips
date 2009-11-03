@@ -93,4 +93,14 @@ class Expenditure(object):
                 filter(Split.user == user).\
                 filter(Split.share != 0).first() is not None)
 
+    def share(self, user):
+        "Return the share corresponding to ``user``."
+        share = meta.Session.query(Split.share).\
+                filter(Split.expenditure == self).\
+                filter(Split.user == user).scalar()
+        if share is None:
+            return Currency(0)
+        else:
+            return share
+
 __all__ = ['Expenditure']

@@ -76,6 +76,7 @@
       <th class="user">Spender</th>
       <th class="description">Description</th>
       <th class="amount">Amount</th>
+      <th class="share">My Share</th>
       <th class="editlink"></th>
     </tr>
     % for e in es:
@@ -90,6 +91,7 @@
         <td class="user">${formatUser(e.spender)}</td>
         <td class="description">${e.description}</td>
         <td class="amount">${e.amount}</td>
+        <td class="share">${e.share(request.environ['user'])}</td>
         <td class="editlink">${h.link_to('Edit', h.url_for(controller='spend', action='edit', id=e.id))}</td>
       </tr>
     % endfor

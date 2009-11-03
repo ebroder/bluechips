@@ -59,6 +59,9 @@ table.list td.user {
 table.list td.amount {
     width: 90px;
 }
+table.list td.share {
+    width: 90px;
+}
 #totals {
     margin-bottom: 10px;
 }
