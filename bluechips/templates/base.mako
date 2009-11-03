@@ -62,7 +62,7 @@
 </%def>
 
 <%def name="formatUser(user)">
-  % if user == c.user:
+  % if user == request.environ['user']:
     <strong>Me</strong>
   % else:
     ${user.name}
@@ -80,7 +80,7 @@
     </tr>
     % for e in es:
       <%
-        if e.involves(c.user):
+        if e.involves(request.environ['user']):
           klass = 'user-involved'
         else:
           klass = 'user-not-involved'
@@ -108,7 +108,7 @@
     </tr>
     % for t in ts:
       <%
-        if t.involves(c.user):
+        if t.involves(request.environ['user']):
           klass = 'user-involved'
         else:
           klass = 'user-not-involved'
