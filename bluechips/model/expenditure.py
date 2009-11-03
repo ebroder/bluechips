@@ -86,4 +86,11 @@ class Expenditure(object):
             s = Split(self, user, share)
             meta.Session.add(s)
 
+    def involves(self, user):
+        "Returns True if ``user`` is involved in this expenditure."
+        return (meta.Session.query(Split.id).\
+                filter(Split.expenditure == self).\
+                filter(Split.user == user).\
+                filter(Split.share != 0).first() is not None)
+
 __all__ = ['Expenditure']

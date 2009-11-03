@@ -69,3 +69,6 @@ td.labelcol {
     text-align: right;
     font-weight: bold;
 }
+tr.user-not-involved {
+    color: #aaa;
+}

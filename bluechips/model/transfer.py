@@ -11,4 +11,7 @@ class Transfer(object):
                                                      self.creditor,
                                                      self.amount)
 
+    def involves(self, user):
+        return (self.debtor == user) or (self.creditor == user)
+
 __all__ = ['Transfer']

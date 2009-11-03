@@ -32,6 +32,8 @@ class BaseController(WSGIController):
                 environ['PATH_INFO'] += '/'
                 raise HTTPMovedPermanently(construct_url(environ))
         try:
+            c.user = meta.Session.query(model.User).\
+                    filter_by(username=unicode(environ['REMOTE_USER'])).one()
             return WSGIController.__call__(self, environ, start_response)
         finally:
             meta.Session.remove()

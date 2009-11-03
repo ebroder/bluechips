@@ -67,8 +67,8 @@
 </%def>
 
 <%def name="formatUser(user)">
-  % if user.username == request.environ['REMOTE_USER']:
-    <strong>${user.name}</strong>
+  % if user == c.user:
+    <strong>Me</strong>
   % else:
     ${user.name}
   % endif
@@ -84,7 +84,13 @@
       <th class="editlink"></th>
     </tr>
     % for e in es:
-      <tr>
+      <%
+        if e.involves(c.user):
+          klass = 'user-involved'
+        else:
+          klass = 'user-not-involved'
+      %>
+      <tr class="${klass}">
         <td class="date">${e.date}</td>
         <td class="user">${formatUser(e.spender)}</td>
         <td class="description">${e.description}</td>
@@ -106,7 +112,13 @@
       <th class="editlink"></th>
     </tr>
     % for t in ts:
-      <tr>
+      <%
+        if t.involves(c.user):
+          klass = 'user-involved'
+        else:
+          klass = 'user-not-involved'
+      %>
+      <tr class="${klass}">
         <td class="date">${t.date}</td>
         <td class="user">${formatUser(t.debtor)}</td>
         <td class="user">${formatUser(t.creditor)}</td>
