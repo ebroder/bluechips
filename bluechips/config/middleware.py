@@ -10,7 +10,6 @@ from pylons.wsgiapp import PylonsApp
 from routes.middleware import RoutesMiddleware
 from paste import httpexceptions
 
-from tw.api import make_middleware
 import authkit.authorize
 
 from bluechips.config.environment import load_environment
@@ -50,12 +49,6 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = RoutesMiddleware(app, config['routes.map'])
     app = SessionMiddleware(app, config)
     app = CacheMiddleware(app, config)
-    
-    app = make_middleware(app, {
-            'toscawidgets.framework': 'pylons',
-            'toscawidgets.framework.default_view': 'mako',
-            'toscawidgets.middleware.inject_resources': True
-            })
     
     if asbool(full_stack):
         # Handle Python exceptions

@@ -4,40 +4,56 @@ Handle expenditures
 
 import logging
 
+from decimal import Decimal, InvalidOperation
+
 from bluechips.lib.base import *
-from bluechips.widgets import spend
 
 from pylons import request
 from pylons.decorators.rest import dispatch_on
+from pylons.decorators import validate
 
-from decimal import Decimal, InvalidOperation
+from formencode import validators, Schema
+from formencode.foreach import ForEach
+from formencode.variabledecode import NestedVariables
 
 log = logging.getLogger(__name__)
 
+
+class ShareSchema(Schema):
+    "Validate individual user shares."
+    allow_extra_fields = False
+    user_id = validators.Int(not_empty=True)
+    amount = validators.Number(not_empty=True)
+
+
+class ExpenditureSchema(Schema):
+    "Validate an expenditure."
+    allow_extra_fields = False
+    pre_validators = [NestedVariables()]
+    spender_id = validators.Int(not_empty=True)
+    amount = validators.Number(not_empty=True)
+    description = validators.UnicodeString()
+    date = validators.DateConverter()
+    shares = ForEach(ShareSchema)
+    
+
 class SpendController(BaseController):
     def index(self):
-        c.title = 'Add a New Expenditure'
-        
-        c.expenditure = dict()
-        c.expenditure['spender'] = request.environ['user']
-        
-        return render('/spend/index.mako')
+        return self.edit()
     
-    def edit(self, id):
-        c.title = 'Edit an Expenditure'
-        
-        c.expenditure = meta.Session.query(model.Expenditure).get(id)
-        
+    def edit(self, id=None):
+        c.users = meta.Session.query(model.User.id, model.User)
+        if id is None:
+            c.title = 'Add a New Expenditure'
+            c.expenditure = model.Expenditure()
+            c.expenditure.spender_id = request.environ['user'].id
+        else:
+            c.title = 'Edit an Expenditure'
+            c.expenditure = meta.Session.query(model.Expenditure).get(id)
         return render('/spend/index.mako')
-    
+
+    @validate(schema=ExpenditureSchema(), form='edit', variable_decode=True)
     def update(self, id=None):
-        # Validate the submission
-        if not valid(self, spend.new_spend_form):
-            if id is None:
-                return self.index()
-            else:
-                return self.edit(id)
-        
         # Either create a new object, or, if we're editing, get the
         # old one
         if id is None:
@@ -47,64 +63,21 @@ class SpendController(BaseController):
             e = meta.Session.query(model.Expenditure).get(id)
         
         # Set the fields that were submitted
+        shares = self.form_result.pop('shares')
+        e.amount = Decimal(self.form_result.pop('amount') * 100)
         update_sar(e, self.form_result)
-        
-        if id is None:
-            e.even_split()
-        else:
+        if e.id is not None:
             e.update_split()
-        
-        meta.Session.commit()
-        
-        h.flash('Expenditure recorded.')
-        h.flash("""Want to do something unusual?
 
-<ul id="expenditure_options">
-  <li>%s</li>
-  <li>%s</li>
-</ul>""" % (h.link_to('Change the split', h.url_for(controller='spend',
-                                                   action='split',
-                                                   id=e.id)),
-           h.link_to('Spin off a subitem', h.url_for(controller='spend',
-                                                     action='subitem',
-                                                     id=e.id))))
-        
-        return h.redirect_to('/')
-    
-    @dispatch_on(POST='_post_split',
-                 GET='_get_split')
-    def split(self, id):
-        abort(500)
-    
-    def _get_split(self, id):
-        c.title = 'Change Expenditure Split'
-        
-        c.expenditure = meta.Session.query(model.Expenditure).get(id)
-        c.users = meta.Session.query(model.User)
-        
-        return render('/spend/split.mako')
-    
-    def _post_split(self, id):
-        c.values = request.params
-        c.errors = dict()
-        
-        split_dict = dict()
-        
-        for username, percent in c.values.iteritems():
-            try:
-                user = meta.Session.query(model.User).\
-                    filter(model.User.username==username).one()
-                split_dict[user] = Decimal(percent)
-            except InvalidOperation:
-                c.errors[username] = 'Please enter a number'
-        if c.errors != dict():
-            return self._get_split(id)
-        
-        e = meta.Session.query(model.Expenditure).get(id)
+        users = dict(meta.Session.query(model.User.id, model.User).all())
+        split_dict = {}
+        for share_params in shares:
+            user = users[share_params['user_id']]
+            split_dict[user] = Decimal(share_params['amount'])
         e.split(split_dict)
         
         meta.Session.commit()
         
-        h.flash('Expenditure redivided')
-        
+        h.flash('Expenditure updated.')
+       
         return h.redirect_to('/')

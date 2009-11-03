@@ -36,6 +36,9 @@ div.block {
     padding: 0 10px;
     border-bottom: 1px solid #bbb;
 }
+table.form th {
+    text-align: right;
+}
 table.list {
     border-collapse: collapse;
     width: 100%;

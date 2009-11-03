@@ -7,4 +7,7 @@ class User(object):
     def __repr__(self):
         return '<User: %s>' % (self.username)
 
+    def __str__(self):
+        return self.name
+
 __all__ = ['User']

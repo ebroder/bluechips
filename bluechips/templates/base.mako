@@ -5,6 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
     ${h.stylesheet_link('/css/main.css')}
+    ${h.stylesheet_link('/js/jquery.date_input.css')}
   </head>
   <body>
     <div id="nav" class="block">
@@ -52,6 +53,9 @@
     <div id="content">
       ${next.body()}
     </div>
+    ${h.javascript_link('/js/jquery-1.3.2.js')}
+    ${h.javascript_link('/js/jquery.date_input.js')}
+    ${h.javascript_link('/js/admin.js')}
   </body>
 </html>
 
