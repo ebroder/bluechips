@@ -88,19 +88,13 @@ class Expenditure(object):
 
     def involves(self, user):
         "Returns True if ``user`` is involved in this expenditure."
-        return (meta.Session.query(Split.id).\
-                filter(Split.expenditure == self).\
-                filter(Split.user == user).\
-                filter(Split.share != 0).first() is not None)
+        return any((split.user == user) and (split.share != 0)
+                   for split in self.splits)
 
     def share(self, user):
         "Return the share corresponding to ``user``."
-        share = meta.Session.query(Split.share).\
-                filter(Split.expenditure == self).\
-                filter(Split.user == user).scalar()
-        if share is None:
-            return Currency(0)
-        else:
-            return share
+        shares = dict((split.user, split.share)
+                      for split in self.splits)
+        return shares.get(user, Currency(0))
 
 __all__ = ['Expenditure']

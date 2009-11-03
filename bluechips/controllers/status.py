@@ -8,6 +8,7 @@ from bluechips.lib.base import *
 from bluechips.lib.totals import *
 
 import sqlalchemy
+from sqlalchemy import orm
 
 from datetime import date, timedelta
 
@@ -45,6 +46,7 @@ class StatusController(BaseController):
                         sqlalchemy.and_(
                             model.Split.user == request.environ['user'],
                             model.Split.share != 0)))).\
+                options(orm.eagerload('splits')).\
                 limit(10).all()
         c.transfers = meta.Session.query(model.Transfer).\
             filter(sqlalchemy.or_(
