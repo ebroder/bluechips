@@ -39,8 +39,13 @@ class StatusController(BaseController):
                     model.Expenditure.date < this_month))
         
         c.expenditures = meta.Session.query(model.Expenditure).\
-            filter(model.Expenditure.spender==request.environ['user']).\
-            limit(10).all()
+                filter(sqlalchemy.or_(
+                    model.Expenditure.spender == request.environ['user'],
+                    model.Expenditure.splits.any(
+                        sqlalchemy.and_(
+                            model.Split.user == request.environ['user'],
+                            model.Split.share != 0)))).\
+                limit(10).all()
         c.transfers = meta.Session.query(model.Transfer).\
             filter(sqlalchemy.or_(
                 model.Transfer.debtor==request.environ['user'],
