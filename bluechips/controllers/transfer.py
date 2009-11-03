@@ -23,7 +23,7 @@ class TransferSchema(Schema):
     creditor_id = validators.Int(not_empty=True)
     amount = validators.Number(not_empty=True)
     description = validators.UnicodeString()
-    date = validators.String()
+    date = validators.DateConverter()
  
 
 class TransferController(BaseController):
