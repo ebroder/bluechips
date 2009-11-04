@@ -30,35 +30,37 @@ class TestTransferController(TestController):
         response = response.follow()
         response.mustcontain('Transfer updated.')
 
-        transfer = meta.Session.query(model.Transfer).\
+        t = meta.Session.query(model.Transfer).\
                 order_by(model.Transfer.id.desc()).first()
-        assert transfer.debtor.name == u'Rich Scheme'
-        assert transfer.creditor.name == u'Ben Bitdiddle'
-        assert transfer.amount == 12345
-        assert transfer.date == today
-        assert transfer.description == u'A test transfer from Rich to Ben'
+        assert t.debtor.name == u'Rich Scheme'
+        assert t.creditor.name == u'Ben Bitdiddle'
+        assert t.amount == 12345
+        assert t.date == today
+        assert t.description == u'A test transfer from Rich to Ben'
+        meta.Session.delete(t)
+        meta.Session.commit()
 
     def test_edit(self):
         user_rich = meta.Session.query(model.User).\
                 filter_by(name=u'Rich Scheme').one()
         user_ben = meta.Session.query(model.User).\
                 filter_by(name=u'Ben Bitdiddle').one()
-        transfer = model.Transfer(user_rich, user_ben, 12345)
-        transfer.description = u'Test transfer'
-        meta.Session.add(transfer)
+        t = model.Transfer(user_rich, user_ben, 12345)
+        t.description = u'Test transfer'
+        meta.Session.add(t)
         meta.Session.commit()
 
         response = self.app.get(url_for(controller='transfer',
                                         action='edit',
-                                        id=transfer.id))
+                                        id=t.id))
         response.mustcontain('Edit a Transfer')
         form = response.form
 
-        assert int(form['debtor_id'].value) == transfer.debtor_id
-        assert int(form['creditor_id'].value) == transfer.creditor_id
-        assert Decimal(form['amount'].value) * 100 == transfer.amount
-        assert form['date'].value == transfer.date.strftime('%m/%d/%Y')
-        assert form['description'].value == transfer.description
+        assert int(form['debtor_id'].value) == t.debtor_id
+        assert int(form['creditor_id'].value) == t.creditor_id
+        assert Decimal(form['amount'].value) * 100 == t.amount
+        assert form['date'].value == t.date.strftime('%m/%d/%Y')
+        assert form['description'].value == t.description
 
         form['description'] = u'A new description'
 
@@ -66,6 +68,8 @@ class TestTransferController(TestController):
         response = response.follow()
         response.mustcontain('Transfer updated.')
 
-        transfer = meta.Session.query(model.Transfer).\
+        t = meta.Session.query(model.Transfer).\
                 order_by(model.Transfer.id.desc()).first()
-        assert transfer.description == u'A new description'
+        assert t.description == u'A new description'
+        meta.Session.delete(t)
+        meta.Session.commit()
