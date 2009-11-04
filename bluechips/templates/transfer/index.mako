@@ -12,7 +12,7 @@
     </tr>
     <tr>
       <th><label for="amount">Amount</label></th>
-      <td>$${h.text('amount', "%0.2f" % (int(c.transfer.amount) / 100.0), size=8)}</td>
+      <td>${h.currency('amount', c.transfer.amount, size=8)}</td>
     </tr>
     <tr>
       <th><label for="date">Date</label></th>

@@ -12,7 +12,7 @@
     </tr>
     <tr>
       <th><label for="amount">Amount</label></th>
-      <td>$${h.text('amount', "%0.2f" % (int(c.expenditure.amount) / 100.), size=8)}</td>
+      <td>${h.currency('amount', c.expenditure.amount, size=8)}</td>
     </tr>
     <tr>
       <th><label for="date">Date</label></th>
@@ -27,10 +27,11 @@
   <p>Change how an expenditure is split up. Enter a percentage, or something like a percentage, for each user. They don't have to add to 100.</p>
 
   <table class="form">
-    % for user_id, user in c.users:
+    % for ii, user_row in enumerate(c.users):
       <%
+        user_id, user = user_row
         try:
-            percent = c.values['shares-%d.amount' % user_id]
+            percent = c.values['shares-%d.amount' % ii]
         except TypeError:
             if c.id != '':
                 try:
@@ -46,11 +47,11 @@
       %>
       <tr>
         <th>
-          <label for="shares-${user_id}amount">${user.name}</label>
+          <label for="shares-${ii}amount">${user.name}</label>
         </th>
         <td>
-          ${h.text('shares-%d.amount' % user_id, percent)}
-          ${h.hidden('shares-%d.user_id' % user_id, user.id)}
+          ${h.text('shares-%d.amount' % ii, percent)}
+          ${h.hidden('shares-%d.user_id' % ii, user.id)}
         </td>
       </tr>
     % endfor
