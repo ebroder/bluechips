@@ -33,17 +33,11 @@
         try:
             percent = c.values['shares-%d.amount' % ii]
         except TypeError:
-            if c.id != '':
-                try:
-                    share = [s.share for s in c.expenditure.splits if s.user == user][0]
-                    percent = (Decimal(100) * Decimal(int(share)) / Decimal(int(c.expenditure.amount))).quantize(Decimal("0.001"))
-                except IndexError:
-                    percent = 0
-            else:
-                if user == request.environ['user']:
-                    percent = 1
-                else:
-                    percent = 0
+            try:
+                share = [s.share for s in c.expenditure.splits if s.user == user][0]
+                percent = (Decimal(100) * Decimal(int(share)) / Decimal(int(c.expenditure.amount))).quantize(Decimal("0.001"))
+            except IndexError:
+                percent = 0
       %>
       <tr>
         <th>

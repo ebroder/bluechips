@@ -47,6 +47,18 @@ class SpendController(BaseController):
             c.title = 'Add a New Expenditure'
             c.expenditure = model.Expenditure()
             c.expenditure.spender_id = request.environ['user'].id
+
+            num_residents = meta.Session.query(model.User).\
+                    filter_by(resident=True).count()
+            # Pre-populate split percentages for an even split.
+            c.values = {}
+            for ii, user_row in enumerate(c.users):
+                user_id, user = user_row
+                if user.resident:
+                    val = Decimal(100) / Decimal(num_residents)
+                else:
+                    val = 0
+                c.values['shares-%d.amount' % ii] = val
         else:
             c.title = 'Edit an Expenditure'
             c.expenditure = meta.Session.query(model.Expenditure).get(id)
