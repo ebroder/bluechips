@@ -16,8 +16,8 @@
       </tr>
       % for transfer in c.settle:
         <tr>
-          <td>${transfer[0].username}</td>
-          <td>${transfer[1].username}</td>
+          <td>${transfer[0].name}</td>
+          <td>${transfer[1].name}</td>
           <td>${transfer[2]}</td>
         </tr>
       % endfor
