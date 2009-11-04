@@ -31,6 +31,12 @@ a:visited {
 #nav td {
     padding: 5px 20px;
 }
+table {
+    border-collapse: collapse;
+}
+th, td {
+    padding: 2px 5px;
+}
 div.block {
     margin: 10px 0;
     padding: 0 10px;
@@ -40,17 +46,14 @@ table.form th {
     text-align: right;
 }
 table.list {
-    border-collapse: collapse;
     width: 100%;
     margin: 10px 0;
 }
 table.list th {
     text-align: left;
-    padding: 2px 5px;
     border-bottom: 1px solid #bbb;
 }
 table.list td {
-    padding: 2px 5px;
     vertical-align: top;
 }
 table.list td.date {
@@ -70,6 +73,16 @@ table.list td.share {
 }
 #totals th {
     text-align: right;
+}
+#totals th.scope {
+    text-align: left;
+    padding: 2px 15px;
+}
+#totals .scope {
+    border-bottom: 1px solid #bbb;
+}
+#totals td {
+    padding: 2px 15px;
 }
 #balance {
     margin-bottom: 10px;

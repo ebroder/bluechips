@@ -30,25 +30,18 @@
 
   <table id="totals">
     <tr>
-      <th>Total</th>
-      <td>${c.total}</td>
+      <td class="scope"></td>
+      <th class="scope">Everyone</th>
+      <th class="scope">My Share</th>
     </tr>
-    <tr>
-      <th>Past year</th>
-      <td>${c.year_total}</td>
-    </tr>
-    <tr>
-      <th>Year to date</th>
-      <td>${c.this_year_total}</td>
-    </tr>
-    <tr>
-      <th>Month to date</th>
-      <td>${c.this_month_total}</td>
-    </tr>
-    <tr>
-      <th>Last month</th>
-      <td>${c.last_month_total}</td>
-    </tr>
+    % for period in ('Total', 'Past year', 'Year to date', 'Month to date', 'Last month'):
+      <tr>
+        <th>${period}</th>
+        % for scope in ('all', 'mine'):
+          <td>${c.totals[period][scope]}</td>
+        % endfor
+      </tr>
+    % endfor
   </table>
 </div>
 

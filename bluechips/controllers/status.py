@@ -23,22 +23,35 @@ class StatusController(BaseController):
         c.debts = debts()
         c.settle = settle(c.debts)
         
-        c.total = self._total()
+        periods = {}
+        periods['Total'] = (None, None)
+        periods['Past year'] = (date.today() - timedelta(days=365), None)
+        periods['Year to date'] = (date.today().replace(month=1, day=1), None)
+        periods['Month to date'] = (date.today().replace(day=1), None)
+        periods['Last month'] = ((date.today() -
+                                  timedelta(days=30)).replace(day=1),
+                                 periods['Month to date'][0])
         
-        year = date.today() - timedelta(days=365)
-        this_year = date.today().replace(month=1, day=1)
-        this_month = date.today().replace(day=1)
-        last_month = (date.today() - timedelta(days=30)).replace(day=1)
-        
-        c.year_total, c.this_year_total, c.this_month_total = \
-            [self._total(model.Expenditure.date >= i)
-             for i in [year, this_year, this_month]]
-        
+        c.totals = {}
+        for period in periods.keys():
+            c.totals[period] = {}
+            start, end = periods[period]
+            conds = []
+            if start is not None:
+                conds.append(model.Expenditure.date >= start)
+            if end is not None:
+                conds.append(model.Expenditure.date < end)
+            if len(conds) > 1:
+                conds = sqlalchemy.and_(*conds)
+            elif len(conds) > 0:
+                conds = conds[0]
+            else:
+                conds = None
 
-        c.last_month_total = self._total(sqlalchemy.and_(
-                    model.Expenditure.date >= last_month,
-                    model.Expenditure.date < this_month))
-        
+            for scope in ('all', 'mine'):
+                meth = getattr(self, '_total_%s' % scope)
+                c.totals[period][scope] = meth(conds)
+
         c.expenditures = meta.Session.query(model.Expenditure).\
                 filter(sqlalchemy.or_(
                     model.Expenditure.spender == request.environ['user'],
@@ -56,9 +69,17 @@ class StatusController(BaseController):
         
         return render('/status/index.mako')
     
-    def _total(self, conditions=None):
+    def _total_all(self, conditions=None):
         q = meta.Session.query(sqlalchemy.func.SUM(
             model.Expenditure.amount))
+        if conditions is not None:
+            q = q.filter(conditions)
+        return q.scalar()
+
+    def _total_mine(self, conditions=None):
+        q = meta.Session.query(sqlalchemy.func.SUM(
+            model.Split.share)).join(model.Split.expenditure).\
+                filter(model.Split.user == request.environ['user'])
         if conditions is not None:
             q = q.filter(conditions)
         return q.scalar()
