@@ -11,9 +11,6 @@ from webhelpers.pylonslib import Flash as _Flash
 
 from decimal import Decimal
 
-def bluechips():
-    return '<span class="bluechips">BlueChips</span>'
-
 def currency(name, value, *args, **kwargs):
     if 'class_' not in kwargs:
         kwargs['class_'] = ''
