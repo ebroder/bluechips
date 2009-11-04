@@ -11,8 +11,6 @@ import bluechips.lib.helpers as h
 from bluechips import model
 from bluechips.model import meta
 
-from paste.request import construct_url
-from paste.httpexceptions import HTTPMovedPermanently
 
 class BaseController(WSGIController):
 
@@ -21,14 +19,6 @@ class BaseController(WSGIController):
         # WSGIController.__call__ dispatches to the Controller method
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
-        if environ['pylons.routes_dict']['controller'] != 'error':
-            if environ['PATH_INFO'].endswith('/index'):
-                environ['PATH_INFO'] = environ['PATH_INFO'][:-5]
-                raise HTTPMovedPermanently(construct_url(environ))
-            if not environ['PATH_INFO'].endswith('/') and \
-                    environ['pylons.routes_dict']['action'] == 'index':
-                environ['PATH_INFO'] += '/'
-                raise HTTPMovedPermanently(construct_url(environ))
         try:
             return WSGIController.__call__(self, environ, start_response)
         finally:

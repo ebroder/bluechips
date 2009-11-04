@@ -19,8 +19,7 @@ def make_map():
 
     # CUSTOM ROUTES HERE
     map.connect('/', controller='status', action='index')
-    map.connect('/:controller')
-    map.connect('/:controller/', action='index')
+    map.connect('/:controller', action='index')
     map.connect('/:controller/:action')
     map.connect('/:controller/:action/:id')
 
