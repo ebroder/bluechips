@@ -54,10 +54,10 @@ def make_app(global_conf, full_stack=True, **app_conf):
 
         # Display error documents for 401, 403, 404 status codes (and
         # 500 when debug is disabled)
-        if asbool(config['debug']):
-            app = StatusCodeRedirect(app)
-        else:
-            app = StatusCodeRedirect(app, [400, 401, 403, 404, 500])
+        status_codes = [400, 401, 403, 404]
+        if not asbool(config.get('debug')):
+            status_codes.append(500)
+        app = StatusCodeRedirect(app, status_codes)
 
     # Establish the Registry for this application
     app = RegistryManager(app)
