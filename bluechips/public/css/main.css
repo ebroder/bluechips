@@ -117,3 +117,6 @@ input.currency {
     background-repeat: no-repeat;
     background-position: center left;
 }
+span.see-all {
+    font-size: 0.7em;
+}

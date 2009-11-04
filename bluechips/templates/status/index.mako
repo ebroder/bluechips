@@ -46,18 +46,12 @@
 </div>
 
 <div class="block">
-  <h2>Add a new transaction</h2>
-
-  <ul>
-    <li>${h.link_to('Expenditure for the group', h.url_for(controller='spend', action='index'))}</li>
-    <li>${h.link_to('Transfer between two people', h.url_for(controller='transfer', action='index'))}</li>
-  </ul>
-</div>
-
-<div class="block">
-  <h2>Your History</h2>
-
-  ${h.link_to('See all history', h.url_for(controller='history', action='index'))}
+  <h2>
+    Your History
+    <span class="see-all">
+      ${h.link_to('See all history', h.url_for(controller='history', action='index'))}
+    </span>
+  </h2>
 
   <h3>Expenditures</h3>
 
