@@ -3,8 +3,10 @@ Define special types used in BlueChips
 """
 
 import locale
+from decimal import Decimal, InvalidOperation
 
 import sqlalchemy as sa
+from formencode import validators, Invalid
 from bluechips.lib.subclass import SmartSubclass
 
 from weakref import WeakValueDictionary
@@ -31,6 +33,27 @@ def localeconv():
      'thousands_sep': ','}
     return d
 locale.localeconv = localeconv
+
+
+class CurrencyValidator(validators.FancyValidator):
+    "A validator to convert to Currency objects."
+    messages = {'amount': "Please enter a valid currency amount",
+                'precision': "Only two digits after the decimal, please"}
+
+    def _to_python(self, value, state):
+        try:
+            dec = Decimal(value)
+        except InvalidOperation:
+            raise Invalid(self.message('amount', state),
+                          value, state)
+        else:
+            ret = dec.quantize(Decimal('1.00'))
+            if ret != dec:
+                raise Invalid(self.message('precision', state),
+                              value, state)
+            else:
+                return Currency(int(ret * 100))
+
 
 class Currency(object):
     """
@@ -106,6 +129,7 @@ class Currency(object):
         return '%s("%s")' % (self.__class__.__name__, str(self))
     def __str__(self):
         return locale.currency(self.value / 100., grouping=True)
+
 
 class DBCurrency(sa.types.TypeDecorator):
     """

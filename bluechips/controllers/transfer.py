@@ -21,7 +21,7 @@ class TransferSchema(Schema):
     allow_extra_fields = False
     debtor_id = validators.Int(not_empty=True)
     creditor_id = validators.Int(not_empty=True)
-    amount = validators.Number(not_empty=True)
+    amount = model.types.CurrencyValidator(not_empty=True)
     description = validators.UnicodeString()
     date = validators.DateConverter()
  
@@ -50,7 +50,6 @@ class TransferController(BaseController):
         else:
             t = meta.Session.query(model.Transfer).get(id)
         
-        t.amount = self.form_result.pop('amount') * 100
         update_sar(t, self.form_result)
         meta.Session.commit()
         

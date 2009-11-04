@@ -31,7 +31,7 @@ class ExpenditureSchema(Schema):
     allow_extra_fields = False
     pre_validators = [NestedVariables()]
     spender_id = validators.Int(not_empty=True)
-    amount = validators.Number(not_empty=True)
+    amount = model.types.CurrencyValidator(not_empty=True)
     description = validators.UnicodeString()
     date = validators.DateConverter()
     shares = ForEach(ShareSchema)
@@ -64,7 +64,6 @@ class SpendController(BaseController):
         
         # Set the fields that were submitted
         shares = self.form_result.pop('shares')
-        e.amount = Decimal(self.form_result.pop('amount') * 100)
         update_sar(e, self.form_result)
         if e.id is not None:
             e.update_split()
