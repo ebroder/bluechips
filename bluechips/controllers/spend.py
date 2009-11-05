@@ -89,6 +89,9 @@ class SpendController(BaseController):
         
         meta.Session.commit()
         
-        h.flash('Expenditure updated.')
+        if id is None:
+            h.flash("Expenditure created.")
+        else:
+            h.flash('Expenditure updated.')
        
         return h.redirect_to('/')

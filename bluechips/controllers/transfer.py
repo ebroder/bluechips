@@ -52,7 +52,10 @@ class TransferController(BaseController):
         
         update_sar(t, self.form_result)
         meta.Session.commit()
-        
-        h.flash('Transfer updated.')
+       
+        if id is None:
+            h.flash('Transfer created.')
+        else:
+            h.flash('Transfer updated.')
         
         return h.redirect_to('/')
