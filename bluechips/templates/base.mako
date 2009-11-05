@@ -44,6 +44,12 @@
               <span>History</span>
             </a>
           </td>
+          <td>
+            <a href="${h.url_for(controller='user', action='index', id=None)}">
+              <img src="/icons/user.png" alt="">
+              <span>User</span>
+            </a>
+          </td>
         </tr>
       </table>
     </div>
