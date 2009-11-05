@@ -1,0 +1,14 @@
+The following expenditure was ${op}:
+
+${expenditure.amount} paid for by ${expenditure.spender}
+
+Description:
+${expenditure.description}
+
+The shares of this expenditure are:
+% for split in expenditure.splits:
+${split.user}: ${split.share}
+% endfor
+
+To view or edit this expenditure, visit:
+${h.url_for(controller='spend', action='edit', id=expenditure.id, qualified=True)}

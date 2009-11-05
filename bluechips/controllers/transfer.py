@@ -8,10 +8,12 @@ from datetime import date
 
 from bluechips.lib.base import *
 
-from pylons import request
+from pylons import request, app_globals as g
 from pylons.decorators import validate
 
 from formencode import Schema, validators
+
+from mailer import Message
 
 log = logging.getLogger(__name__)
 
@@ -47,15 +49,21 @@ class TransferController(BaseController):
         if id is None:
             t = model.Transfer()
             meta.Session.add(t)
+            op = 'created'
         else:
             t = meta.Session.query(model.Transfer).get(id)
+            op = 'updated'
         
         update_sar(t, self.form_result)
         meta.Session.commit()
        
-        if id is None:
-            h.flash('Transfer created.')
-        else:
-            h.flash('Transfer updated.')
-        
+        show = ('Transfer of %s from %s to %s %s.' %
+                (t.amount, t.debtor, t.creditor, op))
+        h.flash(show)
+
+        # Send email notification to involved users if they have an email set.
+        body = render('/emails/transfer.txt', extra_vars={'transfer': t,
+                                                          'op': op})
+        g.handle_notification((t.debtor, t.creditor), show, body)
+
         return h.redirect_to('/')

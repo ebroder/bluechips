@@ -4,6 +4,7 @@ import os
 from mako.lookup import TemplateLookup
 from pylons import config
 from sqlalchemy import engine_from_config
+from mailer import Mailer
 
 import bluechips.lib.app_globals as app_globals
 import bluechips.lib.helpers
@@ -42,3 +43,8 @@ def load_environment(global_conf, app_conf):
     
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
+    config['pylons.app_globals'].mailer = Mailer(config.get('mailer.host',
+                                                            '127.0.0.1'))
+    if 'mailer.user' in config:
+        config['pylons.app_globals'].mailer.login(config['mailer.user'],
+                                                  config['mailer.password'])

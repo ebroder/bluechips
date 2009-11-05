@@ -1,0 +1,9 @@
+The following transfer was ${op}:
+
+${transfer.amount} from ${transfer.debtor} to ${transfer.creditor}
+
+Description:
+${transfer.description}
+
+To view or edit this transfer, visit:
+${h.url_for(controller='transfer', action='edit', id=transfer.id, qualified=True)}

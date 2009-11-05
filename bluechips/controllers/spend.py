@@ -8,13 +8,15 @@ from decimal import Decimal, InvalidOperation
 
 from bluechips.lib.base import *
 
-from pylons import request
+from pylons import request, app_globals as g
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators import validate
 
 from formencode import validators, Schema
 from formencode.foreach import ForEach
 from formencode.variabledecode import NestedVariables
+
+from mailer import Message
 
 log = logging.getLogger(__name__)
 
@@ -71,8 +73,10 @@ class SpendController(BaseController):
         if id is None:
             e = model.Expenditure()
             meta.Session.add(e)
+            op = 'created'
         else:
             e = meta.Session.query(model.Expenditure).get(id)
+            op = 'updated'
         
         # Set the fields that were submitted
         shares = self.form_result.pop('shares')
@@ -88,10 +92,17 @@ class SpendController(BaseController):
         e.split(split_dict)
         
         meta.Session.commit()
-        
-        if id is None:
-            h.flash("Expenditure created.")
-        else:
-            h.flash('Expenditure updated.')
        
+        show = ("Expenditure of %s paid for by %s %s." %
+                (e.amount, e.spender, op))
+        h.flash(show)
+
+        # Send email notification to involved users if they have an email set.
+        involved_users = set(sp.user for sp in e.splits if sp.share != 0)
+        involved_users.add(e.spender)
+        body = render('/emails/expenditure.txt',
+                      extra_vars={'expenditure': e,
+                                  'op': op})
+        g.handle_notification(involved_users, show, body)
+
         return h.redirect_to('/')
