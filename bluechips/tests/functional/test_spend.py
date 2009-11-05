@@ -28,7 +28,7 @@ class TestSpendController(TestController):
 
         response = form.submit()
         response = response.follow()
-        response.mustcontain('Expenditure updated.')
+        response.mustcontain('Expenditure', 'created.')
 
         e = meta.Session.query(model.Expenditure).\
                 order_by(model.Expenditure.id.desc()).first()
@@ -36,8 +36,6 @@ class TestSpendController(TestController):
         assert e.amount == 6678
         assert e.date == today
         assert e.description == u'A test expenditure'
-        meta.Session.delete(e)
-        meta.Session.commit()
 
         # Test the split.
 
@@ -67,10 +65,14 @@ class TestSpendController(TestController):
 
         response = form.submit()
         response = response.follow()
-        response.mustcontain('Expenditure updated.')
+        response.mustcontain('Expenditure', 'updated.')
 
         e = meta.Session.query(model.Expenditure).\
                 order_by(model.Expenditure.id.desc()).first()
         assert e.description == u'Updated bundt cake'
-        meta.Session.delete(e)
+
+    def tearDown(self):
+        expenditures = meta.Session.query(model.Expenditure).all()
+        for e in expenditures:
+            meta.Session.delete(e)
         meta.Session.commit()

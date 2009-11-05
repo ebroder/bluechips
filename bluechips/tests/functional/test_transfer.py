@@ -28,7 +28,7 @@ class TestTransferController(TestController):
 
         response = form.submit()
         response = response.follow()
-        response.mustcontain('Transfer updated.')
+        response.mustcontain('Transfer', 'created.')
 
         t = meta.Session.query(model.Transfer).\
                 order_by(model.Transfer.id.desc()).first()
@@ -37,8 +37,6 @@ class TestTransferController(TestController):
         assert t.amount == 12345
         assert t.date == today
         assert t.description == u'A test transfer from Rich to Ben'
-        meta.Session.delete(t)
-        meta.Session.commit()
 
     def test_edit(self):
         user_rich = meta.Session.query(model.User).\
@@ -66,10 +64,14 @@ class TestTransferController(TestController):
 
         response = form.submit()
         response = response.follow()
-        response.mustcontain('Transfer updated.')
+        response.mustcontain('Transfer', 'updated.')
 
         t = meta.Session.query(model.Transfer).\
                 order_by(model.Transfer.id.desc()).first()
         assert t.description == u'A new description'
-        meta.Session.delete(t)
+
+    def tearDown(self):
+        transfers = meta.Session.query(model.Transfer).all()
+        for t in transfers:
+            meta.Session.delete(t)
         meta.Session.commit()
