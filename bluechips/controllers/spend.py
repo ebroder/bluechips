@@ -102,8 +102,6 @@ class SpendController(BaseController):
         # Set the fields that were submitted
         shares = self.form_result.pop('shares')
         update_sar(e, self.form_result)
-        if e.id is not None:
-            e.update_split()
 
         users = dict(meta.Session.query(model.User.id, model.User).all())
         split_dict = {}
