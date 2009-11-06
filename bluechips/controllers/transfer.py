@@ -10,6 +10,7 @@ from bluechips.lib.base import *
 
 from pylons import request, app_globals as g
 from pylons.decorators import validate
+from pylons.controllers.util import abort
 
 from formencode import Schema, validators
 
@@ -42,6 +43,8 @@ class TransferController(BaseController):
         else:
             c.title = 'Edit a Transfer'
             c.transfer = meta.Session.query(model.Transfer).get(id)
+            if c.transfer is None:
+                abort(404)
         return render('/transfer/index.mako')
     
     @validate(schema=TransferSchema(), form='edit')
@@ -52,6 +55,8 @@ class TransferController(BaseController):
             op = 'created'
         else:
             t = meta.Session.query(model.Transfer).get(id)
+            if t is None:
+                abort(404)
             op = 'updated'
         
         update_sar(t, self.form_result)

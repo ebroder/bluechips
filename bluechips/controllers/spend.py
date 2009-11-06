@@ -11,6 +11,7 @@ from bluechips.lib.base import *
 from pylons import request, app_globals as g
 from pylons.decorators.rest import dispatch_on
 from pylons.decorators import validate
+from pylons.controllers.util import abort
 
 from formencode import validators, Schema
 from formencode.foreach import ForEach
@@ -64,6 +65,8 @@ class SpendController(BaseController):
         else:
             c.title = 'Edit an Expenditure'
             c.expenditure = meta.Session.query(model.Expenditure).get(id)
+            if c.expenditure is None:
+                abort(404)
         return render('/spend/index.mako')
 
     @validate(schema=ExpenditureSchema(), form='edit', variable_decode=True)
@@ -76,6 +79,8 @@ class SpendController(BaseController):
             op = 'created'
         else:
             e = meta.Session.query(model.Expenditure).get(id)
+            if e is None:
+                abort(404)
             op = 'updated'
         
         # Set the fields that were submitted
