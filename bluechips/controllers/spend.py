@@ -16,6 +16,7 @@ from pylons.controllers.util import abort
 from formencode import validators, Schema
 from formencode.foreach import ForEach
 from formencode.variabledecode import NestedVariables
+from formencode.schema import SimpleFormValidator
 
 from mailer import Message
 
@@ -29,6 +30,12 @@ class ShareSchema(Schema):
     amount = validators.Number(not_empty=True)
 
 
+def validate_state(value_dict, state, validator):
+    if all(s['amount'] == 0 for s in value_dict['shares']):
+        return {'shares-0.amount': 'Need at least one non-zero share'}
+ValidateNotAllZero = SimpleFormValidator(validate_state)
+
+
 class ExpenditureSchema(Schema):
     "Validate an expenditure."
     allow_extra_fields = False
@@ -38,6 +45,7 @@ class ExpenditureSchema(Schema):
     description = validators.UnicodeString()
     date = validators.DateConverter()
     shares = ForEach(ShareSchema)
+    chained_validators = [ValidateNotAllZero]
     
 
 class SpendController(BaseController):
