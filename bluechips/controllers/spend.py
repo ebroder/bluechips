@@ -73,9 +73,12 @@ class SpendController(BaseController):
                 try:
                     share = [s.share for s in c.expenditure.splits
                              if s.user == user][0]
-                    percent = (Decimal(100) * Decimal(int(share)) /
-                               Decimal(int(c.expenditure.amount))).\
-                            quantize(Decimal("0.001"))
+                    if c.expenditure.amount == 0:
+                        percent = 0
+                    else:
+                        percent = (Decimal(100) * Decimal(int(share)) /
+                                   Decimal(int(c.expenditure.amount))).\
+                                quantize(Decimal("0.001"))
                 except IndexError:
                     percent = 0
                 c.values['shares-%d.amount' % ii] = percent
