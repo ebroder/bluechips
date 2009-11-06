@@ -88,8 +88,9 @@ class Expenditure(object):
 
     def involves(self, user):
         "Returns True if ``user`` is involved in this expenditure."
-        return any((split.user == user) and (split.share != 0)
-                   for split in self.splits)
+        return (any((split.user == user) and (split.share != 0)
+                    for split in self.splits) or
+                (self.spender == user))
 
     def share(self, user):
         "Return the share corresponding to ``user``."
