@@ -67,6 +67,19 @@ class SpendController(BaseController):
             c.expenditure = meta.Session.query(model.Expenditure).get(id)
             if c.expenditure is None:
                 abort(404)
+            c.values = {}
+            for ii, user_row in enumerate(c.users):
+                user_id, user = user_row
+                try:
+                    share = [s.share for s in c.expenditure.splits
+                             if s.user == user][0]
+                    percent = (Decimal(100) * Decimal(int(share)) /
+                               Decimal(int(c.expenditure.amount))).\
+                            quantize(Decimal("0.001"))
+                except IndexError:
+                    percent = 0
+                c.values['shares-%d.amount' % ii] = percent
+
         return render('/spend/index.mako')
 
     @validate(schema=ExpenditureSchema(), form='edit', variable_decode=True)

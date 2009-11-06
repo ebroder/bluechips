@@ -30,19 +30,10 @@
     % for ii, user_row in enumerate(c.users):
       <%
         user_id, user = user_row
-        try:
-            percent = c.values['shares-%d.amount' % ii]
-        except TypeError:
-            try:
-                share = [s.share for s in c.expenditure.splits if s.user == user][0]
-                percent = (Decimal(100) * Decimal(int(share)) / Decimal(int(c.expenditure.amount))).quantize(Decimal("0.001"))
-            except IndexError:
-                percent = 0
+        percent = c.values['shares-%d.amount' % ii]
       %>
       <tr>
-        <th>
-          <label for="shares-${ii}amount">${user.name}</label>
-        </th>
+        <th><label for="shares-${ii}amount">${user.name}</label></th>
         <td>
           ${h.text('shares-%d.amount' % ii, percent)}
           ${h.hidden('shares-%d.user_id' % ii, user.id)}
