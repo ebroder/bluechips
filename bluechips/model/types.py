@@ -38,7 +38,8 @@ locale.localeconv = localeconv
 class CurrencyValidator(validators.FancyValidator):
     "A validator to convert to Currency objects."
     messages = {'amount': "Please enter a valid currency amount",
-                'precision': "Only two digits after the decimal, please"}
+                'precision': "Only two digits after the decimal, please",
+                'nonzero': "Please enter a non-zero amount"}
 
     def _to_python(self, value, state):
         try:
@@ -48,7 +49,10 @@ class CurrencyValidator(validators.FancyValidator):
                           value, state)
         else:
             ret = dec.quantize(Decimal('1.00'))
-            if ret != dec:
+            if ret == 0:
+                raise Invalid(self.message('nonzero', state),
+                              value, state)
+            elif ret != dec:
                 raise Invalid(self.message('precision', state),
                               value, state)
             else:
