@@ -47,6 +47,7 @@ class TransferController(BaseController):
                 abort(404)
         return render('/transfer/index.mako')
     
+    @redirect_on_get('edit')
     @validate(schema=TransferSchema(), form='edit')
     def update(self, id=None):
         if id is None:

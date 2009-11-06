@@ -93,6 +93,7 @@ class SpendController(BaseController):
 
         return render('/spend/index.mako')
 
+    @redirect_on_get('edit')
     @validate(schema=ExpenditureSchema(), form='edit', variable_decode=True)
     def update(self, id=None):
         # Either create a new object, or, if we're editing, get the
