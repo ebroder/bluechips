@@ -88,7 +88,7 @@ class SpendController(BaseController):
         split_dict = {}
         for share_params in shares:
             user = users[share_params['user_id']]
-            split_dict[user] = Decimal(share_params['amount'])
+            split_dict[user] = Decimal(str(share_params['amount']))
         e.split(split_dict)
         
         meta.Session.commit()
