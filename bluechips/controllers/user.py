@@ -25,6 +25,7 @@ class EmailSchema(Schema):
 
 class UserController(BaseController):
     def index(self):
+        c.title = 'User Settings'
         return render('/user/index.mako')
 
     @validate(schema=EmailSchema(), form='index')
