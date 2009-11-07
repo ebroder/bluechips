@@ -70,6 +70,11 @@ class TestTransferController(TestController):
                 order_by(model.Transfer.id.desc()).first()
         assert t.description == u'A new description'
 
+    def test_edit_nonexistent(self):
+        response = self.app.get(url_for(controller='transfer',
+                                        action='edit',
+                                        id=21424), status=404)
+
     def tearDown(self):
         transfers = meta.Session.query(model.Transfer).all()
         for t in transfers:

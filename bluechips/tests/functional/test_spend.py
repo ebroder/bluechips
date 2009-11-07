@@ -71,6 +71,11 @@ class TestSpendController(TestController):
                 order_by(model.Expenditure.id.desc()).first()
         assert e.description == u'Updated bundt cake'
 
+    def test_edit_nonexistent(self):
+        response = self.app.get(url_for(controller='spend',
+                                        action='edit',
+                                        id=124234), status=404)
+
     def tearDown(self):
         expenditures = meta.Session.query(model.Expenditure).all()
         for e in expenditures:
