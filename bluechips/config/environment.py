@@ -45,6 +45,3 @@ def load_environment(global_conf, app_conf):
     # any Pylons config options)
     config['pylons.app_globals'].mailer = Mailer(config.get('mailer.host',
                                                             '127.0.0.1'))
-    if 'mailer.user' in config:
-        config['pylons.app_globals'].mailer.login(config['mailer.user'],
-                                                  config['mailer.password'])
