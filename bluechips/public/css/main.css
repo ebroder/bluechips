@@ -31,6 +31,9 @@ a:visited {
 #nav td {
     padding: 5px 15px;
 }
+#nav a {
+    color: #002286;
+}
 table {
     border-collapse: collapse;
 }
