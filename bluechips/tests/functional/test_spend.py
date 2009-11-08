@@ -84,6 +84,27 @@ class TestSpendController(TestController):
                 order_by(model.Expenditure.id.desc()).first()
         assert e.description == u'Updated bundt cake'
 
+    def test_edit_zero_value(self):
+        user = meta.Session.query(model.User).\
+                filter_by(name=u'Charlie Root').one()
+        e = model.Expenditure(user, 0, u'A zero value expenditure', None)
+        e.even_split()
+        meta.Session.add(e)
+        meta.Session.commit()
+
+        response = self.app.get(url_for(controller='spend',
+                                        action='edit',
+                                        id=e.id))
+        response.mustcontain('Edit an Expenditure')
+        form = response.form
+
+        assert int(form['spender_id'].value) == user.id
+        assert form['amount'].value == '0.00'
+        assert form['date'].value == date.today().strftime('%m/%d/%Y')
+        assert form['description'].value == u'A zero value expenditure'
+        for ii in range(4):
+            assert form['shares-%d.amount' % ii].value == '0'
+
     def test_edit_nonexistent(self):
         response = self.app.get(url_for(controller='spend',
                                         action='edit',
