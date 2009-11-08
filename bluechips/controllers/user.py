@@ -11,6 +11,7 @@ from sqlalchemy import orm
 
 from pylons import request
 from pylons.decorators import validate
+from pylons.decorators.secure import authenticate_form
 
 from formencode import validators, Schema
 
@@ -28,6 +29,7 @@ class UserController(BaseController):
         c.title = 'User Settings'
         return render('/user/index.mako')
 
+    @authenticate_form
     @validate(schema=EmailSchema(), form='index')
     def update(self):
         new_email = self.form_result['new_email']

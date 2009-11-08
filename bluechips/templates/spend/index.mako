@@ -5,6 +5,7 @@
 %>
 
 <form action="${h.url_for(controller='spend', action='update', id=c.expenditure.id)}" method="post">
+  ${h.auth_token_hidden_field()}
   <table class="form">
     <tr>
       <th><label for="spender_id">Spender</label></th>

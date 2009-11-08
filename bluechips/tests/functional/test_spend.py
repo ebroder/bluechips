@@ -1,6 +1,8 @@
 from datetime import date
 from formencode import Invalid
 
+from webhelpers.html.secure_form import token_key
+
 from bluechips.tests import *
 
 from bluechips import model
@@ -111,11 +113,21 @@ class TestSpendController(TestController):
                                         id=124234), status=404)
 
     def test_update_nonexistent(self):
-        response = self.app.post(url_for(controller='spend',
-                                         action='update',
-                                         id=14234), 
-                                 params=self.sample_post,
-                                 status=404)
+        response = self.app.get(url_for(controller='spend',
+                                        action='edit'))
+        params = self.sample_post.copy()
+        params[token_key] = response.form[token_key].value
+        self.app.post(url_for(controller='spend',
+                              action='update',
+                              id=14234), 
+                      params=params,
+                      status=404)
+
+    def test_xsrf_protection(self):
+        self.app.post(url_for(controller='spend',
+                              action='update'),
+                      params=self.sample_post,
+                      status=403)
 
     def test_all_zero_shares_fails(self):
         params = self.sample_post.copy()

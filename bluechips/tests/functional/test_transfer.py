@@ -1,7 +1,9 @@
 from datetime import date
 from decimal import Decimal
-from bluechips.tests import *
 
+from webhelpers.html.secure_form import token_key
+
+from bluechips.tests import *
 from bluechips import model
 from bluechips.model import meta
 
@@ -76,11 +78,22 @@ class TestTransferController(TestController):
                                         id=21424), status=404)
 
     def test_update_nonexistent(self):
-        response = self.app.post(url_for(controller='transfer',
-                                         action='update',
-                                         id=21424),
-                                 params=self.sample_params,
-                                 status=404)
+        response = self.app.get(url_for(controller='transfer',
+                                        action='edit'))
+        params = self.sample_params.copy()
+        params[token_key] = response.form[token_key].value
+        self.app.post(url_for(controller='transfer',
+                              action='update',
+                              id=21424),
+                      params=params,
+                      status=404)
+
+    def test_xsrf_protection(self):
+        self.app.post(url_for(controller='transfer',
+                              action='update'),
+                      params=self.sample_params,
+                      status=403)
+
 
     def test_update_get_redirects(self):
         response = self.app.get(url_for(controller='transfer',

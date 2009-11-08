@@ -1,6 +1,7 @@
 <%inherit file="/base.mako"/>
 
 <form action="${h.url_for(controller='transfer', action='update', id=c.transfer.id)}" method="post">
+  ${h.auth_token_hidden_field()}
   <table class="form">
     <tr>
       <th><label for="debtor_id">From</label></th>

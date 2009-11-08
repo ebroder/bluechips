@@ -9,8 +9,8 @@ from decimal import Decimal, InvalidOperation
 from bluechips.lib.base import *
 
 from pylons import request, app_globals as g
-from pylons.decorators.rest import dispatch_on
 from pylons.decorators import validate
+from pylons.decorators.secure import authenticate_form
 from pylons.controllers.util import abort
 
 from formencode import validators, Schema
@@ -91,6 +91,7 @@ class SpendController(BaseController):
         return render('/spend/index.mako')
 
     @redirect_on_get('edit')
+    @authenticate_form
     @validate(schema=ExpenditureSchema(), form='edit', variable_decode=True)
     def update(self, id=None):
         # Either create a new object, or, if we're editing, get the

@@ -10,6 +10,7 @@ from bluechips.lib.base import *
 
 from pylons import request, app_globals as g
 from pylons.decorators import validate
+from pylons.decorators.secure import authenticate_form
 from pylons.controllers.util import abort
 
 from formencode import Schema, validators
@@ -48,6 +49,7 @@ class TransferController(BaseController):
         return render('/transfer/index.mako')
     
     @redirect_on_get('edit')
+    @authenticate_form
     @validate(schema=TransferSchema(), form='edit')
     def update(self, id=None):
         if id is None:

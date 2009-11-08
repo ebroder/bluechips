@@ -30,4 +30,8 @@ class TestUserController(TestController):
                 filter_by(username=unicode(config['fake_username'])).one()
         assert user.email == None
 
-
+    def test_xsrf_protection(self):
+        self.app.post(url_for(controller='user',
+                              action='update'),
+                      {'new_email': 'malicious@example.com'},
+                      status=403)
