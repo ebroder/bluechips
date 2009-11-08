@@ -123,12 +123,6 @@ class Currency(object):
         """
         return self.__mul__(other)
     
-    def __str_no_dollar__(self):
-        """
-        Get to the formatted string without the dollar sign
-        """
-        return str(self).replace('$', '')
-    
     def __repr__(self):
         return '%s("%s")' % (self.__class__.__name__, str(self))
     def __str__(self):

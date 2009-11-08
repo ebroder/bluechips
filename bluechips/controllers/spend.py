@@ -65,10 +65,9 @@ class SpendController(BaseController):
             c.values = {}
             for ii, user_row in enumerate(c.users):
                 user_id, user = user_row
+                val = 0
                 if user.resident:
                     val = Decimal(100) / Decimal(num_residents)
-                else:
-                    val = 0
                 c.values['shares-%d.amount' % ii] = val
         else:
             c.title = 'Edit an Expenditure'
@@ -78,17 +77,15 @@ class SpendController(BaseController):
             c.values = {}
             for ii, user_row in enumerate(c.users):
                 user_id, user = user_row
-                try:
-                    share = [s.share for s in c.expenditure.splits
-                             if s.user == user][0]
-                    if c.expenditure.amount == 0:
-                        percent = 0
-                    else:
-                        percent = (Decimal(100) * Decimal(int(share)) /
-                                   Decimal(int(c.expenditure.amount))).\
-                                quantize(Decimal("0.001"))
-                except IndexError:
+                shares_by_user = dict(((sp.user, sp.share) for sp
+                                       in c.expenditure.splits))
+                share = shares_by_user.get(user, 0)
+                if c.expenditure.amount == 0:
                     percent = 0
+                else:
+                    percent = (Decimal(100) * Decimal(int(share)) /
+                               Decimal(int(c.expenditure.amount))).\
+                            quantize(Decimal("0.001"))
                 c.values['shares-%d.amount' % ii] = percent
 
         return render('/spend/index.mako')

@@ -31,11 +31,14 @@ def setUpPackage():
     # Invoke websetup with the current config file
     SetupCommand('setup-app').run([config['__file__']])
     
-    meta.Session.add(bluechips.model.User(u'root', u'Charlie Root', True))
-    meta.Session.add(bluechips.model.User(u'ben', u'Ben Bitdiddle', True))
-    meta.Session.add(bluechips.model.User(u'gotta', u'Gotta Lisp', True))
-    meta.Session.add(bluechips.model.User(u'rich', u'Rich Scheme', True))
+    u1 = bluechips.model.User(u'root', u'Charlie Root', True)
+    u1.email = u'charlie@example.com'
+    u2 = bluechips.model.User(u'ben', u'Ben Bitdiddle', True)
+    u3 = bluechips.model.User(u'gotta', u'Gotta Lisp', True)
+    u4 = bluechips.model.User(u'rich', u'Rich Scheme', True)
 
+    for u in (u1, u2, u3, u4):
+        meta.Session.add(u)
     meta.Session.commit()
 
 def tearDownPackage():

@@ -25,13 +25,12 @@ class EmailSchema(Schema):
 
 class UserController(BaseController):
     def index(self):
+        c.title = 'User Settings'
         return render('/user/index.mako')
 
     @validate(schema=EmailSchema(), form='index')
     def update(self):
         new_email = self.form_result['new_email']
-        if new_email == '':
-            new_email = None
         request.environ['user'].email = new_email
         meta.Session.commit()
         if new_email is None:

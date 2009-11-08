@@ -94,9 +94,9 @@ def settle(debts_dict):
         settle_list.append((owes['who'], owed['who'], val))
     
     if len(owes_list) > 0:
-        raise DirtyBooks, ("People still owe money", owes_list)
+        raise DirtyBooks, ("People still owe money", owes_list) #pragma:nocover
     if len(owed_list) > 0:
-        raise DirtyBooks, ("People are still owed money", owed_list)
+        raise DirtyBooks, ("People are still owed money", owed_list) #pragma:nocover
     
     return settle_list
 
