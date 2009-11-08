@@ -32,7 +32,8 @@ class TestExpenditure(TestCase):
     def test_split_change_to_zero(self):
         self.e.even_split()
         meta.Session.commit()
-        split_dict = {}
+        users = meta.Session.query(model.User).all()
+        split_dict = dict((user, Decimal('0')) for user in users)
         split_dict[self.u] = Decimal(1)
         self.e.split(split_dict)
 
