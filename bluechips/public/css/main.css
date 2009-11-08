@@ -10,7 +10,7 @@ em {
     font-style: italic;
 }
 a {
-    color: #068600;
+    color: #002286;
 }
 h1.title {
     font-size: 1.5em;
@@ -30,9 +30,6 @@ a:visited {
 }
 #nav td {
     padding: 5px 15px;
-}
-#nav a {
-    color: #002286;
 }
 table {
     border-collapse: collapse;
