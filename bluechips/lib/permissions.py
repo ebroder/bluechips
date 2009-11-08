@@ -12,12 +12,12 @@ from bluechips.model import meta
 class BlueChipUser(RequestPermission):
     def check(self, app, environ, start_response):
         if 'REMOTE_USER' not in environ:
-            raise NotAuthenticatedError('Not Authenticated')
+            raise NotAuthenticatedError('Not Authenticated') # pragma: nocover
         environ['user'] = meta.Session.query(model.User).\
             filter_by(username=unicode(environ['REMOTE_USER'])).\
             first()
         if environ['user'] == None:
-            raise NotAuthorizedError('You are not allowed access.')
+            raise NotAuthorizedError('You are not allowed access.') # pragma: nocover
         return app(environ, start_response)
 
 class DummyAuthenticate(AddDictToEnviron):
