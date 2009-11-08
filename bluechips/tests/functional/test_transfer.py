@@ -75,6 +75,28 @@ class TestTransferController(TestController):
                                         action='edit',
                                         id=21424), status=404)
 
+    def test_update_nonexistent(self):
+        response = self.app.post(url_for(controller='transfer',
+                                         action='update',
+                                         id=21424),
+                                 params=self.sample_params,
+                                 status=404)
+
+    def test_update_get_redirects(self):
+        response = self.app.get(url_for(controller='transfer',
+                                        action='update'),
+                                status=302)
+        assert (dict(response.headers)['location'] ==
+                url_for(controller='transfer', action='edit', qualified=True))
+
+    def setUp(self):
+        self.sample_params = {
+            'debtor_id': '1',
+            'creditor_id': '2',
+            'amount': '33.98',
+            'date': '4/1/2007',
+            'description': 'Example transfer params.'}
+
     def tearDown(self):
         transfers = meta.Session.query(model.Transfer).all()
         for t in transfers:

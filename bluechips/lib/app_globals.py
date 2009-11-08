@@ -33,7 +33,7 @@ class Globals(object):
             log.info("From: %s\nTo: %s\nSubject: %s\n\n%s",
                      msg.From, msg.To, msg.Subject, msg.Body)
         else:
-            self.mailer.send(msg)
+            self.mailer.send(msg) # pragma: nocover
 
     def handle_notification(self, users, subject, body):
         "Send a notification email."
