@@ -28,16 +28,6 @@ class Expenditure(object):
         split_percentage = Decimal(100) / Decimal(residents.count())
         self.split(dict((resident, split_percentage) for resident in residents))
     
-    def update_split(self):
-        """
-        Re-split an expenditure using the same percentages as what is
-        currently in the database
-        """
-        
-        old_splits = meta.Session.query(Split).filter(Split.expenditure==self)
-        split_dict = dict((s.user, Decimal(int(s.share))) for s in old_splits)
-        self.split(split_dict)
-    
     def split(self, split_dict):
         """
         Split up an expenditure.
