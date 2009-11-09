@@ -75,3 +75,33 @@ class TransferController(BaseController):
         g.handle_notification((t.debtor, t.creditor), show, body)
 
         return h.redirect_to('/')
+
+    def delete(self, id):
+        c.title = 'Delete a Transfer'
+        c.transfer = meta.Session.query(model.Transfer).get(id)
+        if c.transfer is None:
+            abort(404)
+
+        return render('/transfer/delete.mako')
+
+    @redirect_on_get('delete')
+    @authenticate_form
+    def destroy(self, id):
+        t = meta.Session.query(model.Transfer).get(id)
+        if t is None:
+            abort(404)
+
+        if 'delete' in request.params:
+            meta.Session.delete(t)
+
+            meta.Session.commit()
+            show = ("Transfer of %s from %s to %s deleted." %
+                    (t.amount, t.debtor, t.creditor))
+            h.flash(show)
+
+            body = render('/emails/transfer.txt',
+                          extra_vars={'transfer': t,
+                                      'op': 'deleted'})
+            g.handle_notification((t.debtor, t.creditor), show, body)
+
+        return h.redirect_to('/')
