@@ -33,6 +33,7 @@ def setUpPackage():
     
     u1 = bluechips.model.User(u'root', u'Charlie Root', True)
     u1.email = u'charlie@example.com'
+    u1.password = u'charliepass'
     u2 = bluechips.model.User(u'ben', u'Ben Bitdiddle', True)
     u3 = bluechips.model.User(u'gotta', u'Gotta Lisp', True)
     u4 = bluechips.model.User(u'rich', u'Rich Scheme', True)

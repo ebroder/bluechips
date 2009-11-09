@@ -55,7 +55,7 @@ class TestSpendController(TestController):
         assert shares[4] == Currency('12.34')
 
 
-    def test_edit(self):
+    def test_edit_and_delete(self):
         user = meta.Session.query(model.User).\
                 filter_by(name=u'Charlie Root').one()
         e = model.Expenditure(user, 53812, u'Lemon bundt cake', None)
@@ -86,6 +86,36 @@ class TestSpendController(TestController):
                 order_by(model.Expenditure.id.desc()).first()
         assert e.description == u'Updated bundt cake'
 
+        response = self.app.get(url_for(controller='spend',
+                                        action='delete',
+                                        id=e.id))
+        response = response.form.submit('delete').follow()
+        response.mustcontain('Expenditure', 'deleted')
+
+    def test_delete_nonexistent(self):
+        self.app.get(url_for(controller='spend',
+                             action='delete',
+                             id=124344),
+                     status=404)
+
+    def test_destroy_nonexistent(self):
+        response = self.app.get(url_for(controller='spend',
+                                        action='edit'))
+        params = self.sample_params.copy()
+        params[token_key] = response.form[token_key].value
+        self.app.post(url_for(controller='spend',
+                              action='destroy',
+                              id=124344), 
+                      params=params,
+                      status=404)
+
+    def test_delete_xsrf_protection(self):
+        self.app.post(url_for(controller='spend',
+                              action='destroy',
+                              id=1),
+                      params={'delete': 'Delete'},
+                      status=403)
+
     def test_edit_zero_value(self):
         user = meta.Session.query(model.User).\
                 filter_by(name=u'Charlie Root').one()
@@ -115,7 +145,7 @@ class TestSpendController(TestController):
     def test_update_nonexistent(self):
         response = self.app.get(url_for(controller='spend',
                                         action='edit'))
-        params = self.sample_post.copy()
+        params = self.sample_params.copy()
         params[token_key] = response.form[token_key].value
         self.app.post(url_for(controller='spend',
                               action='update',
@@ -126,11 +156,11 @@ class TestSpendController(TestController):
     def test_xsrf_protection(self):
         self.app.post(url_for(controller='spend',
                               action='update'),
-                      params=self.sample_post,
+                      params=self.sample_params,
                       status=403)
 
     def test_all_zero_shares_fails(self):
-        params = self.sample_post.copy()
+        params = self.sample_params.copy()
         for ii in range(4):
             params['shares-%d.amount' % ii] = '0'
         v = ExpenditureSchema()
@@ -140,7 +170,7 @@ class TestSpendController(TestController):
             pass
 
     def setUp(self):
-        self.sample_post = {
+        self.sample_params = {
             'spender_id': '1',
             'amount': '44.12',
             'date': '10/5/2008',

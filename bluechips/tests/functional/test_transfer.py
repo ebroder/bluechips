@@ -40,7 +40,7 @@ class TestTransferController(TestController):
         assert t.date == today
         assert t.description == u'A test transfer from Rich to Ben'
 
-    def test_edit(self):
+    def test_edit_and_delete(self):
         user_rich = meta.Session.query(model.User).\
                 filter_by(name=u'Rich Scheme').one()
         user_ben = meta.Session.query(model.User).\
@@ -72,6 +72,12 @@ class TestTransferController(TestController):
                 order_by(model.Transfer.id.desc()).first()
         assert t.description == u'A new description'
 
+        response = self.app.get(url_for(controller='transfer',
+                                        action='delete',
+                                        id=t.id))
+        response = response.form.submit('delete').follow()
+        response.mustcontain('Transfer', 'deleted')
+
     def test_edit_nonexistent(self):
         response = self.app.get(url_for(controller='transfer',
                                         action='edit',
@@ -101,6 +107,30 @@ class TestTransferController(TestController):
                                 status=302)
         assert (dict(response.headers)['location'] ==
                 url_for(controller='transfer', action='edit', qualified=True))
+
+    def test_delete_nonexistent(self):
+        self.app.get(url_for(controller='transfer',
+                             action='delete',
+                             id=124244),
+                     status=404)
+
+    def test_destroy_nonexistent(self):
+        response = self.app.get(url_for(controller='transfer',
+                                        action='edit'))
+        params = self.sample_params.copy()
+        params[token_key] = response.form[token_key].value
+        self.app.post(url_for(controller='transfer',
+                              action='destroy',
+                              id=124344), 
+                      params=params,
+                      status=404)
+
+    def test_delete_xsrf_protection(self):
+        self.app.post(url_for(controller='transfer',
+                              action='destroy',
+                              id=1),
+                      params={'delete': 'Delete'},
+                      status=403)
 
     def setUp(self):
         self.sample_params = {

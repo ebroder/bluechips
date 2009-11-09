@@ -43,7 +43,6 @@ def make_app(global_conf, full_stack=True, **app_conf):
     
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
     app = authkit.authorize.middleware(app, BlueChipUser())
-    app = DummyAuthenticate(app, app_conf)
     
     # Routing/Session/Cache Middleware
     app = RoutesMiddleware(app, config['routes.map'])
@@ -69,4 +68,5 @@ def make_app(global_conf, full_stack=True, **app_conf):
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
     app = Cascade([static_app, app])
     app = AuthBasicHandler(app, 'BlueChips', authenticate)
+    app = DummyAuthenticate(app, app_conf)
     return app
