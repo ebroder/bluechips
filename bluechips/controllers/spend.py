@@ -132,3 +132,35 @@ class SpendController(BaseController):
         g.handle_notification(involved_users, show, body)
 
         return h.redirect_to('/')
+
+    def delete(self, id):
+        c.title = 'Delete an Expenditure'
+        c.expenditure = meta.Session.query(model.Expenditure).get(id)
+        if c.expenditure is None:
+            abort(404)
+
+        return render('/spend/delete.mako')
+
+    @redirect_on_get('delete')
+    @authenticate_form
+    def destroy(self, id):
+        e = meta.Session.query(model.Expenditure).get(id)
+        if e is None:
+            abort(404)
+
+        if 'delete' in request.params:
+            meta.Session.delete(e)
+
+            meta.Session.commit()
+            show = ("Expenditure of %s paid for by %s deleted." %
+                    (e.amount, e.spender))
+            h.flash(show)
+
+            involved_users = set(sp.user for sp in e.splits if sp.share != 0)
+            involved_users.add(e.spender)
+            body = render('/emails/expenditure.txt',
+                          extra_vars={'expenditure': e,
+                                      'op': 'deleted'})
+            g.handle_notification(involved_users, show, body)
+
+        return h.redirect_to('/')
