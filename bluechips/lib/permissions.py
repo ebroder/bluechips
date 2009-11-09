@@ -33,4 +33,11 @@ class DummyAuthenticate(AddDictToEnviron):
             newenv['REMOTE_USER'] = app_conf['fake_username']
         super(DummyAuthenticate, self).__init__(app, newenv)
 
-__all__ = ['BlueChipUser', 'DummyAuthenticate']
+
+def authenticate(environ, username, password):
+    user = meta.Session.query(model.User).\
+            filter_by(username=unicode(username),
+                      password=unicode(password)).first()
+    return (user is not None)
+
+__all__ = ['BlueChipUser', 'DummyAuthenticate', 'authenticate']

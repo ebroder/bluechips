@@ -3,6 +3,7 @@ from beaker.middleware import CacheMiddleware, SessionMiddleware
 from paste.cascade import Cascade
 from paste.registry import RegistryManager
 from paste.urlparser import StaticURLParser
+from paste.auth.basic import AuthBasicHandler
 from paste.deploy.converters import asbool
 from pylons import config
 from pylons.middleware import ErrorHandler, StatusCodeRedirect
@@ -13,7 +14,8 @@ import authkit.authorize
 
 from bluechips.config.environment import load_environment
 
-from bluechips.lib.permissions import BlueChipUser, DummyAuthenticate
+from bluechips.lib.permissions import (BlueChipUser, DummyAuthenticate,
+                                       authenticate)
 
 def make_app(global_conf, full_stack=True, **app_conf):
     """Create a Pylons WSGI application and return it
@@ -66,4 +68,5 @@ def make_app(global_conf, full_stack=True, **app_conf):
     # server is handling this static content, remove the following 3 lines)
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
     app = Cascade([static_app, app])
+    app = AuthBasicHandler(app, 'BlueChips', authenticate)
     return app

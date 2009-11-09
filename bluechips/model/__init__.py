@@ -28,7 +28,8 @@ users = sa.Table('users', meta.metadata,
                  sa.Column('username', sa.types.Unicode(32), nullable=False),
                  sa.Column('name', sa.types.Unicode(64)),
                  sa.Column('resident', sa.types.Boolean, default=True),
-                 sa.Column('email', sa.types.Unicode(64))
+                 sa.Column('email', sa.types.Unicode(64)),
+                 sa.Column('password', sa.types.Unicode(64)),
                  )
 
 expenditures = sa.Table('expenditures', meta.metadata,
