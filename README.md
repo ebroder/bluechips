@@ -43,3 +43,32 @@ Tweak the config file as appropriate and then setup the application::
     paster setup-app config.ini
 
 Host the application behind an authentication layer which sets REMOTE_USER.
+
+Apache Configuration
+--------------------
+
+The recommended deployment platform for BlueChips is Apache, mod_wsgi, and any
+Apache module which provides authentication. Here is an example vhost
+configuration:
+
+    <VirtualHost bluechips.example.com:80>
+        ServerName bluechips.example.com
+
+        WSGIScriptAlias / /var/www/bluechips.wsgi
+        <Directory /var/www>
+            Order deny,allow
+            Allow from all
+        </Directory>
+
+        <Location />
+            AuthType Basic
+            AuthName "Example BlueChips Site"
+            AuthUserFile /etc/apache2/passwords
+            Require valid-user
+        </Location>
+    </VirtualHost>
+
+The ``bluechips.wsgi`` wrapper script looks just like:
+
+    from paste.deploy import loadapp
+    application = loadapp('config:/var/www/ssl/production.ini')
