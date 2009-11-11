@@ -66,6 +66,7 @@ class StatusController(BaseController):
                 model.Transfer.debtor==request.environ['user'],
                 model.Transfer.creditor==request.environ['user'])).\
                 limit(10).all()
+        c.users = meta.Session.query(model.User.id, model.User)
         
         return render('/status/index.mako')
     

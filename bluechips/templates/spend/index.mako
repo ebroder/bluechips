@@ -1,9 +1,5 @@
 <%inherit file="/base.mako"/>
 
-<%!
-    from decimal import Decimal
-%>
-
 <form action="${h.url_for(controller='spend', action='update', id=c.expenditure.id)}" method="post">
   ${h.auth_token_hidden_field()}
   <table class="form">

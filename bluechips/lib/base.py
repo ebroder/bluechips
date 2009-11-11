@@ -2,12 +2,15 @@
 
 Provides the BaseController class for subclassing.
 """
+
 from decorator import decorator
 
-from pylons import request, tmpl_context as c
+from pylons import request, session, tmpl_context as c
 from pylons.controllers import WSGIController
 from pylons.i18n import _, ungettext, N_
-from pylons.templating import render_mako as render
+from pylons.templating import render_mako
+
+from mako.exceptions import TopLevelLookupException
 
 import bluechips.lib.helpers as h
 from bluechips import model
@@ -48,6 +51,16 @@ def redirect_on_get(action):
             return func(*args, **kwargs)
     return redirect_on_get_wrap
 
+def render(name, *args, **kwargs):
+    if 'iPhone' in request.user_agent:
+        if session.get('use_non_mobile'):
+            c.mobile_client = True
+        else:
+            try:
+                return render_mako('/mobile' + name, *args, **kwargs)
+            except TopLevelLookupException:
+                pass
+    return render_mako(name, *args, **kwargs)
 
 __all__ = ['c', 'h', 'render', 'model', 'meta', '_', 'ungettext', 'N_',
            'BaseController', 'update_sar', 'redirect_on_get']
