@@ -5,9 +5,12 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
     ${h.stylesheet_link('/css/main.css')}
-    <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet">
-    <meta name="viewport" content="width = device-width, user-scalable=no">
-    <link rel="apple-touch-icon" href="/icons/apple-touch.png">
+    <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+    <meta name="viewport" content="width = device-width, user-scalable=no" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch.png" />
+    <link rel="apple-touch-startup-image" href="/icons/apple-touch-startup.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   </head>
   <body>
     % for message in h.flash.pop_messages():
