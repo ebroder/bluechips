@@ -12,11 +12,11 @@ body {
     width: 98px;
     float: left;
     border-top: 1px solid #fff;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #aaa;
     padding: 5px 1px;
 }
 #tabs a.selected {
-    border: 1px solid #000;
+    border: 1px solid #aaa;
     border-bottom: 1px solid #fff;
     padding: 5px 0;
     -webkit-border-top-left-radius: 10px;
@@ -33,4 +33,11 @@ body {
 }
 div.tab {
     display: none;
+}
+#non-mobile a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 5px 0;
+    border: 1px solid #aaa;
 }

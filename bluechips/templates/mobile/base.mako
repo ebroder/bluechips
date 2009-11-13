@@ -14,6 +14,9 @@
       <div class="flash">${message | n}</div>
     % endfor
     ${next.body()}
+    <div id="non-mobile">
+      <a href="${h.url_for(request.url, use_non_mobile='yes')}">Use non mobile interface</a>
+    </div>
     ${h.javascript_link('/js/jquery-1.3.2.js')}
     ${h.javascript_link('/js/mobile.js')}
   </body>

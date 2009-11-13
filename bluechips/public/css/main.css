@@ -123,3 +123,8 @@ input.currency {
 span.see-all {
     font-size: 0.7em;
 }
+#mobile {
+    padding: 5px;
+    font-weight: bold;
+    border-bottom: 1px solid #bbb;
+}

@@ -8,6 +8,11 @@
     ${h.stylesheet_link('/js/jquery.date_input.css')}
   </head>
   <body>
+    % if c.mobile_client:
+      <div id="mobile">
+        <a href="${h.url_for(request.url, use_non_mobile='no')}">Use mobile interface</a>
+      </div>
+    % endif
     <div id="nav" class="block">
       <table>
         <tr>

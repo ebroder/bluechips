@@ -53,6 +53,9 @@ def redirect_on_get(action):
 
 def render(name, *args, **kwargs):
     if 'iPhone' in request.user_agent:
+        if 'use_non_mobile' in request.params:
+            session['use_non_mobile'] = (request.params['use_non_mobile'] ==
+                                         'yes')
         if session.get('use_non_mobile'):
             c.mobile_client = True
         else:
