@@ -1,6 +1,7 @@
 body {
     width: auto;
     font-size: 1em;
+    -webkit-text-size-adjust: none;
 }
 #tabs img {
     width: 64px;
