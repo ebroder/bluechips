@@ -8,12 +8,21 @@ $(function() {
     console.log("ready()");
 
     $('#tabs a').click(function() {
-        $('div.tab').hide();
         $('#tabs a').removeClass('selected');
         $(this).addClass('selected');
-        $('#tab-' + $(this).attr('id')).show();
+        $('div.tab').hide();
+
+        /* See if that tab has been rendered to the page. */
+        tabname = '#tab-' + $(this).attr('id');
+        tab = $(tabname);
+        if(tab.children().length < 1) {
+            /* If not, return true so that we actually reload. */
+            tab.load($(this).attr('href') + ' ' + tabname + '> *');
+        }
+        tab.show();
         return false;
     });
+    $('#tabs a.selected').click();
 
     console.log("ready() done");
 });
