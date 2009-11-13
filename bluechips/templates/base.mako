@@ -22,7 +22,7 @@
           </td>
           <td>
             <a href="${h.url_for(controller='status', action='index', id=None)}">
-              <img src="/icons/dashboard.png" alt="">
+              <img src="/icons/status.png" alt="">
               <span>Dashboard</span>
             </a>
           </td>
