@@ -62,7 +62,9 @@ def render(name, *args, **kwargs):
             try:
                 return render_mako('/mobile' + name, *args, **kwargs)
             except TopLevelLookupException:
-                pass
+                # If a mobile template doesn't exist for this page, don't show
+                # the 'use mobile interface' link.
+                c.mobile_client = False
     return render_mako(name, *args, **kwargs)
 
 __all__ = ['c', 'h', 'render', 'model', 'meta', '_', 'ungettext', 'N_',
