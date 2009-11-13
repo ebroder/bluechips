@@ -24,6 +24,20 @@ $(function() {
     });
     $('#tabs a.selected').click();
 
+    $('body').bind('orientationchange', function() {
+        switch(window.orientation) {
+            case 0:
+            case 180:
+                $('body').attr('id', 'portrait');
+                break;
+            case -90:
+            case 90:
+                $('body').attr('id', 'landscape');
+                break;
+        }
+    });
+    $('body').trigger('orientationchange');
+
     console.log("ready() done");
 });
 

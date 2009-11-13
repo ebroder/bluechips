@@ -9,20 +9,22 @@ body {
 #tabs a {
     text-align: center;
     display: block;
+}
+#portrait #tabs a {
     width: 98px;
     float: left;
     border-top: 1px solid #fff;
     border-bottom: 1px solid #aaa;
     padding: 5px 1px;
 }
-#tabs a.selected {
+#portrait #tabs a.selected {
     border: 1px solid #aaa;
     border-bottom: 1px solid #fff;
     padding: 5px 0;
     -webkit-border-top-left-radius: 10px;
     -webkit-border-top-right-radius: 10px;
 }
-#tabs:after {
+#portrait #tabs:after {
     content: ".";
     display: block;
     clear: both;
@@ -31,13 +33,37 @@ body {
     height: 0;
     margin-bottom: 10px;
 }
+#landscape #tabs {
+    float: left;
+    width: 100px;
+    margin-right: 10px;
+}
+#landscape #tabs a {
+    border-left: 1px solid #fff;
+    border-right: 1px solid #aaa;
+    padding: 4px 5px;
+}
+#landscape #tabs a.selected {
+    border: 1px solid #aaa;
+    border-right: 1px solid #fff;
+    padding: 3px 5px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+}
 div.tab {
     display: none;
 }
 #non-mobile a {
     display: block;
-    width: 100%;
     text-align: center;
     padding: 5px 0;
     border: 1px solid #aaa;
+    margin-bottom: 5px;
+}
+#portrait #non-mobile a {
+    width: 100%;
+}
+#landscape #non-mobile a {
+    float: right;
+    width: 352px;
 }
