@@ -15,6 +15,7 @@ setup(
     author_email='chips@blue-sun-corp.com',
     #url='',
     install_requires=["Pylons>=0.9.6",
+                      "WebHelpers==0.6.4",
                       "SQLAlchemy>=0.4.1",
                       "AuthKit>=0.4.0",
                       "FormEncode>=1.2.1",
