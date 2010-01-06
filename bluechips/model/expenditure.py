@@ -53,13 +53,11 @@ class Expenditure(object):
         for user, share in split_dict.items():
             if share == 0:
                 del split_dict[user]
-            else:
-                split_dict[user] = share / total
             
         amounts_dict = dict()
         
         for user, share in split_dict.iteritems():
-            amounts_dict[user] = Currency(split_dict[user] * self.amount)
+            amounts_dict[user] = Currency((share * self.amount) / total)
         
         difference = self.amount - sum(amounts_dict.itervalues())
         

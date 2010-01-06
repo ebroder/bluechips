@@ -73,6 +73,22 @@ class TestExpenditure(TestCase):
                                  Currency('-0.01'),
                                  Currency('-0.00'))
 
+    def test_split_irrational_rounding(self):
+        e2 = model.Expenditure(self.u, Decimal('2375.00'),
+                               u'rounding test')
+        u2 = model.User(u'rat', u'Irrational Rat', False)
+        meta.Session.add(u2)
+        meta.Session.add(e2)
+        meta.Session.commit()
+        split_dict = {}
+        split_dict[u2] = Decimal('750.00')
+        split_dict[self.u] = Decimal('4000.00')
+        e2.split(split_dict)
+        assert e2.share(u2) == Decimal('375.00')
+        meta.Session.delete(e2)
+        meta.Session.delete(u2)
+        meta.Session.commit()
+
     def tearDown(self):
         meta.Session.delete(self.e)
         meta.Session.delete(self.u)
