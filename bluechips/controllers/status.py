@@ -22,6 +22,13 @@ class StatusController(BaseController):
     def index(self):
         c.debts = debts()
         c.settle = settle(c.debts)
+
+        c.net = 0
+        for from_user, to_user, amount in c.settle:
+            if from_user == request.environ['user']:
+                c.net -= amount
+            elif to_user == request.environ['user']:
+                c.net += amount
         
         periods = {}
         periods['Total'] = (None, None)
