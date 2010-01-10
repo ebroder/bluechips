@@ -21,11 +21,14 @@ def debts():
     # house
     users = meta.Session.query(model.User)
     
-    debts_dict = {}
+    debts_dict = dict((u, Currency(0)) for u in users)
     
     # First, credit everyone for expenditures they've made
-    for user in users:
-        debts_dict[user] = Currency(-sum(map((lambda x: x.amount), user.expenditures)))
+    total_expenditures = meta.Session.query(model.Expenditure).\
+        add_column(sqlalchemy.func.sum(model.Expenditure.amount).label('total_spend')).\
+        group_by(model.Expenditure.spender_id)
+    for expenditure, total_spend in total_expenditures:
+        debts_dict[expenditure.spender] -= total_spend
     
     # Next, debit everyone for expenditures that they have an
     # investment in (i.e. splits)
