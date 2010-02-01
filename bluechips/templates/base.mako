@@ -5,9 +5,9 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
     ${h.stylesheet_link('/css/main.css')}
-    ${h.stylesheet_link('/js/jquery.date_input.css')}
+    ${h.stylesheet_link('//ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/flick/jquery-ui.css')}
     ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
-    ${h.javascript_link('/js/jquery.date_input.js')}
+    ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js')}
     ${h.javascript_link('/js/admin.js')}
   </head>
   <body>
