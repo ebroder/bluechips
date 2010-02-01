@@ -11,6 +11,8 @@
     <link rel="apple-touch-startup-image" href="/icons/apple-touch-startup.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
+    ${h.javascript_link('/js/mobile.js')}
   </head>
   <body>
     % for message in h.flash.pop_messages():
@@ -20,8 +22,6 @@
     <div id="non-mobile">
       <a href="${h.url_for(request.url, use_non_mobile='yes')}">Use non mobile interface</a>
     </div>
-    ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
-    ${h.javascript_link('/js/mobile.js')}
   </body>
 </html>
 

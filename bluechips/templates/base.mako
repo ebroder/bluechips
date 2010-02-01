@@ -6,6 +6,9 @@
     <title>${self.title()}</title>
     ${h.stylesheet_link('/css/main.css')}
     ${h.stylesheet_link('/js/jquery.date_input.css')}
+    ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
+    ${h.javascript_link('/js/jquery.date_input.js')}
+    ${h.javascript_link('/js/admin.js')}
   </head>
   <body>
     % if c.mobile_client:
@@ -64,9 +67,6 @@
     <div id="content">
       ${next.body()}
     </div>
-    ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
-    ${h.javascript_link('/js/jquery.date_input.js')}
-    ${h.javascript_link('/js/admin.js')}
   </body>
 </html>
 
