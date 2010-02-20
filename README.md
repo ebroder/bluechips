@@ -71,4 +71,4 @@ configuration:
 The ``bluechips.wsgi`` wrapper script looks just like:
 
     from paste.deploy import loadapp
-    application = loadapp('config:/var/www/ssl/production.ini')
+    application = loadapp('config:/var/www/ssl/config.ini')
