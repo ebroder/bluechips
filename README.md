@@ -72,3 +72,20 @@ The ``bluechips.wsgi`` wrapper script looks just like:
 
     from paste.deploy import loadapp
     application = loadapp('config:/var/www/ssl/config.ini')
+
+Acknowledgments
+---------------
+
+BlueChips is the latest in a long line of software to make managing
+group finances easier, and would not be possible without the
+intellectual inspiration of those predecessors.
+
+CUTCAT's [accounting software][cutcat] started the trend of
+software-based accounting mechanisms. It inspired a re-implementation
+as a curses script by [Nelson Elhage][nelhage], which introduced the
+notion of "pushing expenditures" to simplify transfers. The algorithm
+used in BlueChips for settling the books is directly cargo-culted from
+Nelson's implementation.
+
+[cutcat]: http://cutc.at/accounting-software.html
+[nelhage]: http://nelhage.com/
