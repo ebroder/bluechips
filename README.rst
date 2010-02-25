@@ -3,6 +3,11 @@ people with shared expenses. It was designed and developed by groups of
 students who got tired of the headaches of managing lots of little payments
 between roommates.
 
+Demo
+----
+
+If you want to try out BlueChips, you can go to http://demo.bluechi.ps
+
 Example Scenario
 ----------------
 
