@@ -9,7 +9,7 @@ except ImportError:
 
 setup(
     name='BlueChips',
-    version='1.0a2',
+    version='1.0a3',
     description='BlueChips - finances for people with shared expenses',
     long_description=open('README.rst').read(),
     author='Residents of Blue Sun Corporate Headquarters',
