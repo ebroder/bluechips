@@ -13,7 +13,7 @@ from pylons import request
 from pylons.decorators import validate
 from pylons.decorators.secure import authenticate_form
 
-from formencode import validators, Schema
+from formencode import validators, Schema, FancyValidator, Invalid
 
 log = logging.getLogger(__name__)
 
@@ -22,6 +22,31 @@ class EmailSchema(Schema):
     "Validate email updates."
     allow_extra_fields = False
     new_email = validators.Email()
+
+
+class UniqueUsername(FancyValidator):
+    def _to_python(self, value, state):
+        u = meta.Session.query(model.User).\
+            filter(model.User.username == value).\
+            first()
+        if u:
+            raise Invalid(
+                'That username already exists',
+                value, state)
+        return value
+
+
+class NewUserSchema(Schema):
+    "Validate new users."
+    allow_extra_fields = False
+    username = UniqueUsername(not_empty=True)
+    password = validators.String(if_missing=None)
+    confirm_password = validators.String(if_missing=None)
+    name = validators.String(not_empty=False)
+    resident = validators.StringBoolean(not_empty=True)
+    chained_validators = [
+        validators.FieldsMatch('password', 'confirm_password'),
+        ]
 
 
 class UserController(BaseController):
@@ -39,4 +64,28 @@ class UserController(BaseController):
             h.flash("Removed email address.")
         else:
             h.flash("Updated email address to '%s'." % new_email)
+        return h.redirect_to('/')
+
+    def new(self):
+        c.title = 'Register a New User'
+        return render('/user/new.mako')
+
+    @authenticate_form
+    @validate(schema=NewUserSchema(), form='new')
+    def create(self):
+        u = model.User(username=self.form_result['username'],
+                       resident=self.form_result['resident'])
+
+        if self.form_result['name']:
+            u.name = self.form_result['name']
+        else:
+            u.name = self.form_result['username']
+
+        if self.form_result['password'] is not None:
+            u.password = self.form_result['password']
+
+        meta.Session.save(u)
+        meta.Session.commit()
+
+        h.flash('Successfully created new user %s' % u.username)
         return h.redirect_to('/')
