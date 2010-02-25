@@ -50,6 +50,10 @@ class NewUserSchema(Schema):
 
 
 class UserController(BaseController):
+    def index(self):
+        c.title = 'User Settings'
+        return render('/user/index.mako')
+
     def email(self):
         c.title = 'User Settings'
         return render('/user/email.mako')
