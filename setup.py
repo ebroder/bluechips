@@ -24,11 +24,6 @@ setup(
     packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
     test_suite='nose.collector',
-    package_data={'bluechips': ['i18n/*/LC_MESSAGES/*.mo']},
-    #message_extractors = {'bluechips': [
-    #        ('**.py', 'python', None),
-    #        ('templates/**.mako', 'mako', None),
-    #        ('public/**', 'ignore', None)]},
     zip_safe=False,
     paster_plugins=['PasteScript', 'Pylons'],
     entry_points="""
