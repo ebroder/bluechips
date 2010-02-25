@@ -11,9 +11,20 @@ setup(
     name='BlueChips',
     version='1.0a1',
     description='BlueChips - finances for people with shared expenses',
+    long_description=open('README.rst').read(),
     author='Residents of Blue Sun Corporate Headquarters',
     author_email='chips@blue-sun-corp.com',
-    #url='',
+    url='http://github.com/ebroder/bluechips',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Web Environment',
+        'Framework :: Pylons',
+        'License :: OSI Approved :: GNU General Public License (GPL)',
+        'Natural Language :: English',
+        'Topic :: Home Automation',
+        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
+        'Topic :: Office/Business :: Financial :: Accounting',
+        ],
     install_requires=["Pylons>=0.9.6",
                       "WebHelpers==0.6.4",
                       "SQLAlchemy>=0.4.1",
@@ -32,8 +43,5 @@ setup(
 
     [paste.app_install]
     main = pylons.util:PylonsInstaller
-    
-    [paste.filter_app_factory]
-    fakeauth = bluechips.lib.fake_auth:FakeAuth
     """,
 )
