@@ -50,9 +50,9 @@ class NewUserSchema(Schema):
 
 
 class UserController(BaseController):
-    def index(self):
+    def email(self):
         c.title = 'User Settings'
-        return render('/user/index.mako')
+        return render('/user/email.mako')
 
     @authenticate_form
     @validate(schema=EmailSchema(), form='index')
