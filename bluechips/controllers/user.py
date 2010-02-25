@@ -5,9 +5,12 @@ Calculate the current state of the books
 import logging
 
 from bluechips.lib.base import *
+from bluechips.lib.permissions import BlueChipResident
 
 import sqlalchemy
 from sqlalchemy import orm
+
+from authkit.authorize.pylons_adaptors import authorize
 
 from pylons import request
 from pylons.decorators import validate
@@ -70,11 +73,13 @@ class UserController(BaseController):
             h.flash("Updated email address to '%s'." % new_email)
         return h.redirect_to('/')
 
+    @authorize(BlueChipResident())
     def new(self):
         c.title = 'Register a New User'
         return render('/user/new.mako')
 
     @authenticate_form
+    @authorize(BlueChipResident())
     @validate(schema=NewUserSchema(), form='new')
     def create(self):
         u = model.User(username=self.form_result['username'],

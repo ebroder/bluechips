@@ -20,6 +20,16 @@ class BlueChipUser(RequestPermission):
             raise NotAuthorizedError('You are not allowed access.') # pragma: nocover
         return app(environ, start_response)
 
+class BlueChipResident(RequestPermission):
+    def check(self, app, environ, start_response):
+        if 'user' not in environ:
+            raise NotAuthenticatedError('Not Authenticated')
+
+        if not getattr(environ['user'], 'resident', False):
+            raise NotAuthorizedError('You are not allowed access.')
+
+        return app(environ, start_response)
+
 class DummyAuthenticate(AddDictToEnviron):
     """
     Set the authkit.authenticate environment variable so
