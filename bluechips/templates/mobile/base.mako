@@ -5,10 +5,10 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
     ${h.stylesheet_link('/css/main.css')}
-    <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+    <link media="only screen and (max-device-width: 480px)" href="${request.script_name}/css/mobile.css" type="text/css" rel="stylesheet" />
     <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch.png" />
-    <link rel="apple-touch-startup-image" href="/icons/apple-touch-startup.png" />
+    <link rel="apple-touch-icon" href="${request.script_name}/icons/apple-touch.png" />
+    <link rel="apple-touch-startup-image" href="${request.script_name}/icons/apple-touch-startup.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
@@ -53,7 +53,7 @@
           klass = 'unselected'
       %>
       <a id="${name}" class="${klass}" href="${h.url_for(controller=name, action='index', id=None)}">
-        <img src="/icons/${name}.png" alt="">
+        <img src="${request.script_name}/icons/${name}.png" alt="">
         <span>${name.capitalize()}</span>
       </a>
     % endfor

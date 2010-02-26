@@ -116,7 +116,7 @@ span.error-message {
 }
 input.currency {
     padding-left: 10px;
-    background-image: url(/icons/currency-small.png);
+    background-image: url(../icons/currency-small.png);
     background-repeat: no-repeat;
     background-position: center left;
 }

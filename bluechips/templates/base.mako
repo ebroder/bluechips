@@ -4,11 +4,11 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
-    ${h.stylesheet_link('/css/main.css')}
+    ${h.stylesheet_link('%s/css/main.css' % request.script_name)}
     ${h.stylesheet_link('//ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/flick/jquery-ui.css')}
     ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
     ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js')}
-    ${h.javascript_link('/js/admin.js')}
+    ${h.javascript_link('%s/js/admin.js' % request.script_name)}
   </head>
   <body>
     % if c.mobile_client:
@@ -30,31 +30,31 @@
           </td>
           <td>
             <a href="${h.url_for(controller='status', action='index', id=None)}">
-              <img src="/icons/status.png" alt="">
+              <img src="${request.script_name}/icons/status.png" alt="">
               <span>Dashboard</span>
             </a>
           </td>
           <td>
             <a href="${h.url_for(controller='spend', action='index', id=None)}">
-              <img src="/icons/spend.png" alt="">
+              <img src="${request.script_name}/icons/spend.png" alt="">
               <span>Expense</span>
             </a>
           </td>
           <td>
             <a href="${h.url_for(controller='transfer', action='index', id=None)}">
-              <img src="/icons/transfer.png" alt="">
+              <img src="${request.script_name}/icons/transfer.png" alt="">
               <span>Transfer</span>
             </a>
           </td>
           <td>
             <a href="${h.url_for(controller='history', action='index', id=None)}">
-              <img src="/icons/history.png" alt="">
+              <img src="${request.script_name}/icons/history.png" alt="">
               <span>History</span>
             </a>
           </td>
           <td>
             <a href="${h.url_for(controller='user', action='index', id=None)}">
-              <img src="/icons/user.png" alt="">
+              <img src="${request.script_name}/icons/user.png" alt="">
               <span>User</span>
             </a>
           </td>
