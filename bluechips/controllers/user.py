@@ -93,7 +93,7 @@ class UserController(BaseController):
         if self.form_result['password'] is not None:
             u.password = self.form_result['password']
 
-        meta.Session.save(u)
+        meta.Session.add(u)
         meta.Session.commit()
 
         h.flash('Successfully created new user %s' % u.username)
