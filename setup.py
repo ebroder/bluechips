@@ -27,7 +27,7 @@ setup(
         ],
     install_requires=["Pylons>=0.9.6",
                       "WebHelpers==0.6.4",
-                      "SQLAlchemy>=0.4.1",
+                      "SQLAlchemy>=0.5",
                       "AuthKit>=0.4.0",
                       "FormEncode>=1.2.1",
                       "mailer>=0.5"],
