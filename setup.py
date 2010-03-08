@@ -9,14 +9,14 @@ except ImportError:
 
 setup(
     name='BlueChips',
-    version='1.0a4',
+    version='1.0.0',
     description='BlueChips - finances for people with shared expenses',
     long_description=open('README.rst').read(),
     author='Residents of Blue Sun Corporate Headquarters',
     author_email='chips@blue-sun-corp.com',
     url='http://github.com/ebroder/bluechips',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Framework :: Pylons',
         'License :: OSI Approved :: GNU General Public License (GPL)',
