@@ -42,7 +42,7 @@ class ExpenditureSchema(Schema):
     pre_validators = [NestedVariables()]
     spender_id = validators.Int(not_empty=True)
     amount = model.types.CurrencyValidator(not_empty=True)
-    description = validators.UnicodeString()
+    description = validators.UnicodeString(not_empty=True)
     date = validators.DateConverter()
     shares = ForEach(ShareSchema)
     chained_validators = [ValidateNotAllZero]
