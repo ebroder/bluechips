@@ -9,7 +9,7 @@
     </tr>
     <tr>
       <th><label for="amount">Amount</label></th>
-      <td>${h.currency('amount', c.expenditure.amount, size=8)}</td>
+      <td>${h.currency('amount', c.expenditure.amount, size=8, onkeyup="calcSplit();")}</td>
     </tr>
     <tr>
       <th><label for="date">Date</label></th>
@@ -32,8 +32,11 @@
       <tr>
         <th><label for="shares-${ii}amount">${user.name}</label></th>
         <td>
-          ${h.text('shares-%d.amount' % ii, percent)}
+          ${h.text('shares-%d.amount' % ii, percent, class_="share-text", onkeyup="calcSplit();")}
           ${h.hidden('shares-%d.user_id' % ii, user.id)}
+        </td>
+        <td id="shares-${ii}amount-calc" align="right">
+          0.00
         </td>
       </tr>
     % endfor
@@ -44,3 +47,4 @@
     </tr>
   </table>
 </form>
+${h.javascript_link('%s/js/calculator.js' % request.script_name)}
