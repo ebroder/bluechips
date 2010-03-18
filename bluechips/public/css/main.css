@@ -56,6 +56,15 @@ table.list th {
     text-align: left;
     border-bottom: 1px solid #bbb;
 }
+
+table.list th.amount {
+    text-align: right;
+}
+
+table.list th.share {
+    text-align: right;
+}
+
 table.list td {
     vertical-align: top;
 }
@@ -67,9 +76,11 @@ table.list td.user {
 }
 table.list td.amount {
     width: 90px;
+    text-align: right;
 }
 table.list td.share {
     width: 90px;
+    text-align: right;
 }
 #totals {
     margin-bottom: 10px;
@@ -78,7 +89,7 @@ table.list td.share {
     text-align: right;
 }
 #totals th.scope {
-    text-align: left;
+    text-align: right;
     padding: 2px 15px;
 }
 #totals .scope {
@@ -86,6 +97,7 @@ table.list td.share {
 }
 #totals td {
     padding: 2px 15px;
+    text-align: right;
 }
 #balance {
     margin-bottom: 10px;
@@ -93,6 +105,11 @@ table.list td.share {
 #balance th {
     text-align: left;
 }
+
+#balance td.amount {
+    text-align: right;
+}
+
 td.labelcol {
     text-align: right;
     font-weight: bold;
