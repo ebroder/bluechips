@@ -122,6 +122,18 @@ class Currency(object):
         argument to an int
         """
         return self.__mul__(other)
+    def __div__(self, other):
+        """
+        If I don't define this, SmartSubclass will convert the other
+        argument to an int
+        """
+        return Currency(self.value / other)
+    def __truediv__(self, other):
+        """
+        If I don't define this, SmartSubclass will convert the other
+        argument to an int
+        """
+        return Currency(self.value / other)
     
     def __repr__(self):
         return '%s("%s")' % (self.__class__.__name__, str(self))
