@@ -6,8 +6,8 @@ from bluechips.model import meta
 
 class TestUserController(TestController):
 
-    def test_index(self):
-        response = self.app.get(url_for(controller='user'))
+    def test_email(self):
+        response = self.app.get(url_for(controller='user', action='email'))
         # Test response...
         response.mustcontain('Email Notifications', 'User Settings')
         form = response.form
@@ -20,7 +20,7 @@ class TestUserController(TestController):
         assert user.email == 'test@example.com'
 
     def test_clear_email(self):
-        response = self.app.get(url_for(controller='user'))
+        response = self.app.get(url_for(controller='user', action='email'))
         form = response.form
         form['new_email'] = ''
         response = form.submit().follow()
