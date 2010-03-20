@@ -7,11 +7,11 @@
   <table class="form">
     <tr>
       <th><label for="debtor_id">From</label></th>
-      <td>${c.transfer.debtor_id}</td>
+      <td>${c.transfer.debtor}</td>
     </tr>
     <tr>
       <th><label for="creditor_id">To</label></th>
-      <td>${c.transfer.creditor_id}</td>
+      <td>${c.transfer.creditor}</td>
     </tr>
     <tr>
       <th><label for="amount">Amount</label></th>
