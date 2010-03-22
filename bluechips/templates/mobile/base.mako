@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     ${h.javascript_link('//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js')}
-    ${h.javascript_link('/js/mobile.js')}
+    ${h.javascript_link('%s/js/mobile.js' % request.script_name)}
   </head>
   <body>
     % for message in h.flash.pop_messages():
