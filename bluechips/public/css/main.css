@@ -109,6 +109,9 @@ table.list td.share {
 #balance td.amount {
     text-align: right;
 }
+#balance th.amount {
+    text-align: right;
+}
 
 td.labelcol {
     text-align: right;

@@ -30,7 +30,7 @@
               You owe the group:
             % endif
           </th>
-          <th>${abs(c.net)}</th>
+          <th class="amount">${abs(c.net)}</th>
         </tr>
       % endif
     </table>
