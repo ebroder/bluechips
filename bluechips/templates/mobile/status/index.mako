@@ -18,7 +18,7 @@ ${self.tabs('status')}
         <tr>
           <td>${transfer[0].name}</td>
           <td>${transfer[1].name}</td>
-          <td>${transfer[2]}</td>
+          <td class="amount">${transfer[2]}</td>
         </tr>
       % endfor
     </table>
