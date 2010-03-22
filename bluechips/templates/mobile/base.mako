@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>${self.title()}</title>
-    ${h.stylesheet_link('/css/main.css')}
+    ${h.stylesheet_link('%s/css/main.css' % request.script_name)}
     <link media="only screen and (max-device-width: 480px)" href="${request.script_name}/css/mobile.css" type="text/css" rel="stylesheet" />
     <meta name="viewport" content="initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no" />
     <link rel="apple-touch-icon" href="${request.script_name}/icons/apple-touch.png" />
