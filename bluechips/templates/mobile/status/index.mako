@@ -21,6 +21,18 @@ ${self.tabs('status')}
           <td class="amount">${transfer[2]}</td>
         </tr>
       % endfor
+      % if c.net != 0:
+        <tr>
+          <th colspan="2">
+            % if c.net > 0:
+              The group owes you:
+            % elif c.net < 0:
+              You owe the group:
+            % endif
+          </th>
+          <th>${abs(c.net)}</th>
+        </tr>
+      % endif
     </table>
   % endif
 </div>
