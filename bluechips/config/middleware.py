@@ -42,7 +42,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = PylonsApp()
     
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
-    if not app_conf.get('noauth', False):
+    if not asbool(app_conf.get('noauth')):
         app = authkit.authorize.middleware(app, BlueChipUser())
     
     # Routing/Session/Cache Middleware
@@ -68,6 +68,7 @@ def make_app(global_conf, full_stack=True, **app_conf):
     # server is handling this static content, remove the following 3 lines)
     static_app = StaticURLParser(config['pylons.paths']['static_files'])
     app = Cascade([static_app, app])
-    app = AuthBasicHandler(app, 'BlueChips', authenticate)
-    app = DummyAuthenticate(app, app_conf)
+    if not asbool(app_conf.get('noauth')):
+        app = AuthBasicHandler(app, 'BlueChips', authenticate)
+        app = DummyAuthenticate(app, app_conf)
     return app
