@@ -42,7 +42,8 @@ def make_app(global_conf, full_stack=True, **app_conf):
     app = PylonsApp()
     
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
-    app = authkit.authorize.middleware(app, BlueChipUser())
+    if not app_conf.get('noauth', False):
+        app = authkit.authorize.middleware(app, BlueChipUser())
     
     # Routing/Session/Cache Middleware
     app = RoutesMiddleware(app, config['routes.map'])
