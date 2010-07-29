@@ -35,7 +35,7 @@ class TransferController(BaseController):
        return self.edit()
     
     def edit(self, id=None):
-        c.users = meta.Session.query(model.User.id, model.User.name)
+        c.users = get_users()
         if id is None:
             c.title = 'Add a New Transfer'
             c.transfer = model.Transfer()

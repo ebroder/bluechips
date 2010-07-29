@@ -53,7 +53,7 @@ class SpendController(BaseController):
         return self.edit()
     
     def edit(self, id=None):
-        c.users = meta.Session.query(model.User.id, model.User)
+        c.users = get_users()
         if id is None:
             c.title = 'Add a New Expenditure'
             c.expenditure = model.Expenditure()

@@ -67,5 +67,9 @@ def render(name, *args, **kwargs):
                 c.mobile_client = False
     return render_mako(name, *args, **kwargs)
 
+def get_users():
+    return meta.Session.query(model.User.id, model.User).\
+        order_by(model.User.resident.desc(), model.User.username)
+
 __all__ = ['c', 'h', 'render', 'model', 'meta', '_', 'ungettext', 'N_',
-           'BaseController', 'update_sar', 'redirect_on_get']
+           'BaseController', 'update_sar', 'redirect_on_get', 'get_users']
