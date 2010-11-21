@@ -3,6 +3,14 @@
 Provides the BaseController class for subclassing.
 """
 
+# Monkey-patch around a webhelpers/Pylons incompatibility
+try:
+    import webhelpers.pylonslib.secure_form
+    import webhelpers.html
+    webhelpers.html.secure_form = webhelpers.pylonslib.secure_form
+except ImportError:
+    pass
+
 from decorator import decorator
 
 from pylons import request, session, tmpl_context as c
