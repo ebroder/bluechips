@@ -10,7 +10,7 @@ from pylons import request
 from routes import url_for, redirect_to
 from webhelpers.html import escape, literal, url_escape
 from webhelpers.html.tags import *
-from webhelpers.html.secure_form import *
+from webhelpers.pylonslib.secure_form import *
 
 from webhelpers.pylonslib import Flash as _Flash
 

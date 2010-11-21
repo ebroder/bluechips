@@ -1,7 +1,7 @@
 from datetime import date
 from decimal import Decimal
 
-from webhelpers.html.secure_form import token_key
+from webhelpers.pylonslib.secure_form import token_key
 
 from bluechips.tests import *
 from bluechips import model

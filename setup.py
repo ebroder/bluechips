@@ -26,7 +26,7 @@ setup(
         'Topic :: Office/Business :: Financial :: Accounting',
         ],
     install_requires=["Pylons>=0.9.6",
-                      "WebHelpers==0.6.4",
+                      "WebHelpers>=1.0",
                       "SQLAlchemy>=0.5",
                       "AuthKit>=0.4.0",
                       "FormEncode>=1.2.1",
