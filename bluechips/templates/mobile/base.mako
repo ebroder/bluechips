@@ -52,7 +52,7 @@
         else:
           klass = 'unselected'
       %>
-      <a id="${name}" class="${klass}" href="${h.url_for(controller=name, action='index', id=None)}">
+      <a id="${name}" class="${klass}" href="${h.url_for(controller=name, action='index')}">
         <img src="${request.script_name}/icons/${name}.png" alt="">
         <span>${name.capitalize()}</span>
       </a>

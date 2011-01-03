@@ -29,31 +29,31 @@
             </h1>
           </td>
           <td>
-            <a href="${h.url_for(controller='status', action='index', id=None)}">
+            <a href="${h.url_for(controller='status', action='index')}">
               <img src="${request.script_name}/icons/status.png" alt="">
               <span>Dashboard</span>
             </a>
           </td>
           <td>
-            <a href="${h.url_for(controller='spend', action='index', id=None)}">
+            <a href="${h.url_for(controller='spend', action='index')}">
               <img src="${request.script_name}/icons/spend.png" alt="">
               <span>Expense</span>
             </a>
           </td>
           <td>
-            <a href="${h.url_for(controller='transfer', action='index', id=None)}">
+            <a href="${h.url_for(controller='transfer', action='index')}">
               <img src="${request.script_name}/icons/transfer.png" alt="">
               <span>Transfer</span>
             </a>
           </td>
           <td>
-            <a href="${h.url_for(controller='history', action='index', id=None)}">
+            <a href="${h.url_for(controller='history', action='index')}">
               <img src="${request.script_name}/icons/history.png" alt="">
               <span>History</span>
             </a>
           </td>
           <td>
-            <a href="${h.url_for(controller='user', action='index', id=None)}">
+            <a href="${h.url_for(controller='user', action='index')}">
               <img src="${request.script_name}/icons/user.png" alt="">
               <span>User</span>
             </a>
