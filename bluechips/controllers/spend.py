@@ -67,7 +67,7 @@ class SpendController(BaseController):
                 user_id, user = user_row
                 val = 0
                 if user.resident:
-                    val = Decimal(100) / Decimal(num_residents)
+                    val = Decimal(1)
                 c.values['shares-%d.amount' % ii] = val
         else:
             c.title = 'Edit an Expenditure'
