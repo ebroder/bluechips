@@ -39,7 +39,7 @@ class Expenditure(object):
         Percentages will be normalized to sum to 100%.
         
         If the split leaks or gains money due to rounding errors, the
-        pennies will be randomly distributed to one of the users.
+        pennies will be randomly distributed to a subset of the users.
         
         I mean, come on. You're already living together. Are you really
         going to squabble over a few pennies?
@@ -60,15 +60,10 @@ class Expenditure(object):
             amounts_dict[user] = Currency((share * self.amount) / total)
         
         difference = self.amount - sum(amounts_dict.itervalues())
-        
-        if difference > 0:
-            for i in xrange(difference):
-                winner = random.choice(amounts_dict.keys())
-                amounts_dict[winner] += Currency(1)
-        elif difference < 0:
-            for i in xrange(-difference):
-                winner = random.choice(amounts_dict.keys())
-                amounts_dict[winner] -= Currency(1)
+
+        winners = random.sample(amounts_dict.keys(), abs(int(difference)))
+        for winner in winners:
+            amounts_dict[winner] += Currency(1) if difference > 0 else Currency(-1)
         
         for user, share in amounts_dict.iteritems():
             s = Split(self, user, share)
