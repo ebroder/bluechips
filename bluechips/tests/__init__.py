@@ -25,7 +25,7 @@ __all__ = ['url_for', 'TestController',
            'createUsers', 'createExpenditures',
            'deleteUsers', 'deleteExpenditures']
 
-sample_users = [u'Alice', u'Bob', u'Charlie', u'Dave', u'Eve']
+sample_users = [u'Alice', u'Bob', u'Charlie', u'Dave', u'Eve', u'Frank', u'Gina']
 
 def setUpPackage():
     # Invoke websetup with the current config file
@@ -54,7 +54,7 @@ class TestController(TestCase):
 
 def createUsers(n=None):
     if n is None:
-        n = random.randint(2, 5)
+        n = random.randint(2, 7)
     for i in xrange(n):
         u = bluechips.model.User(sample_users[i].lower(), resident=True)
         meta.Session.add(u)

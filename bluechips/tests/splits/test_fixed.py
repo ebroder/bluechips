@@ -100,3 +100,27 @@ class TestSplitFixed(TestCase):
 
         deleteExpenditures()
         deleteUsers()
+
+    def test_sevenPeople(self):
+        """
+        Test that expenses are split as evenly as possible with lots of people
+        """
+        createUsers(7)
+
+        users = meta.Session.query(model.User).all()
+
+        e = model.Expenditure(users[0], Currency("24.00"))
+        meta.Session.add(e)
+        e.even_split()
+        meta.Session.commit()
+
+        splits = meta.Session.query(model.Split).all()
+        self.assertEqual(e.amount, sum(s.share for s in splits))
+
+        max_split = max(s.share for s in splits)
+        min_split = min(s.share for s in splits)
+
+        self.assertTrue(max_split - min_split <= Currency(1))
+
+        deleteExpenditures()
+        deleteUsers()
