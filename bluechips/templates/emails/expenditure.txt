@@ -1,13 +1,13 @@
-The following expenditure was ${op|n}:
+The following expenditure was ${op|n,unicode}:
 
-${expenditure.amount|n,unicode} paid for by ${expenditure.spender|n}
+${expenditure.amount|n,unicode} paid for by ${expenditure.spender|n,unicode}
 
 Description:
-${expenditure.description|n}
+${expenditure.description|n,unicode}
 
 The shares of this expenditure are:
 % for split in expenditure.splits:
-${split.user|n}: ${split.share|n,unicode}
+${split.user|n,unicode}: ${split.share|n,unicode}
 % endfor
 
 To view or edit this expenditure, visit:
