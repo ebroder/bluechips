@@ -32,7 +32,7 @@
       <tr>
         <th><label for="shares-${ii}amount">${user.name}</label></th>
         <td>
-          ${h.text('shares-%d.amount' % ii, percent, class_="share-text", onkeyup="calcSplit();")}
+          ${h.text('shares-%d.amount' % ii, percent, class_="share-text", onchange="calcSplit();", onkeyup="calcSplit();")}
           ${h.hidden('shares-%d.user_id' % ii, user.id)}
         </td>
         <td id="shares-${ii}amount-calc" align="right">
