@@ -83,9 +83,7 @@ class SpendController(BaseController):
                 if c.expenditure.amount == 0:
                     percent = 0
                 else:
-                    percent = (Decimal(100) * Decimal(int(share)) /
-                               Decimal(int(c.expenditure.amount))).\
-                            quantize(Decimal("0.001"))
+                    percent = Decimal(int(share)) / Decimal(100)
                 c.values['shares-%d.amount' % ii] = percent
 
         return render('/spend/index.mako')
