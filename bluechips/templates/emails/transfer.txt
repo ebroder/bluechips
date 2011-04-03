@@ -1,9 +1,9 @@
-The following transfer was ${op}:
+The following transfer was ${op|n}:
 
-${transfer.amount} from ${transfer.debtor} to ${transfer.creditor}
+${transfer.amount|n} from ${transfer.debtor|n} to ${transfer.creditor|n}
 
 Description:
-${transfer.description}
+${transfer.description|n}
 
 To view or edit this transfer, visit:
 ${h.url_for(controller='transfer', action='edit', id=transfer.id, qualified=True)}
