@@ -1,6 +1,6 @@
 The following transfer was ${op|n}:
 
-${transfer.amount|n} from ${transfer.debtor|n} to ${transfer.creditor|n}
+${transfer.amount|n,unicode} from ${transfer.debtor|n} to ${transfer.creditor|n}
 
 Description:
 ${transfer.description|n}
