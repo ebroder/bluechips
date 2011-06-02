@@ -16,7 +16,7 @@
   </head>
   <body>
     % for message in h.flash.pop_messages():
-      <div class="flash">${message | n}</div>
+      <div class="flash">${str(message) | n}</div>
     % endfor
     ${next.body()}
     <div id="non-mobile">
