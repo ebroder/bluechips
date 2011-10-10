@@ -128,7 +128,7 @@ class SpendController(BaseController):
         h.flash(show)
 
         # Send email notification to involved users if they have an email set.
-        involved_users,update(sp.user for sp in e.splits if sp.share != 0)
+        involved_users.update(sp.user for sp in e.splits if sp.share != 0)
         involved_users.add(e.spender)
         body = render('/emails/expenditure.txt',
                       extra_vars={'expenditure': e,
