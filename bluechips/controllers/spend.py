@@ -94,6 +94,8 @@ class SpendController(BaseController):
     def update(self, id=None):
         # Either create a new object, or, if we're editing, get the
         # old one
+        involved_users = set()
+
         if id is None:
             e = model.Expenditure()
             meta.Session.add(e)
@@ -102,6 +104,10 @@ class SpendController(BaseController):
             e = meta.Session.query(model.Expenditure).get(id)
             if e is None:
                 abort(404)
+            # If a user gets removed from a transaction, they should
+            # still get an email
+            involved_users.update(sp.user for sp in e.splits if sp.share != 0)
+            involved_users.add(e.spender)
             op = 'updated'
         
         # Set the fields that were submitted
@@ -122,7 +128,7 @@ class SpendController(BaseController):
         h.flash(show)
 
         # Send email notification to involved users if they have an email set.
-        involved_users = set(sp.user for sp in e.splits if sp.share != 0)
+        involved_users,update(sp.user for sp in e.splits if sp.share != 0)
         involved_users.add(e.spender)
         body = render('/emails/expenditure.txt',
                       extra_vars={'expenditure': e,
