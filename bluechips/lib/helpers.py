@@ -7,12 +7,17 @@ from datetime import date
 from decimal import Decimal
 
 from pylons import request
-from routes import url_for, redirect_to
+from pylons.controllers.util import redirect
+from routes import url_for
 from webhelpers.html import escape, literal, url_escape
 from webhelpers.html.tags import *
 from webhelpers.pylonslib.secure_form import *
 
 from webhelpers.pylonslib import Flash as _Flash
+
+
+def redirect_to(*args, **kwargs):
+    redirect(url_for(*args, **kwargs))
 
 
 def currency(name, value, *args, **kwargs):

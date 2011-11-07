@@ -29,6 +29,11 @@ def load_environment(global_conf, app_conf):
     config['pylons.app_globals'] = app_globals.Globals()
     config['pylons.h'] = bluechips.lib.helpers
 
+    # Use lax attribute access in the template context. BlueChips was
+    # built with that assumption, and it's easier than cleaning all of
+    # the templates
+    config['pylons.strict_tmpl_context'] = False
+
     # Create the Mako TemplateLookup, with the default auto-escaping
     config['pylons.app_globals'].mako_lookup = TemplateLookup(
         directories=paths['templates'],
