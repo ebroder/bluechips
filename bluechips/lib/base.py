@@ -60,7 +60,7 @@ def redirect_on_get(action):
     return redirect_on_get_wrap
 
 def render(name, *args, **kwargs):
-    if any([x in request.user_agent for x in ('iPhone','webOS', 'Android')]):
+    if request.user_agent and any([x in request.user_agent for x in ('iPhone','webOS', 'Android')]):
         if 'use_non_mobile' in request.params:
             session['use_non_mobile'] = (request.params['use_non_mobile'] ==
                                          'yes')

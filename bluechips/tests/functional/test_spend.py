@@ -14,7 +14,8 @@ from bluechips.controllers.spend import ExpenditureSchema
 class TestSpendController(TestController):
 
     def test_index(self):
-        response = self.app.get(url_for(controller='spend'))
+        response = self.app.get(url_for(controller='spend',
+                                        action='index'))
         # Test response...
         response.mustcontain('Add a New Expenditure')
         form = response.form
@@ -28,12 +29,11 @@ class TestSpendController(TestController):
         today = date.today()
         assert form['date'].value == today.strftime('%m/%d/%Y')
         form['description'] = 'A test expenditure'
-        form['shares-0.amount'] = '1'
-        form['shares-1.amount'] = '2'
-        form['shares-2.amount'] = '2'
-        form['shares-3.amount'] = '1'
         for ii in range(4):
-            assert int(form['shares-%d.user_id' % ii].value) == ii + 1
+            if int(form['shares-%d.user_id' % ii].value) in (1, 4):
+                form['shares-%d.amount' % ii] = '1'
+            else:
+                form['shares-%d.amount' % ii] = '2'
 
         response = form.submit()
         response = response.follow()

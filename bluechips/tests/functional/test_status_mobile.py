@@ -16,4 +16,5 @@ class TestMobileController(TestController):
         response = response.click('Use mobile interface')
 
     def test_view_nonmobile(self):
-        self.app.get(url_for(controller='history'))
+        self.app.get(url_for(controller='history',
+                             action='index'))

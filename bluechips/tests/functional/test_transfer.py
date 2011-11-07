@@ -10,7 +10,8 @@ from bluechips.model import meta
 class TestTransferController(TestController):
 
     def test_index(self):
-        response = self.app.get(url_for(controller='transfer'))
+        response = self.app.get(url_for(controller='transfer',
+                                        action='index'))
         # Test response...
         response.mustcontain('Add a New Transfer')
         form = response.form
@@ -105,7 +106,7 @@ class TestTransferController(TestController):
         response = self.app.get(url_for(controller='transfer',
                                         action='update'),
                                 status=302)
-        assert (dict(response.headers)['location'] ==
+        assert (dict(response.headers)['Location'] ==
                 url_for(controller='transfer', action='edit', qualified=True))
 
     def test_delete_nonexistent(self):
