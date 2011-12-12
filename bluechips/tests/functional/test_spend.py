@@ -55,6 +55,51 @@ class TestSpendController(TestController):
         assert shares[4] == Currency('12.34')
 
 
+    def test_index_description_blank_oops(self):
+        response = self.app.get(url_for(controller='spend',
+                                        action='index'))
+        # Test response...
+        response.mustcontain('Add a New Expenditure')
+        form = response.form
+
+        user = meta.Session.query(model.User).\
+                filter_by(name=u'Charlie Root').one()
+
+        form['spender_id'] = user.id
+        form['amount'] = '74.04'
+        # Make sure date is today.
+        today = date.today()
+        assert form['date'].value == today.strftime('%m/%d/%Y')
+        form['description'] = ''
+        for ii in range(4):
+            if int(form['shares-%d.user_id' % ii].value) in (1, 4):
+                form['shares-%d.amount' % ii] = '1'
+            else:
+                form['shares-%d.amount' % ii] = '2'
+
+        response = form.submit()
+        response.mustcontain('<!-- for: description -->', 'Please enter a value')
+        form = response.form
+        form['description'] = 'Another test'
+        response = form.submit()
+        response = response.follow()
+
+        e = meta.Session.query(model.Expenditure).\
+                order_by(model.Expenditure.id.desc()).first()
+        assert e.spender.name == u'Charlie Root'
+        assert e.amount == 7404
+        assert e.date == today
+        assert e.description == u'Another test'
+
+        # Test the split.
+        shares = dict(((sp.user_id, sp.share)
+                       for sp in e.splits))
+        assert shares[1] == Currency('12.34')
+        assert shares[2] == Currency('24.68')
+        assert shares[3] == Currency('24.68')
+        assert shares[4] == Currency('12.34')
+
+
     def test_edit_and_delete(self):
         user = meta.Session.query(model.User).\
                 filter_by(name=u'Charlie Root').one()
