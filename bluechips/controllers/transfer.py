@@ -20,7 +20,7 @@ from mailer import Message
 log = logging.getLogger(__name__)
 
 
-class TransferSchema(Schema):
+class TransferSchema(AuthFormSchema):
     "Validate a transfer."
     allow_extra_fields = False
     debtor_id = validators.Int(not_empty=True)
@@ -49,8 +49,8 @@ class TransferController(BaseController):
         return render('/transfer/index.mako')
     
     @redirect_on_get('edit')
-    @authenticate_form
     @validate(schema=TransferSchema(), form='edit')
+    @authenticate_form
     def update(self, id=None):
         if id is None:
             t = model.Transfer()

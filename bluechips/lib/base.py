@@ -20,6 +20,8 @@ from pylons.templating import render_mako
 
 from mako.exceptions import TopLevelLookupException
 
+import formencode
+
 import bluechips.lib.helpers as h
 from bluechips import model
 from bluechips.model import meta
@@ -36,6 +38,9 @@ class BaseController(WSGIController):
             return WSGIController.__call__(self, environ, start_response)
         finally:
             meta.Session.remove()
+
+class AuthFormSchema(formencode.Schema):
+    _authentication_token = formencode.validators.String(if_missing=None)
 
 def update_sar(record, form_result):
     """
@@ -80,4 +85,5 @@ def get_users():
         order_by(model.User.resident.desc(), model.User.username)
 
 __all__ = ['c', 'h', 'render', 'model', 'meta', '_', 'ungettext', 'N_',
-           'BaseController', 'update_sar', 'redirect_on_get', 'get_users']
+           'BaseController', 'update_sar', 'redirect_on_get', 'get_users',
+           'AuthFormSchema']

@@ -36,7 +36,7 @@ def validate_state(value_dict, state, validator):
 ValidateNotAllZero = SimpleFormValidator(validate_state)
 
 
-class ExpenditureSchema(Schema):
+class ExpenditureSchema(AuthFormSchema):
     "Validate an expenditure."
     allow_extra_fields = False
     pre_validators = [NestedVariables()]
@@ -89,8 +89,8 @@ class SpendController(BaseController):
         return render('/spend/index.mako')
 
     @redirect_on_get('edit')
-    @authenticate_form
     @validate(schema=ExpenditureSchema(), form='edit', variable_decode=True)
+    @authenticate_form
     def update(self, id=None):
         # Either create a new object, or, if we're editing, get the
         # old one

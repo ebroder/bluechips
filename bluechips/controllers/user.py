@@ -21,7 +21,7 @@ from formencode import validators, Schema, FancyValidator, Invalid
 log = logging.getLogger(__name__)
 
 
-class EmailSchema(Schema):
+class EmailSchema(AuthFormSchema):
     "Validate email updates."
     allow_extra_fields = False
     new_email = validators.Email()
@@ -39,7 +39,7 @@ class UniqueUsername(FancyValidator):
         return value
 
 
-class NewUserSchema(Schema):
+class NewUserSchema(AuthFormSchema):
     "Validate new users."
     allow_extra_fields = False
     username = UniqueUsername(not_empty=True)
@@ -61,8 +61,8 @@ class UserController(BaseController):
         c.title = 'User Settings'
         return render('/user/email.mako')
 
-    @authenticate_form
     @validate(schema=EmailSchema(), form='index')
+    @authenticate_form
     def update(self):
         new_email = self.form_result['new_email']
         request.environ['user'].email = new_email
@@ -78,9 +78,9 @@ class UserController(BaseController):
         c.title = 'Register a New User'
         return render('/user/new.mako')
 
-    @authenticate_form
     @authorize(BlueChipResident())
     @validate(schema=NewUserSchema(), form='new')
+    @authenticate_form
     def create(self):
         u = model.User(username=self.form_result['username'],
                        resident=self.form_result['resident'])
