@@ -41,7 +41,8 @@ class Globals(object):
         if len(recipients) > 0:
             msg = Message(From=config.get('mailer.from',
                                           'root@localhost'),
-                          To=recipients)
-            msg.Subject = "BlueChips: %s" % subject
+                          To=recipients,
+                          charset='utf-8')
+            msg.Subject = ("BlueChips: %s" % subject).encode('utf-8')
             msg.Body = body
             self.send_message(msg)
