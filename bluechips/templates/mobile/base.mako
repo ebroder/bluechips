@@ -77,7 +77,7 @@
         </tr>
         <tr>
           <th><label for="amount">Amount</label></th>
-          <td>${h.currency('amount', h.grab(c.expenditure, 'amount'), size=8)}</td>
+          <td>${h.currency('amount', h.grab(c.expenditure, 'amount'), size=8, pattern='[0-9]*')}</td>
         </tr>
         <tr>
           <th><label for="date">Date</label></th>
@@ -103,7 +103,7 @@
           <tr>
             <th><label for="shares-${ii}amount">${user.name}</label></th>
             <td>
-              ${h.text('shares-%d.amount' % ii, percent)}
+              ${h.text('shares-%d.amount' % ii, percent, pattern='[0-9]*')}
               ${h.hidden('shares-%d.user_id' % ii, user.id)}
             </td>
           </tr>
@@ -139,7 +139,7 @@
         </tr>
         <tr>
           <th><label for="amount">Amount</label></th>
-          <td>${h.currency('amount', h.grab(c.transfer, 'amount'), size=8)}</td>
+          <td>${h.currency('amount', h.grab(c.transfer, 'amount'), size=8, pattern='[0-9]*')}</td>
         </tr>
         <tr>
           <th><label for="date">Date</label></th>
