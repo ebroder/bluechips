@@ -27,7 +27,7 @@ class ShareSchema(Schema):
     "Validate individual user shares."
     allow_extra_fields = False
     user_id = validators.Int(not_empty=True)
-    amount = validators.Number(not_empty=True)
+    amount = validators.Number(if_empty=0)
 
 
 def validate_state(value_dict, state, validator):
