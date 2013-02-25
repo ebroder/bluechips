@@ -62,7 +62,7 @@
       </table>
     </div>
     % for message in h.flash.pop_messages():
-      <div class="flash">${str(message) | n}</div>
+      <div class="flash">${message}</div>
     % endfor
     <div id="content">
       ${next.body()}
