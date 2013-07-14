@@ -173,7 +173,8 @@ class SpendController(BaseController):
             involved_users.add(e.spender)
             body = render('/emails/expenditure.txt',
                           extra_vars={'expenditure': e,
-                                      'op': 'deleted'})
+                                      'op': 'deleted',
+                                      'old_expenditure': None})
             g.handle_notification(involved_users, show, body)
 
         return h.redirect_to('/')
