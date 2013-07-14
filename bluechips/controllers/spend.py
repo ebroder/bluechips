@@ -100,10 +100,18 @@ class SpendController(BaseController):
             e = model.Expenditure()
             meta.Session.add(e)
             op = 'created'
+
+            old_expenditure = None
         else:
             e = meta.Session.query(model.Expenditure).get(id)
             if e is None:
                 abort(404)
+
+            old_expenditure = render('/emails/expenditure.txt',
+                                     extra_vars={'expenditure': e,
+                                                 'op': 'previously',
+                                                 'old_expenditure': None})
+
             # If a user gets removed from a transaction, they should
             # still get an email
             involved_users.update(sp.user for sp in e.splits if sp.share != 0)
@@ -132,7 +140,8 @@ class SpendController(BaseController):
         involved_users.add(e.spender)
         body = render('/emails/expenditure.txt',
                       extra_vars={'expenditure': e,
-                                  'op': op})
+                                  'op': op,
+                                  'old_expenditure': old_expenditure})
         g.handle_notification(involved_users, show, body)
 
         return h.redirect_to('/')
