@@ -12,7 +12,7 @@ ${split.user|n,unicode}: ${split.share|n,unicode}
 
 % if old_expenditure is not None:
 ${old_expenditure}
-% else
+% else:
 To view or edit this expenditure, visit:
 ${h.url_for(controller='spend', action='edit', id=expenditure.id, qualified=True)}
 % endif
