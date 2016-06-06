@@ -1,3 +1,7 @@
+**Important Note**: BlueChips is largely unsupported, and has not seen
+significant development in several years. I have since happily switched to
+using `Splitwise`_, which has all the features of BlueChips and then some.
+
 BlueChips is a simple finance tracking application designed for small groups of
 people with shared expenses. It was designed and developed by groups of
 students who got tired of the headaches of managing lots of little payments
@@ -93,5 +97,6 @@ notion of "pushing expenditures" to simplify transfers. The algorithm
 used in BlueChips for settling the books is directly cargo-culted from
 Nelson's implementation.
 
+.. _Splitwise: https://www.splitwise.com/
 .. _accounting software: http://cutc.at/accounting-software.html
 .. _Nelson Elhage: http://nelhage.com/
